@@ -17,7 +17,6 @@
     <assertj-core.version>3.11.1</assertj-core.version>
     <hibernate-core.version>5.3.7.Final</hibernate-core.version>
     <javax.persistence-api.version>2.2</javax.persistence-api.version>
-    <lombok.version>1.18.4</lombok.version>
   </properties>
 
   <modules>
@@ -61,11 +60,6 @@
         <groupId>javax.persistence</groupId>
         <artifactId>javax.persistence-api</artifactId>
         <version>${javax.persistence-api.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>${lombok.version}</version>
       </dependency>
       <dependency>
         <groupId>postgresql</groupId>
