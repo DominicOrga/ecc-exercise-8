@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Ignore;
 
+import org.hibernate.PropertyValueException;
+
 public class EmployeeDAOTest {
 
 	private EmployeeDAO employeeDAO;
@@ -42,15 +44,23 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	public void whenEmployeeSavedThenIdMustExist() {		
-		employeeDAO.save(employee);
+	public void whenEmployeeSavedThenEmployeeIsPersisted() {		
+		this.employee.setId(null);
+
+		employeeDAO.save(this.employee);
+
 		assertThat(employee.getId()).isNotNull();
 	}
 
 	@Test
-	public void whenEmployeeSavedThenEmployeeMustBePersisted() {
-		employeeDAO.save(employee);
-		Optional<Employee> employee1 = employeeDAO.get(this.employee.getId());
-		assertThat(employee1.isPresent()).isTrue();
+	public void whenNameIsNullThenEmployeeIsNotPersisted() {
+		this.employee.setId(null);
+		this.employee.setName(null);
+
+		Throwable thrown = catchThrowable(() -> {
+			employeeDAO.save(this.employee);
+		});
+
+		assertThat(thrown).isInstanceOf(PropertyValueException.class);
 	}
 }

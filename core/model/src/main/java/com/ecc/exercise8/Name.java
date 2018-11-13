@@ -1,12 +1,16 @@
 package com.ecc.exercise8;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Column;
 
 @Embeddable
 public class Name {
 
+	@Column(nullable=false)
 	private String firstName;
+	@Column(nullable=false)
 	private String middleName;
+	@Column(nullable=false)
 	private String lastName;
 
 	public Name() {}
