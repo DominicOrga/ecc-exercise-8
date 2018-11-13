@@ -14,6 +14,8 @@
         
         <property name="show_sql">true</property> <!-- Show SQL in console -->
         <property name="format_sql">true</property> <!-- Show SQL formatted -->
+        
         <mapping class="com.ecc.exercise8.Employee"/>
+        <mapping class="com.ecc.exercise8.Address"/>
     </session-factory>
 </hibernate-configuration>

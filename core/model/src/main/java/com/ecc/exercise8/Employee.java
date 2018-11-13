@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
 
 @Entity
 public class Employee {
@@ -15,16 +17,20 @@ public class Employee {
 	
 	@Embedded
 	private Name name;
-
-	private Float gwa;
-	private Boolean isEmployed;
 	private LocalDate birthDate;
 	private LocalDate dateHired;
+	private Float gwa;
+	private Boolean isEmployed;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	private Address address;
 
 	public Employee() {}
 
-	public Employee(Name name, Float gwa, Boolean isEmployed) {
+	public Employee(Name name, LocalDate birthDate, LocalDate dateHired, Float gwa, Boolean isEmployed) {
 		this.name = name;
+		this.birthDate = birthDate;
+		this.dateHired = dateHired;
 		this.gwa = gwa;
 		this.isEmployed = isEmployed;
 	}
@@ -75,5 +81,13 @@ public class Employee {
 
 	public void setDateHired(LocalDate dateHired) {
 		this.dateHired = dateHired;
+	}
+
+	public Address getAddress() {
+		return this.address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 }
