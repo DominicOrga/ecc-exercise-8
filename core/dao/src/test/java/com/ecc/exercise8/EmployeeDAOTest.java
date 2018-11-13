@@ -52,10 +52,100 @@ public class EmployeeDAOTest {
 		assertThat(employee.getId()).isNotNull();
 	}
 
+	@Test 
+	public void givenNameWhenEmployeeIsLoadedThenNameIsPreserved() {
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
+
+		assertThat(employee2.get().getName().toString().equals(
+				   this.employee.getName().toString()))
+			.isTrue();
+	}
+
+	@Test
+	public void givenBirthDateWhenEmployeeIsLoadedThenBirthdateIsPreserved() {
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
+
+		assertThat(employee2.get().getBirthDate().isEqual(this.employee.getBirthDate())).isTrue();
+	}
+
+	@Test
+	public void givenDateHiredWhenEmployeeIsLoadedThenDateHiredIsPreserved() {
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
+
+		assertThat(employee2.get().getDateHired().isEqual(this.employee.getDateHired())).isTrue();
+	}
+
+	@Test
+	public void givenGWAWhenEmployeeIsLoadedThenGWAIsPreserved() {
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
+
+		assertThat(employee2.get().getGWA()).isEqualTo(this.employee.getGWA());
+	}
+
+	@Test
+	public void givenEmployedStatusWhenEmployeeIsLoadedThenEmployedStatusIsPreserved() {
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
+
+		assertThat(employee2.get().isEmployed()).isEqualTo(this.employee.isEmployed());
+	}
+
 	@Test
 	public void whenNameIsNullThenEmployeeIsNotPersisted() {
-		this.employee.setId(null);
 		this.employee.setName(null);
+
+		Throwable thrown = catchThrowable(() -> {
+			employeeDAO.save(this.employee);
+		});
+
+		assertThat(thrown).isInstanceOf(PropertyValueException.class);
+	}
+
+	@Test
+	public void whenBirthDateIsNullThenEmployeeIsNotPersisted() {
+		this.employee.setBirthDate(null);
+
+		Throwable thrown = catchThrowable(() -> {
+			employeeDAO.save(this.employee);
+		});
+
+		assertThat(thrown).isInstanceOf(PropertyValueException.class);
+	}
+
+	@Test
+	public void whenDateHiredIsNullThenEmployeeIsNotPersisted() {
+		this.employee.setDateHired(null);
+
+		Throwable thrown = catchThrowable(() -> {
+			employeeDAO.save(this.employee);
+		});
+
+		assertThat(thrown).isInstanceOf(PropertyValueException.class);
+	}
+
+	@Test
+	public void whenGWAIsNullThenEmployeeIsNotPersisted() {
+		this.employee.setGWA(null);
+
+		Throwable thrown = catchThrowable(() -> {
+			employeeDAO.save(this.employee);
+		});
+
+		assertThat(thrown).isInstanceOf(PropertyValueException.class);
+	}
+
+	@Test
+	public void whenEmployedStatusIsNullThenEmployeeIsNotPersisted() {
+		this.employee.setEmployed(null);
 
 		Throwable thrown = catchThrowable(() -> {
 			employeeDAO.save(this.employee);

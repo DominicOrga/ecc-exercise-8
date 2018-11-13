@@ -8,6 +8,7 @@ import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
 import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 
 @Entity
 public class Employee {
@@ -17,9 +18,17 @@ public class Employee {
 	
 	@Embedded
 	private Name name;
+
+	@Column(nullable=false)
 	private LocalDate birthDate;
+
+	@Column(nullable=false)
 	private LocalDate dateHired;
+
+	@Column(nullable=false)
 	private Float gwa;
+
+	@Column(nullable=false)
 	private Boolean isEmployed;
 	
 	@OneToOne(cascade=CascadeType.ALL)
@@ -63,7 +72,7 @@ public class Employee {
 		return this.isEmployed;
 	}
 
-	public void setIsEmployed(Boolean isEmployed) {
+	public void setEmployed(Boolean isEmployed) {
 		this.isEmployed = isEmployed;
 	}
 
