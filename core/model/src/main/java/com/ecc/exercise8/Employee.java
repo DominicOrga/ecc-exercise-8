@@ -36,12 +36,13 @@ public class Employee {
 
 	public Employee() {}
 
-	public Employee(Name name, LocalDate birthDate, LocalDate dateHired, Float gwa, Boolean isEmployed) {
+	public Employee(Name name, LocalDate birthDate, LocalDate dateHired, Float gwa, Boolean isEmployed, Address address) {
 		this.name = name;
 		this.birthDate = birthDate;
 		this.dateHired = dateHired;
 		this.gwa = gwa;
 		this.isEmployed = isEmployed;
+		this.address = address;
 	}
 
 	public Long getId() {

@@ -56,4 +56,9 @@ public class Address {
 	public void setZipcode(Integer zipcode) {
 		this.zipcode = zipcode;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("%s,%s,%s,%d", this.streetNumber, this.barangay, this.city, this.zipcode.intValue());
+	}
 }

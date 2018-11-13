@@ -20,6 +20,7 @@ public class EmployeeDAOTest {
 	private LocalDate dateHired;
 	private float gwa;
 	private boolean isEmployed;
+	private Address address;
 	private Employee employee;
 
 	@Before
@@ -34,8 +35,14 @@ public class EmployeeDAOTest {
 		this.gwa = 2.75f;
 		this.isEmployed = true;
 
+		String streetNumber = "123";
+		String barangay = "San Isidro";
+		String city = "Manila";
+		Integer zipcode = 1920;
+		this.address = new Address(streetNumber, barangay, city, zipcode);
+
 		this.employee = new Employee(
-			this.name, this.birthdate, this.dateHired, this.gwa, this.isEmployed);
+			this.name, this.birthdate, this.dateHired, this.gwa, this.isEmployed, this.address);
 	}
 
 	@Before
@@ -53,7 +60,7 @@ public class EmployeeDAOTest {
 	}
 
 	@Test 
-	public void givenNameWhenEmployeeIsLoadedThenNameIsPreserved() {
+	public void givenNameWhenEmployeeIsSavedAndLoadedThenNameIsPreserved() {
 		employeeDAO.save(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
@@ -64,7 +71,7 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	public void givenBirthDateWhenEmployeeIsLoadedThenBirthdateIsPreserved() {
+	public void givenBirthDateWhenEmployeeIsSavedAndLoadedThenBirthdateIsPreserved() {
 		employeeDAO.save(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
@@ -73,7 +80,7 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	public void givenDateHiredWhenEmployeeIsLoadedThenDateHiredIsPreserved() {
+	public void givenDateHiredWhenEmployeeIsSavedAndLoadedThenDateHiredIsPreserved() {
 		employeeDAO.save(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
@@ -82,7 +89,7 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	public void givenGWAWhenEmployeeIsLoadedThenGWAIsPreserved() {
+	public void givenGWAWhenEmployeeIsSavedAndLoadedThenGWAIsPreserved() {
 		employeeDAO.save(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
@@ -91,12 +98,21 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	public void givenEmployedStatusWhenEmployeeIsLoadedThenEmployedStatusIsPreserved() {
+	public void givenEmployedStatusWhenEmployeeIsSavedAndLoadedThenEmployedStatusIsPreserved() {
 		employeeDAO.save(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
 
 		assertThat(employee2.get().isEmployed()).isEqualTo(this.employee.isEmployed());
+	}
+
+	@Test
+	public void givenAnAddressWhenEmployeeIsSavedAndLoadedThenAddressIsPreserved() {
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
+
+		assertThat(employee2.get().getAddress().toString()).isEqualTo(employee.getAddress().toString());
 	}
 
 	@Test
