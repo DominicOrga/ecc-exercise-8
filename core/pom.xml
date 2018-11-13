@@ -15,5 +15,6 @@
   <name>core</name>
   <modules>
     <module>model</module>
+    <module>dao</module>
   </modules>
 </project>
