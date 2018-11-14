@@ -17,5 +17,6 @@
         
         <mapping class="com.ecc.exercise8.Employee"/>
         <mapping class="com.ecc.exercise8.Address"/>
+        <mapping class="com.ecc.exercise8.Contact"/>
     </session-factory>
 </hibernate-configuration>

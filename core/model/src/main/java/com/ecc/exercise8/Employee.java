@@ -1,5 +1,8 @@
 package com.ecc.exercise8;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import java.time.LocalDate;
 
 import javax.persistence.Entity;
@@ -7,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
 import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -32,9 +36,12 @@ public class Employee {
 	@Column(nullable=false)
 	private Boolean isEmployed;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.ALL, orphanRemoval=true)
 	@JoinColumn(nullable=false)
 	private Address address;
+
+	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="employee")
+	private List<Contact> contacts = new ArrayList<>();
 
 	public Employee() {}
 
@@ -101,5 +108,13 @@ public class Employee {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+
+	public List<Contact> getContacts() {
+		return this.contacts;
+	}
+
+	public void setContacts(List<Contact> contacts) {
+		this.contacts = contacts;
 	}
 }

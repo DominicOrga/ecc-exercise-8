@@ -3,6 +3,7 @@ package com.ecc.exercise8;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.Optional;
+import java.util.List;
 import java.time.LocalDate;
 
 import org.junit.Before;
@@ -60,59 +61,14 @@ public class EmployeeDAOTest {
 	}
 
 	@Test 
-	public void givenNameWhenEmployeeIsSavedAndLoadedThenNameIsPreserved() {
+	public void givenNameWhenEmployeeIsSavedAndLoadedThenNameIsPersisted() {
 		employeeDAO.save(this.employee);
 
-		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
 		assertThat(employee2.get().getName().toString().equals(
 				   this.employee.getName().toString()))
 			.isTrue();
-	}
-
-	@Test
-	public void givenBirthDateWhenEmployeeIsSavedAndLoadedThenBirthdateIsPreserved() {
-		employeeDAO.save(this.employee);
-
-		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
-
-		assertThat(employee2.get().getBirthDate().isEqual(this.employee.getBirthDate())).isTrue();
-	}
-
-	@Test
-	public void givenDateHiredWhenEmployeeIsSavedAndLoadedThenDateHiredIsPreserved() {
-		employeeDAO.save(this.employee);
-
-		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
-
-		assertThat(employee2.get().getDateHired().isEqual(this.employee.getDateHired())).isTrue();
-	}
-
-	@Test
-	public void givenGWAWhenEmployeeIsSavedAndLoadedThenGWAIsPreserved() {
-		employeeDAO.save(this.employee);
-
-		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
-
-		assertThat(employee2.get().getGWA()).isEqualTo(this.employee.getGWA());
-	}
-
-	@Test
-	public void givenEmployedStatusWhenEmployeeIsSavedAndLoadedThenEmployedStatusIsPreserved() {
-		employeeDAO.save(this.employee);
-
-		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
-
-		assertThat(employee2.get().isEmployed()).isEqualTo(this.employee.isEmployed());
-	}
-
-	@Test
-	public void givenAnAddressWhenEmployeeIsSavedAndLoadedThenAddressIsPreserved() {
-		employeeDAO.save(this.employee);
-
-		Optional<Employee> employee2 = employeeDAO.get(this.employee.getId());
-
-		assertThat(employee2.get().getAddress().toString()).isEqualTo(employee.getAddress().toString());
 	}
 
 	@Test
@@ -127,6 +83,15 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
+	public void givenBirthDateWhenEmployeeIsSavedAndLoadedThenBirthdateIsPersisted() {
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.get().getBirthDate().isEqual(this.employee.getBirthDate())).isTrue();
+	}
+
+	@Test
 	public void whenBirthDateIsNullThenEmployeeIsNotPersisted() {
 		this.employee.setBirthDate(null);
 
@@ -135,6 +100,15 @@ public class EmployeeDAOTest {
 		});
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);
+	}
+
+	@Test
+	public void givenDateHiredWhenEmployeeIsSavedAndLoadedThenDateHiredIsPersisted() {
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.get().getDateHired().isEqual(this.employee.getDateHired())).isTrue();
 	}
 
 	@Test
@@ -149,6 +123,15 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
+	public void givenGWAWhenEmployeeIsSavedAndLoadedThenGWAIsPersisted() {
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.get().getGWA()).isEqualTo(this.employee.getGWA());
+	}
+
+	@Test
 	public void whenGWAIsNullThenEmployeeIsNotPersisted() {
 		this.employee.setGWA(null);
 
@@ -157,6 +140,15 @@ public class EmployeeDAOTest {
 		});
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);
+	}
+
+	@Test
+	public void givenEmployedStatusWhenEmployeeIsSavedAndLoadedThenEmployedStatusIsPersisted() {
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.get().isEmployed()).isEqualTo(this.employee.isEmployed());
 	}
 
 	@Test
@@ -171,6 +163,15 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
+	public void givenAnAddressWhenEmployeeIsSavedAndLoadedThenAddressIsPersisted() {
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.get().getAddress().toString()).isEqualTo(employee.getAddress().toString());
+	}
+
+	@Test
 	public void whenAddressIsNullThenEmployeeIsNotPersisted() {
 		this.employee.setAddress(null);
 
@@ -180,4 +181,35 @@ public class EmployeeDAOTest {
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);	
 	}
+
+	@Test
+	@Ignore
+	public void whenAddressIsRemovedThenAddressIsDeleted() {
+
+	}
+
+	@Test
+	public void givenAContactWhenEmployeeIsSavedAndLoadedThenContactIsPersisted() {
+		Contact contact1 = new Contact(Contact.ContactType.mobile, "22222222222", this.employee);
+		this.employee.getContacts().add(contact1);
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedContacts(this.employee.getId());
+		Contact contact2 = employee2.get().getContacts().get(0);
+
+		assertThat(contact2.getType()).isEqualTo(contact1.getType());
+		assertThat(contact2.getValue()).isEqualTo(contact1.getValue());
+		assertThat(contact2.getEmployee().getId()).isEqualTo(contact1.getEmployee().getId());
+	}
+
+	@Test
+	@Ignore
+	public void whenContactIsRemovedThenContactIsDeleted() {
+		
+	}
+
+	// @After
+	// public void removeEmployee() {
+	// 	employeeDAO.remove(this.employee);
+	// }
 }
