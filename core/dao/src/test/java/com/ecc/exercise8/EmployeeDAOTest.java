@@ -203,13 +203,25 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	@Ignore
-	public void whenContactIsRemovedThenContactIsDeleted() {
-		
+	public void givenNContactsThenContactListSizeIsN() {
+		Contact contact1 = new Contact(Contact.ContactType.mobile, "22222222222", this.employee);
+		Contact contact2 = new Contact(Contact.ContactType.email, "pikapika@gmail.com", this.employee);
+		Contact contact3 = new Contact(Contact.ContactType.landline, "4324323", this.employee);
+
+		this.employee.getContacts().add(contact1);
+		this.employee.getContacts().add(contact2);
+		this.employee.getContacts().add(contact3);
+
+		employeeDAO.save(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedContacts(this.employee.getId());
+
+		assertThat(employee2.get().getContacts().size()).isEqualTo(3);
 	}
 
-	// @After
-	// public void removeEmployee() {
-	// 	employeeDAO.remove(this.employee);
-	// }
+	@Test
+	@Ignore
+	public void whenEmployeeContactIsRemovedThenContactIsDeleted() {
+		
+	}
 }

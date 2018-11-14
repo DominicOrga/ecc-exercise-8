@@ -38,7 +38,4 @@ public class EmployeeDAO {
 		}
 	}
 
-	public void remove(Employee employee) {
-		
-	}
 }

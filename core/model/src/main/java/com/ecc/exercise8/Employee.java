@@ -14,6 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
+import javax.persistence.Table;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.AttributeOverride;
 
 @Entity
 public class Employee {
