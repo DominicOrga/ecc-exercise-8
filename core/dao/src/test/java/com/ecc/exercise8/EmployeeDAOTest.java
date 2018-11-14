@@ -169,4 +169,15 @@ public class EmployeeDAOTest {
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);
 	}
+
+	@Test
+	public void whenAddressIsNullThenEmployeeIsNotPersisted() {
+		this.employee.setAddress(null);
+
+		Throwable thrown = catchThrowable(() -> {
+			employeeDAO.save(this.employee);
+		});
+
+		assertThat(thrown).isInstanceOf(PropertyValueException.class);	
+	}
 }
