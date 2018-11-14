@@ -55,14 +55,14 @@ public class EmployeeDAOTest {
 	public void whenEmployeeSavedThenEmployeeIsPersisted() {		
 		this.employee.setId(null);
 
-		employeeDAO.save(this.employee);
+		employeeDAO.saveEmployee(this.employee);
 
 		assertThat(employee.getId()).isNotNull();
 	}
 
 	@Test 
 	public void givenNameWhenEmployeeIsSavedAndLoadedThenNameIsPersisted() {
-		employeeDAO.save(this.employee);
+		employeeDAO.saveEmployee(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
@@ -76,7 +76,7 @@ public class EmployeeDAOTest {
 		this.employee.setName(null);
 
 		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.save(this.employee);
+			employeeDAO.saveEmployee(this.employee);
 		});
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);
@@ -84,7 +84,7 @@ public class EmployeeDAOTest {
 
 	@Test
 	public void givenBirthDateWhenEmployeeIsSavedAndLoadedThenBirthdateIsPersisted() {
-		employeeDAO.save(this.employee);
+		employeeDAO.saveEmployee(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
@@ -96,7 +96,7 @@ public class EmployeeDAOTest {
 		this.employee.setBirthDate(null);
 
 		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.save(this.employee);
+			employeeDAO.saveEmployee(this.employee);
 		});
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);
@@ -104,7 +104,7 @@ public class EmployeeDAOTest {
 
 	@Test
 	public void givenDateHiredWhenEmployeeIsSavedAndLoadedThenDateHiredIsPersisted() {
-		employeeDAO.save(this.employee);
+		employeeDAO.saveEmployee(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
@@ -116,7 +116,7 @@ public class EmployeeDAOTest {
 		this.employee.setDateHired(null);
 
 		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.save(this.employee);
+			employeeDAO.saveEmployee(this.employee);
 		});
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);
@@ -124,7 +124,7 @@ public class EmployeeDAOTest {
 
 	@Test
 	public void givenGWAWhenEmployeeIsSavedAndLoadedThenGWAIsPersisted() {
-		employeeDAO.save(this.employee);
+		employeeDAO.saveEmployee(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
@@ -136,7 +136,7 @@ public class EmployeeDAOTest {
 		this.employee.setGWA(null);
 
 		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.save(this.employee);
+			employeeDAO.saveEmployee(this.employee);
 		});
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);
@@ -144,7 +144,7 @@ public class EmployeeDAOTest {
 
 	@Test
 	public void givenEmployedStatusWhenEmployeeIsSavedAndLoadedThenEmployedStatusIsPersisted() {
-		employeeDAO.save(this.employee);
+		employeeDAO.saveEmployee(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
@@ -156,7 +156,7 @@ public class EmployeeDAOTest {
 		this.employee.setEmployed(null);
 
 		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.save(this.employee);
+			employeeDAO.saveEmployee(this.employee);
 		});
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);
@@ -164,7 +164,7 @@ public class EmployeeDAOTest {
 
 	@Test
 	public void givenAnAddressWhenEmployeeIsSavedAndLoadedThenAddressIsPersisted() {
-		employeeDAO.save(this.employee);
+		employeeDAO.saveEmployee(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
@@ -176,7 +176,7 @@ public class EmployeeDAOTest {
 		this.employee.setAddress(null);
 
 		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.save(this.employee);
+			employeeDAO.saveEmployee(this.employee);
 		});
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);	
@@ -192,7 +192,7 @@ public class EmployeeDAOTest {
 	public void givenAContactWhenEmployeeIsSavedAndLoadedThenContactIsPersisted() {
 		Contact contact1 = new Contact(Contact.ContactType.mobile, "22222222222", this.employee);
 		this.employee.getContacts().add(contact1);
-		employeeDAO.save(this.employee);
+		employeeDAO.saveEmployee(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedContacts(this.employee.getId());
 		Contact contact2 = employee2.get().getContacts().get(0);
@@ -203,7 +203,7 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	public void givenNContactsThenContactListSizeIsN() {
+	public void givenNContactsWhenEmployeeSavedAndLoadedThenContactListSizeIsN() {
 		Contact contact1 = new Contact(Contact.ContactType.mobile, "22222222222", this.employee);
 		Contact contact2 = new Contact(Contact.ContactType.email, "pikapika@gmail.com", this.employee);
 		Contact contact3 = new Contact(Contact.ContactType.landline, "4324323", this.employee);
@@ -212,7 +212,7 @@ public class EmployeeDAOTest {
 		this.employee.getContacts().add(contact2);
 		this.employee.getContacts().add(contact3);
 
-		employeeDAO.save(this.employee);
+		employeeDAO.saveEmployee(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedContacts(this.employee.getId());
 
@@ -223,5 +223,27 @@ public class EmployeeDAOTest {
 	@Ignore
 	public void whenEmployeeContactIsRemovedThenContactIsDeleted() {
 		
+	}
+
+	@Test
+	public void givenARoleWhenEmployeeIsSavedAndLoadedThenRoleIsPersisted() {
+		Role role = new Role("Dev", "Dev Things");
+		RoleDAO roleDAO = new RoleDAO();
+		roleDAO.saveRole(role);
+
+		this.employee.getRoles().add(role);
+		this.employeeDAO.saveEmployee(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedRoles(this.employee.getId());
+
+		Role role2 = employee2.get().getRoles().get(0);
+
+		assertThat(role2.getId()).isEqualTo(role.getId());
+	}
+
+	@Test
+	@Ignore
+	public void givenNRolesWhenEmployeeSavedAndLoadedThenRoleListSizeIsN() {
+
 	}
 }

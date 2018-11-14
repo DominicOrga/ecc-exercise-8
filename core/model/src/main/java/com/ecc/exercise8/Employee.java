@@ -11,6 +11,7 @@ import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
 import javax.persistence.OneToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
@@ -45,6 +46,9 @@ public class Employee {
 
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="employee")
 	private List<Contact> contacts = new ArrayList<>();
+
+	@ManyToMany
+	private List<Role> roles = new ArrayList<>();
 
 	public Employee() {}
 
@@ -119,5 +123,13 @@ public class Employee {
 
 	public void setContacts(List<Contact> contacts) {
 		this.contacts = contacts;
+	}
+
+	public List<Role> getRoles() {
+		return this.roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 }

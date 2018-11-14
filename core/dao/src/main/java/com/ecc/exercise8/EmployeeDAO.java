@@ -9,7 +9,7 @@ import org.hibernate.Transaction;
 
 public class EmployeeDAO {
 
-	public void save(Employee employee) {
+	public void saveEmployee(Employee employee) {
 		try (Session session = SessionUtil.getSession()) {
 			Transaction tx = session.beginTransaction();
 			session.save(employee);
@@ -38,4 +38,17 @@ public class EmployeeDAO {
 		}
 	}
 
+	public Optional<Employee> getEmployeeJoinedRoles(Long id) {
+		try (Session session = SessionUtil.getSession()) {
+			Employee employee = session.createQuery(
+					"SELECT e " + 
+					"FROM Employee e " +
+					"JOIN FETCH e.roles " +
+					"WHERE e.id=:id", Employee.class)
+				.setParameter("id", id)
+				.uniqueResult();
+
+			return Optional.ofNullable(employee);
+		}
+	}
 }
