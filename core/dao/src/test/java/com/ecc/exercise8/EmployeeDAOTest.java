@@ -232,12 +232,18 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	@Ignore
 	public void whenEmployeeContactIsRemovedThenContactIsDeleted() {
-		
+		Contact contact1 = new Contact(Contact.ContactType.mobile, "22222222222", this.employee);
+		this.employee.getContacts().add(contact1);
+		employeeDAO.saveEmployee(this.employee);
+
+		this.employee.getContacts().remove(contact1);
+		employeeDAO.updateEmployee(this.employee);
+
+		Employee employee2 = employeeDAO.getEmployeeJoinedContacts(this.employee.getId()).get();
+		assertThat(employee2.getContacts().size()).isEqualTo(0);
 	}
 
-	@Test
 	public void givenARoleWhenEmployeeIsSavedAndLoadedThenRoleIsPersisted() {
 		Role role = new Role("Dev", "Dev Things");
 		RoleDAO roleDAO = new RoleDAO();
@@ -250,7 +256,7 @@ public class EmployeeDAOTest {
 
 		Role role2 = employee2.get().getRoles().iterator().next();
 
-		assertThat(role2).isNotNull();
+		assertThat(role2).isEqualTo(role);
 	}
 
 	@Test

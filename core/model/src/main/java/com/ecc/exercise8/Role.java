@@ -63,4 +63,28 @@ public class Role {
 	public void setEmployees(Set<Employee> employees) {
 		this.employees = employees;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (!(o instanceof Role)) {
+			return false;
+		}
+
+		Role role = (Role) o;
+
+		return role.getCode().equals(this.code) && 
+			   role.getDescription().equals(this.description);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + this.code.hashCode();
+		result = 31 * result + this.description.hashCode();
+		return result;
+	}
 }

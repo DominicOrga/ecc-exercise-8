@@ -29,7 +29,7 @@ public class EmployeeDAO {
 			Employee employee = session.createQuery(
 					"SELECT e " + 
 					"FROM Employee e " +
-					"JOIN FETCH e.contacts " +
+					"LEFT JOIN FETCH e.contacts " +
 					"WHERE e.id=:id", Employee.class)
 				.setParameter("id", id)
 				.uniqueResult();
@@ -43,12 +43,20 @@ public class EmployeeDAO {
 			Employee employee = session.createQuery(
 					"SELECT e " + 
 					"FROM Employee e " +
-					"JOIN FETCH e.roles " +
+					"LEFT JOIN FETCH e.roles " +
 					"WHERE e.id=:id", Employee.class)
 				.setParameter("id", id)
 				.uniqueResult();
 
 			return Optional.ofNullable(employee);
+		}
+	}
+
+	public void updateEmployee(Employee employee) {
+		try (Session session = SessionUtil.getSession()) {
+			Transaction tx = session.beginTransaction();
+			session.update(employee);
+			tx.commit();
 		}
 	}
 }
