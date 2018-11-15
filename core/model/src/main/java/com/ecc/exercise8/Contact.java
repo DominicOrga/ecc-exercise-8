@@ -62,4 +62,30 @@ public class Contact {
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (!(o instanceof Contact)) {
+			return false;
+		}
+
+		Contact contact = (Contact) o;
+
+		return contact.getType().equals(this.type) && 
+			   contact.getValue().equals(this.value) &&
+			   contact.getEmployee().getId().equals(this.employee.getId());
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + this.type.hashCode();
+		result = 31 * result + this.value.hashCode();
+		result = 31 * result + this.employee.hashCode();
+		return result;
+	}
 }

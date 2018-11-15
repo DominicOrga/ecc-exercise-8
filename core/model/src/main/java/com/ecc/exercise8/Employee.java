@@ -1,7 +1,7 @@
 package com.ecc.exercise8;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import java.time.LocalDate;
 
@@ -45,10 +45,10 @@ public class Employee {
 	private Address address;
 
 	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="employee")
-	private List<Contact> contacts = new ArrayList<>();
+	private Set<Contact> contacts = new HashSet<>();
 
 	@ManyToMany
-	private List<Role> roles = new ArrayList<>();
+	private Set<Role> roles = new HashSet<>();
 
 	public Employee() {}
 
@@ -117,19 +117,19 @@ public class Employee {
 		this.address = address;
 	}
 
-	public List<Contact> getContacts() {
+	public Set<Contact> getContacts() {
 		return this.contacts;
 	}
 
-	public void setContacts(List<Contact> contacts) {
+	public void setContacts(Set<Contact> contacts) {
 		this.contacts = contacts;
 	}
 
-	public List<Role> getRoles() {
+	public Set<Role> getRoles() {
 		return this.roles;
 	}
 
-	public void setRoles(List<Role> roles) {
+	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
 }

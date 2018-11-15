@@ -1,7 +1,7 @@
 package com.ecc.exercise8;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -23,7 +23,7 @@ public class Role {
 	private String description;
 
 	@ManyToMany(mappedBy="roles")
-	private List<Employee> employees = new ArrayList<>();
+	private Set<Employee> employees = new HashSet<>();
 
 	public Role() {}
 
@@ -56,11 +56,11 @@ public class Role {
 		this.description = description;
 	}
 
-	public List<Employee> getEmployees() {
+	public Set<Employee> getEmployees() {
 		return this.employees;
 	}
 
-	public void setEmployees(List<Employee> employees) {
+	public void setEmployees(Set<Employee> employees) {
 		this.employees = employees;
 	}
 }
