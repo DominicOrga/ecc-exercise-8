@@ -4,25 +4,28 @@ import java.util.Set;
 import java.util.HashSet;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
 import javax.persistence.ManyToMany;
 
 @Entity
+@Table(name = RoleContract.TABLE_NAME)
 public class Role {
 
 	@Id
 	@GeneratedValue
+	@Column(name = RoleContract.COLUMN_ID)
 	private Long id;
 
-	@Column(nullable=false)
+	@Column(name = RoleContract.COLUMN_CODE, nullable = false)
 	private String code;
 
-	@Column(nullable=false)
+	@Column(name = RoleContract.COLUMN_DESCRIPTION, nullable = false)
 	private String description;
 
-	@ManyToMany(mappedBy="roles")
+	@ManyToMany(mappedBy = "roles")
 	private Set<Employee> employees = new HashSet<>();
 
 	public Role() {}

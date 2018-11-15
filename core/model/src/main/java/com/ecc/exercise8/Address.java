@@ -3,17 +3,28 @@ package com.ecc.exercise8;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
+import javax.persistence.Column;
 
 @Entity
+@Table(name = AddressContract.TABLE_NAME)
 public class Address {
 	
 	@Id
 	@GeneratedValue
+	@Column(name = AddressContract.COLUMN_ID)
 	private Long id;
 
+	@Column(name = AddressContract.COLUMN_STREET_NUMBER)
 	private String streetNumber;
+
+	@Column(name = AddressContract.COLUMN_BARANGAY)
 	private String barangay;
+
+	@Column(name = AddressContract.COLUMN_CITY)
 	private String city;
+
+	@Column(name = AddressContract.COLUMN_ZIPCODE)
 	private Integer zipcode;
 
 	public Address() {}

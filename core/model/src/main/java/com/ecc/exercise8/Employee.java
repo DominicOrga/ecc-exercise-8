@@ -16,38 +16,46 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.persistence.JoinTable;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.AttributeOverride;
 
 @Entity
+@Table(name = EmployeeContract.TABLE_NAME)
 public class Employee {
 	@Id
 	@GeneratedValue
+	@Column(name = EmployeeContract.COLUMN_ID)
 	private Long id;
 	
 	@Embedded
 	private Name name;
 
-	@Column(nullable=false)
+	@Column(name = EmployeeContract.COLUMN_BIRTH_DATE, nullable = false)
 	private LocalDate birthDate;
 
-	@Column(nullable=false)
+	@Column(name = EmployeeContract.COLUMN_DATE_HIRED, nullable = false)
 	private LocalDate dateHired;
 
-	@Column(nullable=false)
+	@Column(name = EmployeeContract.COLUMN_GWA, nullable = false)
 	private Float gwa;
 
-	@Column(nullable=false)
+	@Column(name = EmployeeContract.COLUMN_IS_EMPLOYED, nullable = false)
 	private Boolean isEmployed;
 	
-	@OneToOne(cascade=CascadeType.ALL, orphanRemoval=true)
-	@JoinColumn(nullable=false)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = EmployeeContract.COLUMN_ADDRESS_ID, nullable = false)
 	private Address address;
 
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true, mappedBy="employee")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "employee")
 	private Set<Contact> contacts = new HashSet<>();
 
 	@ManyToMany
+	@JoinTable(
+		name = EmployeeRoleContract.TABLE_NAME,
+		joinColumns = { @JoinColumn(name = EmployeeRoleContract.COLUMN_EMPLOYEE_ID) },
+		inverseJoinColumns = { @JoinColumn(name = EmployeeRoleContract.COLUMN_ROLE_ID) }
+	)
 	private Set<Role> roles = new HashSet<>();
 
 	public Employee() {}

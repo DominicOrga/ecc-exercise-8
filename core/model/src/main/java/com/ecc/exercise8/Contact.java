@@ -1,6 +1,7 @@
 package com.ecc.exercise8;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 
 @Entity
+@Table(name = ContactContract.TABLE_NAME)
 public class Contact {
 
 	public enum ContactType {
@@ -18,17 +20,18 @@ public class Contact {
 
 	@Id
 	@GeneratedValue
+	@Column(name = ContactContract.COLUMN_ID)
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable=false)
+	@Column(name = ContactContract.COLUMN_TYPE, nullable = false)
 	private ContactType type;
 	
-	@Column(nullable=false)
+	@Column(name = ContactContract.COLUMN_VALUE, nullable = false)
 	private String value;
 	
 	@ManyToOne
-	@JoinColumn(nullable=false)
+	@JoinColumn(name = ContactContract.COLUMN_EMPLOYEE_ID, nullable = false)
 	private Employee employee;
 
 	public Contact() {}
