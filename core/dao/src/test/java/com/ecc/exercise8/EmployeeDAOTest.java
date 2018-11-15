@@ -365,4 +365,15 @@ public class EmployeeDAOTest {
 
 		assertThat(employee2.get().getRoles().size()).isEqualTo(1);
 	}
+
+	@Test
+	public void whenEmployeeIsDeletedThenPersistDeletion() {
+		employeeDAO.saveEmployee(this.employee);
+
+		employeeDAO.removeEmployee(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.isPresent()).isFalse();
+	}
 }

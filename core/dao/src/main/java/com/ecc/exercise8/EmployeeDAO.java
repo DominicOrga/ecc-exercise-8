@@ -59,4 +59,12 @@ public class EmployeeDAO {
 			tx.commit();
 		}
 	}
+
+	public void removeEmployee(Employee employee) {
+		try (Session session = SessionUtil.getSession()) {
+			Transaction tx = session.beginTransaction();
+			session.remove(employee);
+			tx.commit();
+		}
+	}
 }
