@@ -218,6 +218,20 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
+	public void whenDuplicateContactsAreAddedThenOnlyOneIsAdded() {
+		Contact contact1 = new Contact(Contact.ContactType.mobile, "22222222222", this.employee);
+
+		this.employee.getContacts().add(contact1);
+		this.employee.getContacts().add(contact1);
+
+		employeeDAO.saveEmployee(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedContacts(this.employee.getId());
+
+		assertThat(employee2.get().getContacts().size()).isEqualTo(1);
+	}
+
+	@Test
 	@Ignore
 	public void whenEmployeeContactIsRemovedThenContactIsDeleted() {
 		
@@ -225,56 +239,55 @@ public class EmployeeDAOTest {
 
 	@Test
 	public void givenARoleWhenEmployeeIsSavedAndLoadedThenRoleIsPersisted() {
-		// Role role = new Role("Dev", "Dev Things");
-		// RoleDAO roleDAO = new RoleDAO();
-		// roleDAO.saveRole(role);
+		Role role = new Role("Dev", "Dev Things");
+		RoleDAO roleDAO = new RoleDAO();
+		roleDAO.saveRole(role);
 
-		// this.employee.getRoles().add(role);
-		// this.employeeDAO.saveEmployee(this.employee);
+		this.employee.getRoles().add(role);
+		this.employeeDAO.saveEmployee(this.employee);
 
-		// Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedRoles(this.employee.getId());
+		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedRoles(this.employee.getId());
 
-		// Role role2 = employee2.get().getRoles().get(role);
+		Role role2 = employee2.get().getRoles().iterator().next();
 
-		// assertThat(role2).isNotNull();
+		assertThat(role2).isNotNull();
 	}
 
 	@Test
 	public void givenNRolesWhenEmployeeSavedAndLoadedThenRoleListSizeIsN() {
-		// Role role1 = new Role("Dev", "Dev Things");
-		// Role role2 = new Role("QA", "QA Stuffs");
-		// Role role3 = new Role("BA", "BA Things and Stuffs");
+		Role role1 = new Role("Dev", "Dev Things");
+		Role role2 = new Role("QA", "QA Stuffs");
+		Role role3 = new Role("BA", "BA Things and Stuffs");
 
-		// RoleDAO roleDAO = new RoleDAO();
-		// roleDAO.saveRole(role1);
-		// roleDAO.saveRole(role2);
-		// roleDAO.saveRole(role3);
+		RoleDAO roleDAO = new RoleDAO();
+		roleDAO.saveRole(role1);
+		roleDAO.saveRole(role2);
+		roleDAO.saveRole(role3);
 
-		// this.employee.getRoles().add(role1);
-		// this.employee.getRoles().add(role2);
-		// this.employee.getRoles().add(role3);
+		this.employee.getRoles().add(role1);
+		this.employee.getRoles().add(role2);
+		this.employee.getRoles().add(role3);
 
-		// this.employeeDAO.saveEmployee(this.employee);
+		this.employeeDAO.saveEmployee(this.employee);
 
-		// Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedRoles(this.employee.getId());
+		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedRoles(this.employee.getId());
 
-		// assertThat(employee2.get().getRoles().size()).isEqualTo(3);
+		assertThat(employee2.get().getRoles().size()).isEqualTo(3);
 	}
 
 	@Test
 	public void whenDuplicateRolesAreAddedThenOnlyOneIsAdded() {
-		// Role role1 = new Role("Dev", "Dev Things");
-		// RoleDAO roleDAO = new RoleDAO();
-		// roleDAO.saveRole(role1);
+		Role role1 = new Role("Dev", "Dev Things");
+		RoleDAO roleDAO = new RoleDAO();
+		roleDAO.saveRole(role1);
 
-		// this.employee.getRoles().add(role1);
-		// this.employee.getRoles().add(role1);
-		// this.employee.getRoles().add(role1);
+		this.employee.getRoles().add(role1);
+		this.employee.getRoles().add(role1);
 
-		// this.employeeDAO.saveEmployee(this.employee);
+		this.employeeDAO.saveEmployee(this.employee);
 
-		// Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedRoles(this.employee.getId());
+		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedRoles(this.employee.getId());
 
-		// assertThat(employee2.get().getRoles().size()).isEqualTo(1);
+		assertThat(employee2.get().getRoles().size()).isEqualTo(1);
 	}
 }
