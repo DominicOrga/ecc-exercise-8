@@ -6,11 +6,11 @@ import javax.persistence.Column;
 @Embeddable
 public class Name {
 
-	@Column(nullable=false)
+	@Column(name = NameContract.FIRST_NAME, nullable = false)
 	private String firstName;
-	@Column(nullable=false)
+	@Column(name = NameContract.MIDDLE_NAME, nullable = false)
 	private String middleName;
-	@Column(nullable=false)
+	@Column(name = NameContract.LAST_NAME, nullable = false)
 	private String lastName;
 
 	public Name() {}
