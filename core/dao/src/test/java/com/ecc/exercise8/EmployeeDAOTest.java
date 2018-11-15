@@ -52,7 +52,7 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	public void whenEmployeeSavedThenEmployeeIsPersisted() {		
+	public void whenEmployeeIsPersistedThenEmployeeWillHaveAnId() {		
 		this.employee.setId(null);
 
 		employeeDAO.saveEmployee(this.employee);
@@ -103,6 +103,19 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
+	public void givenBirthDateWhenEmployeeIsUpdatedAndLoadedThenBirthdateIsPersisted() {
+		employeeDAO.saveEmployee(this.employee);
+
+		LocalDate newBirthDate = LocalDate.of(1922, 01, 02);
+		this.employee.setBirthDate(newBirthDate);
+		employeeDAO.updateEmployee(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.get().getBirthDate().isEqual(newBirthDate)).isTrue();
+	}
+
+	@Test
 	public void whenBirthDateIsNullThenEmployeeIsNotPersisted() {
 		this.employee.setBirthDate(null);
 
@@ -120,6 +133,19 @@ public class EmployeeDAOTest {
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
 		assertThat(employee2.get().getDateHired().isEqual(this.employee.getDateHired())).isTrue();
+	}
+
+	@Test
+	public void givenDateHiredWhenEmployeeIsUpdatedAndLoadedThenDateHiredIsPersisted() {
+		employeeDAO.saveEmployee(this.employee);
+
+		LocalDate newDateHired = LocalDate.of(1935, 3, 02);
+		this.employee.setDateHired(newDateHired);
+		employeeDAO.updateEmployee(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.get().getDateHired().isEqual(newDateHired)).isTrue();
 	}
 
 	@Test
@@ -143,6 +169,19 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
+	public void givenGWAWhenEmployeeIsUpdatedAndLoadedThenGWAIsPersisted() {
+		employeeDAO.saveEmployee(this.employee);
+
+		float newGWA = 1.5f;
+		this.employee.setGWA(newGWA);
+		employeeDAO.updateEmployee(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.get().getGWA()).isEqualTo(newGWA);
+	}
+
+	@Test
 	public void whenGWAIsNullThenEmployeeIsNotPersisted() {
 		this.employee.setGWA(null);
 
@@ -163,6 +202,18 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
+	public void givenEmployedStatusWhenEmployeeIsUpdatedAndLoadedThenEmployedStatusIsPersisted() {
+		employeeDAO.saveEmployee(this.employee);
+
+		this.employee.setEmployed(false);
+		employeeDAO.updateEmployee(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.get().isEmployed()).isFalse();
+	}
+
+	@Test
 	public void whenEmployedStatusIsNullThenEmployeeIsNotPersisted() {
 		this.employee.setEmployed(null);
 
@@ -180,6 +231,19 @@ public class EmployeeDAOTest {
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
 		assertThat(employee2.get().getAddress().toString()).isEqualTo(employee.getAddress().toString());
+	}
+
+	@Test
+	public void givenAnAddressWhenEmployeeIsUpdatedAndLoadedThenAddressIsPersisted() {
+		employeeDAO.saveEmployee(this.employee);
+
+		Address newAddress = new Address("128", "San Domingo", "Caloocan", 1920);
+		this.employee.setAddress(newAddress);
+		employeeDAO.updateEmployee(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.get().getAddress()).isEqualTo(newAddress);
 	}
 
 	@Test

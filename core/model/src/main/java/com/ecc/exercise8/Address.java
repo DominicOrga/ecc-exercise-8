@@ -41,6 +41,14 @@ public class Address {
 		this.streetNumber = streetNumber;
 	}
 
+	public String getBarangay() {
+		return this.barangay;
+	}
+
+	public void setBarangay(String barangay) {
+		this.barangay = barangay;
+	}
+
 	public String getCity() {
 		return this.city;
 	}
@@ -60,5 +68,33 @@ public class Address {
 	@Override
 	public String toString() {
 		return String.format("%s,%s,%s,%d", this.streetNumber, this.barangay, this.city, this.zipcode.intValue());
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (!(o instanceof Address)) {
+			return false;
+		}
+
+		Address address = (Address) o;
+
+		return address.getStreetNumber().equals(this.streetNumber) &&
+			   address.getBarangay().equals(this.barangay) &&
+			   address.getCity().equals(this.city) &&
+			   address.getZipcode().intValue() == this.zipcode.intValue();
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + this.streetNumber.hashCode();
+		result = 31 * result + this.barangay.hashCode();
+		result = 31 * result + this.city.hashCode();
+		result = 31 * result + this.zipcode.intValue();
+		return result;
 	}
 }
