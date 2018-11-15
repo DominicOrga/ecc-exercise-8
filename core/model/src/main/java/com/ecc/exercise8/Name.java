@@ -49,4 +49,30 @@ public class Name {
 	public String toString() {
 		return this.firstName + " " + this.middleName + " " + this.lastName;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (!(o instanceof Name)) {
+			return false;
+		}
+
+		Name name = (Name) o;
+
+		return name.getFirstName().equals(this.firstName) &&
+			   name.getMiddleName().equals(this.middleName) &&
+			   name.getLastName().equals(this.lastName);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + this.firstName.hashCode();
+		result = 31 * result + this.middleName.hashCode();
+		result = 31 * result + this.lastName.hashCode();
+		return result;
+	}
 }

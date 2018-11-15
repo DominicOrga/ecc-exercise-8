@@ -66,9 +66,20 @@ public class EmployeeDAOTest {
 
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
-		assertThat(employee2.get().getName().toString().equals(
-				   this.employee.getName().toString()))
-			.isTrue();
+		assertThat(employee2.get().getName()).isEqualTo(this.employee.getName());
+	}
+
+	@Test
+	public void givenNameWhenEmployeIsUpdatedAndLoadedThenNameIsPersisted() {
+		employeeDAO.saveEmployee(this.employee);
+
+		Name newName = new Name("Ariana", "Rivera", "Grande");
+		this.employee.setName(newName);
+		employeeDAO.updateEmployee(this.employee);
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee2.get().getName()).isEqualTo(newName);
 	}
 
 	@Test
@@ -180,12 +191,6 @@ public class EmployeeDAOTest {
 		});
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);	
-	}
-
-	@Test
-	@Ignore
-	public void whenAddressIsRemovedThenAddressIsDeleted() {
-
 	}
 
 	@Test
