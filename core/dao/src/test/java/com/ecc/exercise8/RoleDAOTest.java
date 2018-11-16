@@ -3,6 +3,8 @@ package com.ecc.exercise8;
 import static org.assertj.core.api.Assertions.*;
 
 import java.util.Optional;
+import java.util.List;
+import java.util.ArrayList;
 import java.time.LocalDate;
 
 import org.junit.Test;
@@ -18,7 +20,9 @@ public class RoleDAOTest {
 
 	private String code;
 	private String description;
+	
 	private Role role;
+	private List<Employee> employeeCollector = new ArrayList<>();
 
 	@Before
 	public void setupRole() {
@@ -144,10 +148,29 @@ public class RoleDAOTest {
 		EmployeeDAO employeeDAO = new EmployeeDAO();
 		employeeDAO.saveEmployee(employee);
 
+		this.employeeCollector.add(employee);
+
 		roleDAO.removeRole(this.role);
 
 		Optional<Role> role2 = roleDAO.getRole(this.role.getId());
 		assertThat(role2.isPresent()).isFalse();
+	}
+
+	@After
+	public void removePersistedEmployee() {
+		EmployeeDAO employeeDAO = new EmployeeDAO();
+
+		for (Employee employee : this.employeeCollector) {
+			if (employee.getId() == null) {
+				continue;
+			}
+
+			Optional<Employee> employee2 = employeeDAO.getEmployee(employee.getId());
+
+			if (employee2.isPresent()) {
+				employeeDAO.removeEmployee(employee2.get());
+			}
+		}
 	}
 
 	@After
@@ -159,7 +182,7 @@ public class RoleDAOTest {
 		Optional<Role> role2 = roleDAO.getRole(this.role.getId());
 
 		if (role2.isPresent()) {
-			roleDAO.removeRole(this.role);
+			roleDAO.removeRole(role2.get());
 		}
 	}
 }

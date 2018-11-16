@@ -390,18 +390,23 @@ public class EmployeeDAOTest {
 	}
 
 	@After
+	public void removePersistedEmployee() {
+
+	}
+
+	@After
 	public void removePersistedRoles() {
 		RoleDAO roleDAO = new RoleDAO();
 
 		for (Role role : this.roleCollector) {
 			if (role.getId() == null) {
-				return;
+				continue;
 			}
 
 			Optional<Role> role2 = roleDAO.getRole(role.getId());
 
 			if (role2.isPresent()) {
-				roleDAO.removeRole(role);
+				roleDAO.removeRole(role2.get());
 			}
 		}
 	}
