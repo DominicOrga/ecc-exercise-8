@@ -2,9 +2,13 @@ package com.ecc.exercise8;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.Optional;
+
 import org.junit.Test;
 import org.junit.Ignore;
 import org.junit.Before;
+
+import org.hibernate.PropertyValueException;
 
 public class RoleDAOTest {
 
@@ -37,14 +41,76 @@ public class RoleDAOTest {
 	}
 
 	@Test
-	@Ignore
 	public void givenCodeWhenRoleIsSavedAndLoadedThenCodeIsPersisted() {
+		roleDAO.saveRole(this.role);
 
+		Role role2 = roleDAO.getRole(this.role.getId()).get();
+
+		assertThat(role2.getCode()).isEqualTo(this.code);
 	}
 
 	@Test
-	@Ignore
-	public void whenCodeIsNullThenRoleIsNotPersisted() {
+	public void givenCodeWhenRoleIsUpdatedAndLoadedTheCodeIsPersisted() {
+		roleDAO.saveRole(this.role);
 
+		this.role.setCode("QA");
+		roleDAO.updateRole(this.role);
+
+		Role role2 = roleDAO.getRole(this.role.getId()).get();
+
+		assertThat(role2.getCode()).isEqualTo("QA");
+	}
+
+	@Test
+	public void whenCodeIsNullThenRoleIsNotPersisted() {
+		this.role.setCode(null);
+
+		Throwable thrown = catchThrowable(() -> {
+			roleDAO.saveRole(this.role);
+		});
+
+		assertThat(thrown).isInstanceOf(PropertyValueException.class);
+	}
+
+	@Test
+	public void givenDescriptionWhenRoleIsSavedAndLoadedThenDescriptionIsPersisted() {
+		roleDAO.saveRole(this.role);
+
+		Role role2 = roleDAO.getRole(this.role.getId()).get();
+
+		assertThat(role2.getDescription()).isEqualTo(this.description);
+	}
+
+	@Test
+	public void givenDescriptionWhenRoleIsUpdatedAndLoadedThenDescriptionIsPersisted() {
+		roleDAO.saveRole(this.role);
+
+		this.role.setDescription("QA Stuffs");
+		roleDAO.updateRole(this.role);
+
+		Role role2 = roleDAO.getRole(this.role.getId()).get();
+
+		assertThat(role2.getDescription()).isEqualTo("QA Stuffs");
+	}
+
+	@Test
+	public void whenDescriptionIsNullThenRoleIsNotPersisted() {
+		this.role.setDescription(null);
+
+		Throwable thrown = catchThrowable(() -> {
+			roleDAO.saveRole(this.role);
+		});
+
+		assertThat(thrown).isInstanceOf(PropertyValueException.class);
+	}
+
+	@Test
+	public void whenRoleIsDeletedThenRoleIsNotPersisted() {
+		roleDAO.saveRole(this.role);
+		roleDAO.removeRole(this.role);
+
+		Optional<Role> role2 = roleDAO.getRole(this.role.getId());
+
+		assertThat(role2.isPresent()).isFalse();
 	}
 }
