@@ -4,11 +4,13 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.Optional;
 import java.util.List;
+import java.util.ArrayList;
 import java.time.LocalDate;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.After;
 
 import org.hibernate.PropertyValueException;
 
@@ -22,7 +24,9 @@ public class EmployeeDAOTest {
 	private float gwa;
 	private boolean isEmployed;
 	private Address address;
+
 	private Employee employee;
+	private List<Role> roleCollector = new ArrayList<>();
 
 	@Before
 	public void setupEmployee() {
@@ -318,6 +322,8 @@ public class EmployeeDAOTest {
 		RoleDAO roleDAO = new RoleDAO();
 		roleDAO.saveRole(role);
 
+		this.roleCollector.add(role);
+
 		this.employee.getRoles().add(role);
 		this.employeeDAO.saveEmployee(this.employee);
 
@@ -333,6 +339,10 @@ public class EmployeeDAOTest {
 		Role role1 = new Role("Dev", "Dev Things");
 		Role role2 = new Role("QA", "QA Stuffs");
 		Role role3 = new Role("BA", "BA Things and Stuffs");
+
+		this.roleCollector.add(role1);
+		this.roleCollector.add(role2);
+		this.roleCollector.add(role3);
 
 		RoleDAO roleDAO = new RoleDAO();
 		roleDAO.saveRole(role1);
@@ -355,6 +365,8 @@ public class EmployeeDAOTest {
 		Role role1 = new Role("Dev", "Dev Things");
 		RoleDAO roleDAO = new RoleDAO();
 		roleDAO.saveRole(role1);
+
+		this.roleCollector.add(role1);
 
 		this.employee.getRoles().add(role1);
 		this.employee.getRoles().add(role1);

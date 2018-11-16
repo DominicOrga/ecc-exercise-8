@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Column;
 import javax.persistence.ManyToMany;
+import javax.persistence.CascadeType;
 
 @Entity
 @Table(name = RoleContract.TABLE_NAME)
