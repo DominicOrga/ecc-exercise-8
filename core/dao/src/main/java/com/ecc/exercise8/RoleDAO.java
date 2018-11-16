@@ -26,6 +26,20 @@ public class RoleDAO {
 		}
 	}
 
+	public Optional<Role> getRoleJoinedEmployees(Long id) {
+		try (Session session = SessionUtil.getSession()) {
+			Role role = session.createQuery(
+					"SELECT r " +
+					"FROM Role r " +
+					"LEFT JOIN FETCH r.employees " +
+					"WHERE r.id=:id", Role.class)
+				.setParameter("id", id)
+				.uniqueResult();
+
+			return Optional.ofNullable(role);
+		}
+	}
+
 	public List<Role> getRolesJoinedEmployees() {
 		try (Session session = SessionUtil.getSession()) {
 			List<Role> roles = session.createQuery(

@@ -1,26 +1,42 @@
-// package com.ecc.exercise8;
+package com.ecc.exercise8;
 
-// public class RoleService {
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-// 	private RoleDAO roleDAO = new RoleDAO();
+public class RoleService {
 
-// 	public String getRolesAsString() {
-// 		StringBuilder sb = new StringBuilder();
+	private RoleDAO roleDAO = new RoleDAO();
 
-// 		List<Role> roles = roleDAO.getRolesJoinedEmployees();
+	public void saveRole(Role role) {
+		roleDAO.saveRole(role);
+	}
 
-// 		String format = "ID: %d \n" +
-// 						"Code: %s \n" +
-// 						"Description: %s \n" +
-// 						"Employee IDs: %s"; 
+	public Optional<Role> getRole(Long id) {
+		return roleDAO.getRole(id);
+	}
 
-// 		for (Role role : roles) {
-// 			String employees = role.getEmployees().stream().map(Employee::getId).collect(Collectors.joining());
+	public Optional<Role> getRoleJoinedEmployees(Long id) {
+		return roleDAO.getRoleJoinedEmployees(id);
+	}
 
-// 			sb.append(role.getId());
-// 		}
-// 	}
+	public String getRoleDetail(Long id) {
+		Optional<Role> role = roleDAO.getRoleJoinedEmployees(id); 
+
+		if (!role.isPresent()) {
+			return null;
+		}
+
+		return String.format("ID: %d \n" +
+						"Code: %s \n" +
+						"Description: %s \n" +
+						"Employee ID/s: %s",
+						role.get().getId(), 
+						role.get().getCode(), 
+						role.get().getDescription(), 
+						role.get().getEmployees().stream().map(e -> e.getId().toString()).collect(Collectors.joining(", ")));
+	}
 
 
 
-// }
+}
