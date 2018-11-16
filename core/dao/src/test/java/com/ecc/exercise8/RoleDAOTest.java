@@ -150,16 +150,16 @@ public class RoleDAOTest {
 		assertThat(role2.isPresent()).isFalse();
 	}
 
-	// @After
-	// public void removePersistedRole() {
-	// 	if (this.role.getId() == null) {
-	// 		return;
-	// 	}
+	@After
+	public void removePersistedRole() {
+		if (this.role.getId() == null) {
+			return;
+		}
 
-	// 	Optional<Role> role2 = roleDAO.getRole(this.role.getId());
+		Optional<Role> role2 = roleDAO.getRole(this.role.getId());
 
-	// 	if (role2.isPresent()) {
-	// 		roleDAO.removeRole(this.role);
-	// 	}
-	// }
+		if (role2.isPresent()) {
+			roleDAO.removeRole(this.role);
+		}
+	}
 }

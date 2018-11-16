@@ -388,4 +388,21 @@ public class EmployeeDAOTest {
 
 		assertThat(employee2.isPresent()).isFalse();
 	}
+
+	@After
+	public void removePersistedRoles() {
+		RoleDAO roleDAO = new RoleDAO();
+
+		for (Role role : this.roleCollector) {
+			if (role.getId() == null) {
+				return;
+			}
+
+			Optional<Role> role2 = roleDAO.getRole(role.getId());
+
+			if (role2.isPresent()) {
+				roleDAO.removeRole(role);
+			}
+		}
+	}
 }
