@@ -7,5 +7,4 @@ public class EmployeeContract {
 	public static final String COLUMN_DATE_HIRED = "date_hired";
 	public static final String COLUMN_GWA = "gwa";
 	public static final String COLUMN_IS_EMPLOYED = "is_employed";
-	public static final String COLUMN_ADDRESS_ID = "address_id";
 }

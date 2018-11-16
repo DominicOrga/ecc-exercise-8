@@ -43,8 +43,7 @@ public class Employee {
 	@Column(name = EmployeeContract.COLUMN_IS_EMPLOYED, nullable = false)
 	private Boolean isEmployed;
 	
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = EmployeeContract.COLUMN_ADDRESS_ID, nullable = false)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "employee", optional = false)
 	private Address address;
 
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "employee")
@@ -60,13 +59,12 @@ public class Employee {
 
 	public Employee() {}
 
-	public Employee(Name name, LocalDate birthDate, LocalDate dateHired, Float gwa, Boolean isEmployed, Address address) {
+	public Employee(Name name, LocalDate birthDate, LocalDate dateHired, Float gwa, Boolean isEmployed) {
 		this.name = name;
 		this.birthDate = birthDate;
 		this.dateHired = dateHired;
 		this.gwa = gwa;
 		this.isEmployed = isEmployed;
-		this.address = address;
 	}
 
 	public Long getId() {

@@ -134,14 +134,15 @@ public class RoleDAOTest {
 		float gwa = 2.75f;
 		boolean isEmployed = true;
 
-		String streetNumber = "123";
+		Employee employee = new Employee(name, birthdate, dateHired, gwa, isEmployed);
+
+		String streetNumber = "113";
 		String barangay = "San Isidro";
 		String city = "Manila";
 		Integer zipcode = 1920;
-		Address address = new Address(streetNumber, barangay, city, zipcode);
+		Address address = new Address(streetNumber, barangay, city, zipcode, employee);
 
-		Employee employee = new Employee(
-			name, birthdate, dateHired, gwa, isEmployed, address);
+		employee.setAddress(address);
 
 		employee.getRoles().add(this.role);
 

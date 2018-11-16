@@ -17,6 +17,7 @@
     <assertj-core.version>3.11.1</assertj-core.version>
     <hibernate.version>5.3.7.Final</hibernate.version>
     <javax.persistence-api.version>2.2</javax.persistence-api.version>
+    <postgresql.version>9.1-901-1.jdbc4</postgresql.version>
   </properties>
 
   <modules>
@@ -64,7 +65,7 @@
       <dependency>
         <groupId>postgresql</groupId>
         <artifactId>postgresql</artifactId>
-        <version>9.1-901-1.jdbc4</version>
+        <version>${postgresql.version}</version>
       </dependency>
     </dependencies>   
   </dependencyManagement>  

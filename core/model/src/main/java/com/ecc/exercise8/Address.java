@@ -5,6 +5,10 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Table;
 import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.CascadeType;
 
 @Entity
 @Table(name = AddressContract.TABLE_NAME)
@@ -27,13 +31,18 @@ public class Address {
 	@Column(name = AddressContract.COLUMN_ZIPCODE)
 	private Integer zipcode;
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = AddressContract.COLUMN_EMPLOYEE_ID, nullable = false)
+	private Employee employee;
+
 	public Address() {}
 
-	public Address(String streetNumber, String barangay, String city, Integer zipcode) {
+	public Address(String streetNumber, String barangay, String city, Integer zipcode, Employee employee) {
 		this.streetNumber = streetNumber;
 		this.barangay = barangay;
 		this.city = city;
 		this.zipcode = zipcode;
+		this.employee = employee;
 	}
 
 	public Long getId() {
@@ -76,6 +85,14 @@ public class Address {
 		this.zipcode = zipcode;
 	}
 
+	public Employee getEmployee() {
+		return this.employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("%s,%s,%s,%d", this.streetNumber, this.barangay, this.city, this.zipcode.intValue());
@@ -96,7 +113,8 @@ public class Address {
 		return address.getStreetNumber().equals(this.streetNumber) &&
 			   address.getBarangay().equals(this.barangay) &&
 			   address.getCity().equals(this.city) &&
-			   address.getZipcode().intValue() == this.zipcode.intValue();
+			   address.getZipcode().intValue() == this.zipcode.intValue() &&
+			   address.getEmployee().getId().intValue() == this.employee.getId().intValue();
 	}
 
 	@Override
@@ -106,6 +124,7 @@ public class Address {
 		result = 31 * result + this.barangay.hashCode();
 		result = 31 * result + this.city.hashCode();
 		result = 31 * result + this.zipcode.intValue();
+		result = 31 * result + this.employee.getId().intValue();
 		return result;
 	}
 }
