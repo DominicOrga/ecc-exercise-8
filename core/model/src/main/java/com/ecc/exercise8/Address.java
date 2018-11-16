@@ -31,7 +31,7 @@ public class Address {
 	@Column(name = AddressContract.COLUMN_ZIPCODE)
 	private Integer zipcode;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name = AddressContract.COLUMN_EMPLOYEE_ID, nullable = false)
 	private Employee employee;
 

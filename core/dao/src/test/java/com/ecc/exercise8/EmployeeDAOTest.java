@@ -238,19 +238,6 @@ public class EmployeeDAOTest {
 		assertThat(employee2.get().getAddress().toString()).isEqualTo(employee.getAddress().toString());
 	}
 
-	// @Test
-	// public void givenAnAddressWhenEmployeeIsUpdatedAndLoadedThenAddressIsPersisted() {
-	// 	employeeDAO.saveEmployee(this.employee);
-
-	// 	Address newAddress = new Address("128", "San Domingo", "Caloocan", 1920, this.employee);
-	// 	this.employee.setAddress(newAddress);
-	// 	employeeDAO.updateEmployee(this.employee);
-
-	// 	Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
-
-	// 	assertThat(employee2.get().getAddress()).isEqualTo(newAddress);
-	// }
-
 	@Test
 	public void whenAddressIsNullThenEmployeeIsNotPersisted() {
 		this.employee.setAddress(null);
@@ -390,33 +377,33 @@ public class EmployeeDAOTest {
 		assertThat(employee2.isPresent()).isFalse();
 	}
 
-	// @After
-	// public void removePersistedRoles() {
-	// 	RoleDAO roleDAO = new RoleDAO();
+	@After
+	public void removePersistedRoles() {
+		RoleDAO roleDAO = new RoleDAO();
 
-	// 	for (Role role : this.roleCollector) {
-	// 		if (role.getId() == null) {
-	// 			continue;
-	// 		}
+		for (Role role : this.roleCollector) {
+			if (role.getId() == null) {
+				continue;
+			}
 
-	// 		Optional<Role> role2 = roleDAO.getRole(role.getId());
+			Optional<Role> role2 = roleDAO.getRole(role.getId());
 
-	// 		if (role2.isPresent()) {
-	// 			roleDAO.removeRole(role2.get());
-	// 		}
-	// 	}
-	// }
+			if (role2.isPresent()) {
+				roleDAO.removeRole(role2.get());
+			}
+		}
+	}
 
-	// @After
-	// public void removePersistedEmployee() {
-	// 	if (this.employee.getId() == null) {
-	// 		return;
-	// 	}
+	@After
+	public void removePersistedEmployee() {
+		if (this.employee.getId() == null) {
+			return;
+		}
 
-	// 	Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
-	// 	if (employee2.isPresent()) {
-	// 		employeeDAO.removeEmployee(employee2.get());
-	// 	}
-	// }
+		if (employee2.isPresent()) {
+			employeeDAO.removeEmployee(employee2.get());
+		}
+	}
 }
