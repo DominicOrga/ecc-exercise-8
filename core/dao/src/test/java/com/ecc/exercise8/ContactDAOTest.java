@@ -121,62 +121,17 @@ public class ContactDAOTest {
 
 		assertThat(thrown).isInstanceOf(PropertyValueException.class);
 	}
+
+	@Test
+	public void whenContactIsDeletedThenContactIsNotPersisted() {
+		this.contactDAO.saveContact(this.contact);
+		this.contactDAO.removeContact(this.contact.getId());
+
+		Optional<Contact> contact2 = this.contactDAO.getContact(this.contact.getId());
+
+		assertThat(contact2.isPresent()).isFalse();
+	}
 }	
-
-	// @Test
-	// public void givenCodeWhenRoleIsUpdatedAndLoadedTheCodeIsPersisted() {
-	// 	roleDAO.saveRole(this.role);
-
-	// 	this.role.setCode("QA");
-	// 	roleDAO.updateRole(this.role);
-
-	// 	Role role2 = roleDAO.getRole(this.role.getId()).get();
-
-	// 	assertThat(role2.getCode()).isEqualTo("QA");
-	// }
-
-	// @Test
-	// public void whenCodeIsNullThenRoleIsNotPersisted() {
-	// 	this.role.setCode(null);
-
-	// 	Throwable thrown = catchThrowable(() -> {
-	// 		roleDAO.saveRole(this.role);
-	// 	});
-
-	// 	assertThat(thrown).isInstanceOf(PropertyValueException.class);
-	// }
-
-	// @Test
-	// public void givenDescriptionWhenRoleIsSavedAndLoadedThenDescriptionIsPersisted() {
-	// 	roleDAO.saveRole(this.role);
-
-	// 	Role role2 = roleDAO.getRole(this.role.getId()).get();
-
-	// 	assertThat(role2.getDescription()).isEqualTo(this.description);
-	// }
-
-	// @Test
-	// public void givenDescriptionWhenRoleIsUpdatedAndLoadedThenDescriptionIsPersisted() {
-	// 	roleDAO.saveRole(this.role);
-
-	// 	this.role.setDescription("QA Stuffs");
-	// 	roleDAO.updateRole(this.role);
-
-	// 	Role role2 = roleDAO.getRole(this.role.getId()).get();
-
-	// 	assertThat(role2.getDescription()).isEqualTo("QA Stuffs");
-	// }
-
-	// @Test
-	// public void whenDescriptionIsNullThenRoleIsNotPersisted() {
-	// 	this.role.setDescription(null);
-
-	// 	Throwable thrown = catchThrowable(() -> {
-	// 		roleDAO.saveRole(this.role);
-	// 	});
-
-	// 	assertThat(thrown).isInstanceOf(PropertyValueException.class);
-	// }
 
 	// @Test
 	// public void whenRoleIsDeletedThenRoleIsNotPersisted() {

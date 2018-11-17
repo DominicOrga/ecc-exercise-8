@@ -29,4 +29,15 @@ public class ContactDAO {
 			tx.commit();
 		}
 	}
+
+	public void removeContact(Long id) {
+		try (Session session = SessionUtil.getSession()) {
+			Transaction tx = session.beginTransaction();
+
+			Contact contact = session.load(Contact.class, id);
+
+			session.delete(contact);
+			tx.commit();
+		}
+	}
 }
