@@ -11,7 +11,7 @@ public class RoleQueryApp {
 	private static final int VIEW_ROLE = 0;
 	private static final int ADD_ROLE = 1;
 	private static final int UPDATE_ROLE = 2;
-	private static final int DELETE_ROLE = 3;
+	private static final int REMOVE_ROLE = 3;
 	private static final int RETURN = 4;
 
 	private static final int COLUMN_CODE = 0;
@@ -21,23 +21,26 @@ public class RoleQueryApp {
     	boolean isReturn = false;
 
     	do {
-    		System.out.println("[0] View Roles, [1] Add Role, [2] Update Role, [3] Delete Role, [4] Return");
+    		System.out.println("[0] View Roles, [1] Add Role, [2] Update Role, [3] Remove Role, [4] Return");
 
     		int option = InputUtility.nextIntPersistent("Enter option:");
 
 	    	switch (option) {
-	    		case VIEW_ROLE :
+	    		case VIEW_ROLE:
 	    			viewRole();
 	    			break;
                 case ADD_ROLE :
                 	addRole();
                 	viewRole();
                 	break;
-                case UPDATE_ROLE :
+                case UPDATE_ROLE:
                 	updateRole();
                 	viewRole();
                 	break;
-
+                case REMOVE_ROLE:
+                	removeRole();
+                	viewRole();
+                	break;
     			case RETURN :
     				isReturn = true;
 	    	}	
@@ -61,19 +64,12 @@ public class RoleQueryApp {
     }
 
     public void updateRole() {
-		Optional<Role> role = Optional.empty();    	
+		Optional<Role> role = getRoleByID();
 
-    	do {
-    		Long id = (long) InputUtility.nextIntPersistent("Enter Role ID:");
-
-    		role = this.roleService.getRole(id);
-
-    		if (!role.isPresent()) {
-    			System.out.println("Role ID does not exist.");
-    		}
-
-    	} while (!role.isPresent());
-
+		if (!role.isPresent()) {
+			System.out.println("No Role Exists.");
+			return;
+		}
 
     	System.out.println("[0] Code, [1] Description");
     	int option = InputUtility.nextIntPersistent("Choose Column to Edit:", 0, 1);
@@ -93,5 +89,38 @@ public class RoleQueryApp {
     	}
 
     	this.roleService.updateRole(role.get());
+    }
+
+    public void removeRole() {
+    	Optional<Role> role = getRoleByID();
+
+    	if (!role.isPresent()) {
+    		System.out.println("No Role Exists");
+    	}
+
+    	this.roleService.removeRole(role.get().getId());
+    }
+
+    private Optional<Role> getRoleByID() {
+    	List<Role> existingRoles = this.roleService.getRoles();
+
+    	if (existingRoles == null || existingRoles.isEmpty()) {
+    		return null;
+    	}
+
+    	Optional<Role> role = Optional.empty();    	
+
+    	do {
+    		Long id = (long) InputUtility.nextIntPersistent("Enter Role ID:");
+
+    		role = this.roleService.getRole(id);
+
+    		if (!role.isPresent()) {
+    			System.out.println("Role ID does not exist.");
+    		}
+
+    	} while (!role.isPresent());
+
+    	return role;
     }
 }

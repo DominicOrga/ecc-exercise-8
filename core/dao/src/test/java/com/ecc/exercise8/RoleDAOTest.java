@@ -114,7 +114,7 @@ public class RoleDAOTest {
 	@Test
 	public void whenRoleIsDeletedThenRoleIsNotPersisted() {
 		roleDAO.saveRole(this.role);
-		roleDAO.removeRole(this.role);
+		roleDAO.removeRole(this.role.getId());
 
 		Optional<Role> role2 = roleDAO.getRole(this.role.getId());
 
@@ -127,7 +127,7 @@ public class RoleDAOTest {
 
 		Employee employee = generateEmployeeWithRole(this.role);
 
-		roleDAO.removeRole(this.role);
+		roleDAO.removeRole(this.role.getId());
 
 		Optional<Role> role2 = roleDAO.getRole(this.role.getId());
 		assertThat(role2.isPresent()).isFalse();
@@ -176,7 +176,7 @@ public class RoleDAOTest {
 		Optional<Role> role2 = roleDAO.getRole(this.role.getId());
 
 		if (role2.isPresent()) {
-			roleDAO.removeRole(role2.get());
+			roleDAO.removeRole(role2.get().getId());
 		}
 	}
 

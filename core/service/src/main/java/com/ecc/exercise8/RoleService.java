@@ -55,4 +55,8 @@ public class RoleService {
 	public void updateRole(Role role) {
 		this.roleDAO.updateRole(role);
 	}
+
+	public void removeRole(Long id) {
+		this.roleDAO.removeRole(id);
+	}
 }

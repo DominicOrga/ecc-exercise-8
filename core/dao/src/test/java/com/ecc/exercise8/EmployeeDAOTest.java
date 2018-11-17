@@ -389,7 +389,7 @@ public class EmployeeDAOTest {
 			Optional<Role> role2 = roleDAO.getRole(role.getId());
 
 			if (role2.isPresent()) {
-				roleDAO.removeRole(role2.get());
+				roleDAO.removeRole(role2.get().getId());
 			}
 		}
 

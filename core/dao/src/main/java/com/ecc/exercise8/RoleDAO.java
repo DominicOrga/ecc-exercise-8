@@ -71,11 +71,11 @@ public class RoleDAO {
 		}
 	}
 
-	public void removeRole(Role role) {
+	public void removeRole(Long id) {
 		try (Session session = SessionUtil.getSession()) {
 			Transaction tx = session.beginTransaction();
 
-			role = (Role) session.load(Role.class, role.getId());
+			Role role = (Role) session.load(Role.class, id);
 
 			Set<Employee> employees = role.getEmployees();
 
