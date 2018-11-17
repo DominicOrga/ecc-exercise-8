@@ -88,6 +88,39 @@ public class ContactDAOTest {
 		assertThat(contact2.getType()).isEqualTo(this.contact.getType());
 		assertThat(contact2.getValue()).isEqualTo(this.contact.getValue());
 	}
+
+	@Test
+	public void whenTypeIsNullThenContactIsNotPersisted() {
+		this.contact.setType(null);
+
+		Throwable thrown = catchThrowable(() -> {
+			this.contactDAO.saveContact(this.contact);
+		});
+
+		assertThat(thrown).isInstanceOf(PropertyValueException.class);
+	}
+
+	@Test
+	public void whenValueIsNullThenContactIsNotPersisted() {
+		this.contact.setValue(null);
+
+		Throwable thrown = catchThrowable(() -> {
+			this.contactDAO.saveContact(this.contact);
+		});
+
+		assertThat(thrown).isInstanceOf(PropertyValueException.class);
+	}
+
+	@Test
+	public void whenEmployeeIsNullThenContactIsNotPersisted() {
+		this.contact.setEmployee(null);
+
+		Throwable thrown = catchThrowable(() -> {
+			this.contactDAO.saveContact(this.contact);
+		});
+
+		assertThat(thrown).isInstanceOf(PropertyValueException.class);
+	}
 }	
 
 	// @Test
