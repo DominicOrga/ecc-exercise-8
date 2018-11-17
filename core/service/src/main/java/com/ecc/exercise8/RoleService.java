@@ -52,4 +52,7 @@ public class RoleService {
 			   .collect(Collectors.joining("\n"));
 	} 
 
+	public void updateRole(Role role) {
+		this.roleDAO.updateRole(role);
+	}
 }
