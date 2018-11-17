@@ -131,73 +131,43 @@ public class ContactDAOTest {
 
 		assertThat(contact2.isPresent()).isFalse();
 	}
+
+	@Test
+	public void whenContactIsDeletedThenEmployeeIsStillPersisted() {
+		this.contactDAO.saveContact(this.contact);
+		this.contactDAO.removeContact(this.contact.getId());
+
+		EmployeeDAO employeeDAO = new EmployeeDAO();
+		Optional<Employee> employee = employeeDAO.getEmployee(this.employee.getId());
+
+		assertThat(employee.isPresent()).isTrue();
+	}
+
+	@After
+	public void removePersistedEmployee() {
+		EmployeeDAO employeeDAO = new EmployeeDAO();
+
+		if (this.employee.getId() == null) {
+			return;
+		}
+
+		Optional<Employee> employee2 = employeeDAO.getEmployee(employee.getId());
+
+		if (employee2.isPresent()) {
+			employeeDAO.removeEmployee(employee2.get());
+		}
+	}
+
+	@After
+	public void removePersistedContact() {
+		if (this.contact.getId() == null) {
+			return;
+		}
+
+		Optional<Contact> contact2 = this.contactDAO.getContact(this.contact.getId());
+
+		if (contact2.isPresent()) {
+			this.contactDAO.removeContact(contact2.get().getId());
+		}
+	}
 }	
-
-	// @Test
-	// public void whenRoleIsDeletedThenRoleIsNotPersisted() {
-	// 	roleDAO.saveRole(this.role);
-	// 	roleDAO.removeRole(this.role.getId());
-
-	// 	Optional<Role> role2 = roleDAO.getRole(this.role.getId());
-
-	// 	assertThat(role2.isPresent()).isFalse();
-	// }
-	
-	// @Test
-	// public void whenRoleIsDeletedThenCascadeOnEmployees() {
-	// 	roleDAO.saveRole(this.role);
-
-	// 	Employee employee = generateEmployeeWithRole(this.role);
-
-	// 	roleDAO.removeRole(this.role.getId());
-
-	// 	Optional<Role> role2 = roleDAO.getRole(this.role.getId());
-	// 	assertThat(role2.isPresent()).isFalse();
-	// }
-
-	// @Test
-	// public void whenRoleIsUpdatedThenCascadeOnEmployees() {
-	// 	roleDAO.saveRole(this.role);
-
-	// 	Employee employee = generateEmployeeWithRole(this.role);
-
-	// 	this.role.setCode("HR");
-	// 	roleDAO.updateRole(this.role);
-
-	// 	EmployeeDAO employeeDAO = new EmployeeDAO();
-	// 	employee = employeeDAO.getEmployeeJoinedRoles(employee.getId()).get();
-
-	// 	assertThat(employee.getRoles().iterator().next().getCode()).isEqualTo("HR");
-	// }
-
-	// @After
-	// public void removePersistedEmployee() {
-	// 	EmployeeDAO employeeDAO = new EmployeeDAO();
-
-	// 	for (Employee employee : this.employeeCollector) {
-	// 		if (employee.getId() == null) {
-	// 			continue;
-	// 		}
-
-	// 		Optional<Employee> employee2 = employeeDAO.getEmployee(employee.getId());
-
-	// 		if (employee2.isPresent()) {
-	// 			employeeDAO.removeEmployee(employee2.get());
-	// 		}
-	// 	}
-
-	// 	this.employeeCollector.clear();
-	// }
-
-	// @After
-	// public void removePersistedRole() {
-	// 	if (this.role.getId() == null) {
-	// 		return;
-	// 	}
-
-	// 	Optional<Role> role2 = roleDAO.getRole(this.role.getId());
-
-	// 	if (role2.isPresent()) {
-	// 		roleDAO.removeRole(role2.get().getId());
-	// 	}
-	// }
