@@ -24,33 +24,6 @@ public class ContactDAOTest {
 
 	private Contact contact;
 
-	private Employee generateEmployee() {
-		String firstName = "Dominic";
-		String middleName = "Rivera";
-		String lastName = "Orga";
-		Name name = new Name(firstName, middleName, lastName);
-
-		LocalDate birthdate = LocalDate.of(1993, 11, 5);
-		LocalDate dateHired = LocalDate.of(2011, 4, 3);
-		float gwa = 2.75f;
-		boolean isEmployed = true;
-
-		Employee employee = new Employee(name, birthdate, dateHired, gwa, isEmployed);
-
-		String streetNumber = "113";
-		String barangay = "San Isidro";
-		String city = "Manila";
-		Integer zipcode = 1920;
-		Address address = new Address(streetNumber, barangay, city, zipcode, employee);
-
-		employee.setAddress(address);
-
-		EmployeeDAO employeeDAO = new EmployeeDAO();
-		employeeDAO.saveEmployee(employee);
-
-		return employee;
-	}
-
 	@Before
 	public void setupContact() {
 		this.type = Contact.ContactType.landline;
@@ -169,5 +142,32 @@ public class ContactDAOTest {
 		if (contact2.isPresent()) {
 			this.contactDAO.removeContact(contact2.get().getId());
 		}
+	}
+
+	private Employee generateEmployee() {
+		String firstName = "Dominic";
+		String middleName = "Rivera";
+		String lastName = "Orga";
+		Name name = new Name(firstName, middleName, lastName);
+
+		LocalDate birthdate = LocalDate.of(1993, 11, 5);
+		LocalDate dateHired = LocalDate.of(2011, 4, 3);
+		float gwa = 2.75f;
+		boolean isEmployed = true;
+
+		Employee employee = new Employee(name, birthdate, dateHired, gwa, isEmployed);
+
+		String streetNumber = "113";
+		String barangay = "San Isidro";
+		String city = "Manila";
+		Integer zipcode = 1920;
+		Address address = new Address(streetNumber, barangay, city, zipcode, employee);
+
+		employee.setAddress(address);
+
+		EmployeeDAO employeeDAO = new EmployeeDAO();
+		employeeDAO.saveEmployee(employee);
+
+		return employee;
 	}
 }	

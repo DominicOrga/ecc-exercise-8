@@ -14,26 +14,29 @@ import org.junit.After;
 
 public class RoleServiceTest {
 
+	private Role role;
 	private RoleService roleService;
-
 	private List<Employee> employeeCollector = new ArrayList<>();
 
 	@Before
-	public void setup() {
+	public void setupRole() {
+		this.role = new Role("Dev", "Dev Things");
+	}
+
+	@Before
+	public void setupRoleService() {
 		this.roleService = new RoleService();
 	}
 
 	@Test
 	public void whenRoleGetAsStringThenMatchExpectedFormat() {
-		Role role = new Role("Dev", "Dev Things");
+		this.roleService.saveRole(this.role);
 
-		this.roleService.saveRole(role);
+		Employee employee = generateEmployeeWithRole(this.role);		
 
-		Employee employee = generateEmployeeWithRole(role);		
+		this.role = this.roleService.getRoleJoinedEmployees(this.role.getId()).get();
 
-		role = this.roleService.getRoleJoinedEmployees(role.getId()).get();
-
-		String roleDetail = this.roleService.getRoleDetail(role.getId());		
+		String roleDetail = this.roleService.getRoleDetail(this.role.getId());		
 
 		assertThat(roleDetail).isEqualTo(
 			String.format(
@@ -45,6 +48,19 @@ public class RoleServiceTest {
 				role.getCode(), 
 				role.getDescription(),
 				role.getEmployees().stream().map(e -> e.getId().toString()).collect(Collectors.joining(", "))));
+	}
+
+	@After
+	public void removePersistedRole() {
+		if (this.role.getId() == null) {
+			return;
+		}
+
+		Optional<Role> role2 = this.roleService.getRole(this.role.getId());
+
+		if (role2.isPresent()) {
+			this.roleService.removeRole(role2.get().getId());
+		}
 	}
 
 	@After
@@ -66,7 +82,7 @@ public class RoleServiceTest {
 		this.employeeCollector.clear();
 	}
 
-	public Employee generateEmployeeWithRole(Role role) {
+	private Employee generateEmployeeWithRole(Role role) {
 		String firstName = "Dominic";
 		String middleName = "Rivera";
 		String lastName = "Orga";
