@@ -34,7 +34,7 @@ public class RoleService {
 		return String.format("ID: %d \n" +
 						"Code: %s \n" +
 						"Description: %s \n" +
-						"Employee ID/s: %s",
+						"Employee ID/s: %s\n",
 						role.get().getId(), 
 						role.get().getCode(), 
 						role.get().getDescription(), 

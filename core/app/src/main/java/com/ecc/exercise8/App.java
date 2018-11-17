@@ -6,9 +6,8 @@ public class App
 
     public static void main( String[] args )
     {
-        // System.out.println()
-
-
+        App app = new App();
+        app.queryRole();
     }
 
     public void queryRole() {
@@ -21,7 +20,7 @@ public class App
 
 	    	switch (option) {
 	    		case 0 :
-	    			this.roleService.getRoleDetails();
+	    			System.out.println(this.roleService.getRoleDetails());
 	    			break;
     			case 4 :
     				isReturn = true;

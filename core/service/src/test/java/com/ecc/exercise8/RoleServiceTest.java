@@ -40,7 +40,7 @@ public class RoleServiceTest {
 				"ID: %d \n" +
 				"Code: %s \n" +
 				"Description: %s \n" +
-				"Employee ID/s: %s", 
+				"Employee ID/s: %s\n", 
 				role.getId(), 
 				role.getCode(), 
 				role.getDescription(),
