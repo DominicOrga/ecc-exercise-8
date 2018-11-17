@@ -42,6 +42,14 @@ public class Contact {
 		this.employee = employee;
 	}
 
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	public ContactType getType() {
 		return this.type;
 	}
