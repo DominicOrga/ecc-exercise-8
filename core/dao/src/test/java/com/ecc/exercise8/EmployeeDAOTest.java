@@ -392,6 +392,8 @@ public class EmployeeDAOTest {
 				roleDAO.removeRole(role2.get());
 			}
 		}
+
+		this.roleCollector.clear();
 	}
 
 	@After

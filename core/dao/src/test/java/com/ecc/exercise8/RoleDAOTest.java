@@ -124,6 +124,62 @@ public class RoleDAOTest {
 	public void whenRoleIsDeletedThenCascadeOnEmployees() {
 		roleDAO.saveRole(this.role);
 
+		Employee employee = generateEmployeeWithRole(this.role);
+
+		roleDAO.removeRole(this.role);
+
+		Optional<Role> role2 = roleDAO.getRole(this.role.getId());
+		assertThat(role2.isPresent()).isFalse();
+	}
+
+	@Test
+	public void whenRoleIsUpdatedThenCascadeOnEmployees() {
+		roleDAO.saveRole(this.role);
+
+		Employee employee = generateEmployeeWithRole(this.role);
+
+		this.role.setCode("HR");
+		roleDAO.updateRole(this.role);
+
+		EmployeeDAO employeeDAO = new EmployeeDAO();
+		employee = employeeDAO.getEmployeeJoinedRoles(employee.getId()).get();
+
+		assertThat(employee.getRoles().iterator().next().getCode()).isEqualTo("HR");
+	}
+
+	@After
+	public void removePersistedEmployee() {
+		EmployeeDAO employeeDAO = new EmployeeDAO();
+
+		for (Employee employee : this.employeeCollector) {
+			if (employee.getId() == null) {
+				continue;
+			}
+
+			Optional<Employee> employee2 = employeeDAO.getEmployee(employee.getId());
+
+			if (employee2.isPresent()) {
+				employeeDAO.removeEmployee(employee2.get());
+			}
+		}
+
+		this.employeeCollector.clear();
+	}
+
+	@After
+	public void removePersistedRole() {
+		if (this.role.getId() == null) {
+			return;
+		}
+
+		Optional<Role> role2 = roleDAO.getRole(this.role.getId());
+
+		if (role2.isPresent()) {
+			roleDAO.removeRole(role2.get());
+		}
+	}
+
+	private Employee generateEmployeeWithRole(Role role) {
 		String firstName = "Dominic";
 		String middleName = "Rivera";
 		String lastName = "Orga";
@@ -151,39 +207,6 @@ public class RoleDAOTest {
 
 		this.employeeCollector.add(employee);
 
-		roleDAO.removeRole(this.role);
-
-		Optional<Role> role2 = roleDAO.getRole(this.role.getId());
-		assertThat(role2.isPresent()).isFalse();
-	}
-
-	@After
-	public void removePersistedEmployee() {
-		EmployeeDAO employeeDAO = new EmployeeDAO();
-
-		for (Employee employee : this.employeeCollector) {
-			if (employee.getId() == null) {
-				continue;
-			}
-
-			Optional<Employee> employee2 = employeeDAO.getEmployee(employee.getId());
-
-			if (employee2.isPresent()) {
-				employeeDAO.removeEmployee(employee2.get());
-			}
-		}
-	}
-
-	@After
-	public void removePersistedRole() {
-		if (this.role.getId() == null) {
-			return;
-		}
-
-		Optional<Role> role2 = roleDAO.getRole(this.role.getId());
-
-		if (role2.isPresent()) {
-			roleDAO.removeRole(role2.get());
-		}
+		return employee;
 	}
 }

@@ -16,6 +16,10 @@ public class RoleService {
 		return roleDAO.getRole(id);
 	}
 
+	public List<Role> getRolesJoinedEmployees() {
+		return roleDAO.getRolesJoinedEmployees();
+	}
+
 	public Optional<Role> getRoleJoinedEmployees(Long id) {
 		return roleDAO.getRoleJoinedEmployees(id);
 	}
@@ -37,6 +41,11 @@ public class RoleService {
 						role.get().getEmployees().stream().map(e -> e.getId().toString()).collect(Collectors.joining(", ")));
 	}
 
-
+	public String getRoleDetails() {
+		return getRolesJoinedEmployees()
+			   .stream()
+			   .map(role -> getRoleDetail(role.getId()))
+			   .collect(Collectors.joining("\n"));
+	} 
 
 }

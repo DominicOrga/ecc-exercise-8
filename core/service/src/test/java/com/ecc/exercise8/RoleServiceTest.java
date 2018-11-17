@@ -2,15 +2,21 @@ package com.ecc.exercise8;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.time.LocalDate;
 
 import org.junit.Test;
 import org.junit.Before;
+import org.junit.After;
 
 public class RoleServiceTest {
 
 	private RoleService roleService;
+
+	private List<Employee> employeeCollector = new ArrayList<>();
 
 	@Before
 	public void setup() {
@@ -41,6 +47,25 @@ public class RoleServiceTest {
 				role.getEmployees().stream().map(e -> e.getId().toString()).collect(Collectors.joining(", "))));
 	}
 
+	@After
+	public void removePersistedEmployees() {
+		EmployeeDAO employeeDAO = new EmployeeDAO();
+
+		for (Employee employee : this.employeeCollector) {
+			if (employee.getId() == null) {
+				continue;
+			}
+
+			Optional<Employee> employee2 = employeeDAO.getEmployee(employee.getId());
+
+			if (employee2.isPresent()) {
+				employeeDAO.removeEmployee(employee2.get());
+			}
+		}
+
+		this.employeeCollector.clear();
+	}
+
 	public Employee generateEmployeeWithRole(Role role) {
 		String firstName = "Dominic";
 		String middleName = "Rivera";
@@ -65,6 +90,8 @@ public class RoleServiceTest {
 
 		EmployeeDAO employeeDAO = new EmployeeDAO();
 		employeeDAO.saveEmployee(employee);
+
+		this.employeeCollector.add(employee);
 
 		return employee;
 	}
