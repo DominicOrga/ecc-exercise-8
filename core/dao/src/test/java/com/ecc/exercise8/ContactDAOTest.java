@@ -73,25 +73,22 @@ public class ContactDAOTest {
 
 		assertThat(this.contact.getId()).isNotNull();
 	}
-}
-	
-	// @Test
-	// public void whenRoleSavedThenRoleIsPersisted() {
-	// 	this.role.setId(null);
 
-	// 	roleDAO.saveRole(this.role);
+	@Test
+	public void givenNewValuesWhenContactIsUpdatedAndLoadedThenContactIsPersisted() {
+		this.contactDAO.saveContact(this.contact);
 
-	// 	assertThat(this.role.getId()).isNotNull();
-	// }
+		this.contact.setType(Contact.ContactType.email);
+		this.contact.setValue("maxima@gmail.com");
 
-	// @Test
-	// public void givenCodeWhenRoleIsSavedAndLoadedThenCodeIsPersisted() {
-	// 	roleDAO.saveRole(this.role);
+		this.contactDAO.updateContact(this.contact);
 
-	// 	Role role2 = roleDAO.getRole(this.role.getId()).get();
+		Contact contact2 = this.contactDAO.getContact(this.contact.getId()).get();
 
-	// 	assertThat(role2.getCode()).isEqualTo(this.code);
-	// }
+		assertThat(contact2.getType()).isEqualTo(this.contact.getType());
+		assertThat(contact2.getValue()).isEqualTo(this.contact.getValue());
+	}
+}	
 
 	// @Test
 	// public void givenCodeWhenRoleIsUpdatedAndLoadedTheCodeIsPersisted() {
