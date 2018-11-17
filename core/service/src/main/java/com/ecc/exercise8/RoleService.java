@@ -16,6 +16,10 @@ public class RoleService {
 		return roleDAO.getRole(id);
 	}
 
+	public List<Role> getRoles() {
+		return roleDAO.getRoles();
+	}
+
 	public List<Role> getRolesJoinedEmployees() {
 		return roleDAO.getRolesJoinedEmployees();
 	}

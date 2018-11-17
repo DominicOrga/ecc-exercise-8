@@ -26,6 +26,17 @@ public class RoleDAO {
 		}
 	}
 
+	public List<Role> getRoles() {
+		try (Session session = SessionUtil.getSession()) {
+			List<Role> roles = session.createQuery(
+					"SELECT r " +
+					"FROM Role r", Role.class)
+				.list();
+
+			return roles;
+		}
+	}
+
 	public Optional<Role> getRoleJoinedEmployees(Long id) {
 		try (Session session = SessionUtil.getSession()) {
 			Role role = session.createQuery(

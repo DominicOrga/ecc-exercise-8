@@ -20,7 +20,7 @@ public class Role {
 	@Column(name = RoleContract.COLUMN_ID)
 	private Long id;
 
-	@Column(name = RoleContract.COLUMN_CODE, nullable = false)
+	@Column(name = RoleContract.COLUMN_CODE, nullable = false, unique = true)
 	private String code;
 
 	@Column(name = RoleContract.COLUMN_DESCRIPTION, nullable = false)
