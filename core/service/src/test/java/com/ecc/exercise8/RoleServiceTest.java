@@ -34,7 +34,7 @@ public class RoleServiceTest {
 
 		Employee employee = generateEmployeeWithRole(this.role);		
 
-		this.role = this.roleService.getRoleJoinedEmployees(this.role.getId()).get();
+		this.role = this.roleService.getRole(this.role.getId(), true).get();
 
 		String roleDetail = this.roleService.getRoleDetail(this.role.getId());		
 

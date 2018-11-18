@@ -16,20 +16,20 @@ public class RoleService {
 		return roleDAO.getRole(id);
 	}
 
+	public Optional<Role> getRole(Long id, boolean isEmployeeInitialized) {
+		return roleDAO.getRole(id, isEmployeeInitialized);
+	}
+
 	public List<Role> getRoles() {
 		return roleDAO.getRoles();
 	}
 
-	public List<Role> getRolesJoinedEmployees() {
-		return roleDAO.getRolesJoinedEmployees();
-	}
-
-	public Optional<Role> getRoleJoinedEmployees(Long id) {
-		return roleDAO.getRoleJoinedEmployees(id);
+	public List<Role> getRoles(boolean isEmployeesInitialized) {
+		return roleDAO.getRoles(isEmployeesInitialized);
 	}
 
 	public String getRoleDetail(Long id) {
-		Optional<Role> role = roleDAO.getRoleJoinedEmployees(id); 
+		Optional<Role> role = roleDAO.getRole(id, true); 
 
 		if (!role.isPresent()) {
 			return null;
@@ -46,7 +46,7 @@ public class RoleService {
 	}
 
 	public String getRoleDetails() {
-		return getRolesJoinedEmployees()
+		return getRoles(true)
 			   .stream()
 			   .map(role -> getRoleDetail(role.getId()))
 			   .collect(Collectors.joining("\n"));

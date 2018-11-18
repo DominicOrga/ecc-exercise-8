@@ -20,26 +20,14 @@ public class RoleDAO {
 	}
 
 	public Optional<Role> getRole(Long id) {
-		try (Session session = SessionUtil.getSession()) {
-			Role role = (Role) session.get(Role.class, id);
-			return Optional.ofNullable(role);
-		}
+		return getRole(id, false);
 	}
 
-	public List<Role> getRoles() {
+	public Optional<Role> getRole(Long id, boolean isEmployeeInitialized) {
 		try (Session session = SessionUtil.getSession()) {
-			List<Role> roles = session.createQuery(
-					"SELECT r " +
-					"FROM Role r", Role.class)
-				.list();
 
-			return roles;
-		}
-	}
-
-	public Optional<Role> getRoleJoinedEmployees(Long id) {
-		try (Session session = SessionUtil.getSession()) {
-			Role role = session.createQuery(
+			if (isEmployeeInitialized) {
+				Role role = session.createQuery(
 					"SELECT r " +
 					"FROM Role r " +
 					"LEFT JOIN FETCH r.employees " +
@@ -47,16 +35,33 @@ public class RoleDAO {
 				.setParameter("id", id)
 				.uniqueResult();
 
+				return Optional.ofNullable(role);
+			}
+			
+			Role role = (Role) session.get(Role.class, id);
 			return Optional.ofNullable(role);
 		}
 	}
 
-	public List<Role> getRolesJoinedEmployees() {
+	public List<Role> getRoles() {
+		return getRoles(false);
+	}
+
+	public List<Role> getRoles(boolean isEmployeeInitialized) {
 		try (Session session = SessionUtil.getSession()) {
-			List<Role> roles = session.createQuery(
+			if (isEmployeeInitialized) {
+				List<Role> roles = session.createQuery(
 					"SELECT r " + 
 					"FROM Role r " +
 					"LEFT JOIN FETCH r.employees", Role.class)
+				.list();
+
+				return roles;
+			}
+
+			List<Role> roles = session.createQuery(
+					"SELECT r " +
+					"FROM Role r", Role.class)
 				.list();
 
 			return roles;
