@@ -111,7 +111,7 @@ public class RoleQueryApp {
     	Optional<Role> role = Optional.empty();    	
 
     	do {
-    		Long id = (long) InputUtility.nextIntPersistent("Enter Role ID:");
+    		long id = InputUtility.nextLongPersistent("Enter Role ID:");
 
     		role = this.roleService.getRole(id);
 

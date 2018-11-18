@@ -124,7 +124,7 @@ public class Address {
 		result = 31 * result + this.barangay.hashCode();
 		result = 31 * result + this.city.hashCode();
 		result = 31 * result + this.zipcode.intValue();
-		result = 31 * result + this.employee.getId().intValue();
+		result = 31 * result + this.employee.hashCode();
 		return result;
 	}
 }
