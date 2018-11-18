@@ -160,7 +160,7 @@ public class RoleDAOTest {
 			Optional<Employee> employee2 = employeeDAO.getEmployee(employee.getId());
 
 			if (employee2.isPresent()) {
-				employeeDAO.removeEmployee(employee2.get());
+				employeeDAO.removeEmployee(employee2.get().getId());
 			}
 		}
 

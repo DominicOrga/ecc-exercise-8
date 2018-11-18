@@ -60,9 +60,11 @@ public class EmployeeDAO {
 		}
 	}
 
-	public void removeEmployee(Employee employee) {
+	public void removeEmployee(Long id) {
 		try (Session session = SessionUtil.getSession()) {
 			Transaction tx = session.beginTransaction();
+
+			Employee employee = session.load(Employee.class, id);
 			session.remove(employee);
 			tx.commit();
 		}

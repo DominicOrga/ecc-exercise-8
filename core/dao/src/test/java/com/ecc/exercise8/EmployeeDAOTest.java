@@ -370,7 +370,7 @@ public class EmployeeDAOTest {
 	public void whenEmployeeIsDeletedThenPersistDeletion() {
 		employeeDAO.saveEmployee(this.employee);
 
-		employeeDAO.removeEmployee(this.employee);
+		employeeDAO.removeEmployee(this.employee.getId());
 
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
@@ -405,7 +405,7 @@ public class EmployeeDAOTest {
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
 		if (employee2.isPresent()) {
-			employeeDAO.removeEmployee(employee2.get());
+			employeeDAO.removeEmployee(employee2.get().getId());
 		}
 	}
 }
