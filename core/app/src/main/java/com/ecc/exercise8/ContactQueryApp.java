@@ -20,7 +20,8 @@ public class ContactQueryApp {
     	boolean isReturn = false;
 
     	do {
-    		System.out.println("[0] View Contacts, [1] Add Contact, [2] Update Contact, [3] Remove Contact, [4] Return");
+    		System.out.println("[0] View Contacts, [1] Add Contact, [2] Update Contact, " + 
+                "[3] Remove Contact, [4] Return");
 
     		int option = InputUtility.nextIntPersistent("Enter option:");
 
@@ -122,13 +123,13 @@ public class ContactQueryApp {
     }
 
     public void removeContact() {
-    	// Optional<Contact> contact = getContactByID();
+    	Optional<Contact> contact = getContactByID();
 
-    	// if (!contact.isPresent()) {
-    	// 	System.out.println("No Contact Exists");
-    	// }
+    	if (!contact.isPresent()) {
+    		System.out.println("No Contact Exists");
+    	}
 
-    	// this.contactService.removeContact(contact.get().getId());
+    	this.contactService.removeContact(contact.get().getId());
     }
 
     private Optional<Employee> getEmployeeByID() {
