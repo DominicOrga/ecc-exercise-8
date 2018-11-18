@@ -75,6 +75,44 @@ public class InputUtilityTest {
 	}
 
 	@Test
+	public void givenAValidLongInputWhenRequestLongThenReturnLong() {
+		String longInput = "4";
+
+		ByteArrayInputStream in = new ByteArrayInputStream(longInput.getBytes());
+		System.setIn(in);
+
+		Optional<Long> input = InputUtility.nextLong("message");
+
+		assertThat(input.get()).isEqualTo(Long.parseLong(longInput));
+	}
+
+	@Test
+	public void givenMaxIsLessThanMinWhenRequestLongThenReturnEmpty() {
+		String longInput = "4";
+		long min = 6;
+		long max = 4;
+
+		ByteArrayInputStream in = new ByteArrayInputStream(longInput.getBytes());
+		System.setIn(in);
+
+		Optional<Long> input = InputUtility.nextLong("message", min, max);
+
+		assertThat(input.isPresent()).isFalse();	
+	}
+
+	@Test
+	public void givenANonLongInputWhenRequestLongThenReturnEmpty() {
+		String longInput = "Non-String Input";
+
+		ByteArrayInputStream in = new ByteArrayInputStream(longInput.getBytes());
+		System.setIn(in);
+
+		Optional<Long> input = InputUtility.nextLong("message");
+
+		assertThat(input.isPresent()).isFalse();		
+	}
+
+	@Test
 	public void givenTrueSymbolWhenRequestBoolThenReturnTrue() {
 		String trueSymbol = "y";
 		String falseSymbol = "n";
