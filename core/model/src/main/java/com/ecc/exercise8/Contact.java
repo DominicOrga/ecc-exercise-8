@@ -88,7 +88,7 @@ public class Contact {
 
 		return contact.getType().equals(this.type) && 
 			   contact.getValue().equals(this.value) &&
-			   contact.getEmployee().getId().equals(this.employee.getId());
+			   contact.getEmployee().equals(this.employee);
 	}
 
 	@Override
@@ -97,6 +97,7 @@ public class Contact {
 		result = 31 * result + this.type.hashCode();
 		result = 31 * result + this.value.hashCode();
 		result = 31 * result + this.employee.hashCode();
+		
 		return result;
 	}
 }

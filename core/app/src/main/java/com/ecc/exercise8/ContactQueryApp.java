@@ -54,6 +54,7 @@ public class ContactQueryApp {
 		Optional<Employee> employee = getEmployeeByID();
 
     	if (!employee.isPresent()) {
+            System.out.println("No employee exists to assign a contact.");
     		return;
     	}
 
@@ -82,31 +83,42 @@ public class ContactQueryApp {
     }
 
     public void updateContact() {
-		// Optional<Contact> contact = getContactByID();
+		Optional<Contact> contact = getContactByID();
 
-		// if (!contact.isPresent()) {
-		// 	System.out.println("No Contact Exists.");
-		// 	return;
-		// }
+		if (!contact.isPresent()) {
+			System.out.println("No Contact Exists.");
+			return;
+		}
 
-  //   	System.out.println("[0] Code, [1] Description");
-  //   	int option = InputUtility.nextIntPersistent("Choose Column to Edit:", 0, 1);
+    	System.out.println("[0] Type, [1] Value");
+    	int option = InputUtility.nextIntPersistent("Choose Column to Edit:", 0, 1);
 
-  //   	switch (option) {
-  //   		case COLUMN_CODE:
-  //   			List<Contact> existingContacts = this.contactService.getContacts();
-  //   			String[] existingContactCodes = existingContacts.stream().map(Contact::getCode).toArray(String[]::new);
+        List<Contact> existingContacts = this.contactService.getContacts();
+        boolean isValid = false;
 
-  //   			String code = InputUtility.nextStringPersistent("Enter Code:", existingContactCodes);
-  //   			contact.get().setCode(code);
-  //   			break;
-		// 	case COLUMN_DESCRIPTION:
-		// 		String description = InputUtility.nextStringPersistent("Enter Description:");
-		// 		contact.get().setDescription(description);
-		// 		break;
-  //   	}
+        do {
+            switch (option) {
+                case COLUMN_TYPE:
+                    System.out.println("[0] Landline, [1] Mobile, [2] Email");
+                    Contact.ContactType type = 
+                        Contact.ContactType.values()[InputUtility.nextIntPersistent("Enter Type:", 0, 2)];
+                    contact.get().setType(type);
+                    break;
+                case COLUMN_VALUE:
+                    String value = InputUtility.nextStringPersistent("Enter Value:");
+                    contact.get().setValue(value);
+                    break;
+            }
 
-  //   	this.contactService.updateContact(contact.get());
+            if (!existingContacts.contains(contact)) {
+                isValid = true;
+            }
+            else {
+                System.out.println("Error: Duplicate Contact.");
+            }
+        } while(!isValid);
+
+    	this.contactService.updateContact(contact.get());
     }
 
     public void removeContact() {

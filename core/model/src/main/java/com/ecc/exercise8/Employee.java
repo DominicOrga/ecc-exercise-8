@@ -138,4 +138,34 @@ public class Employee {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) {
+			return true;
+		}
+
+		if (!(o instanceof Employee)) {
+			return false;
+		}
+
+		Employee employee = (Employee) o;
+
+		return employee.getName().equals(this.name) &&
+			   employee.getBirthDate().isEqual(this.birthDate) &&
+			   employee.getDateHired().isEqual(this.dateHired) &&
+			   employee.getGWA().floatValue() == this.gwa.floatValue() &&
+			   employee.isEmployed() == this.isEmployed();
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + this.name.hashCode();
+		result = 31 * result + this.birthDate.hashCode();
+		result = 31 * result + this.dateHired.hashCode();
+		result = 31 * result + this.gwa.hashCode();
+		result = 31 * result + this.isEmployed.hashCode();
+		return result;
+	}
 }

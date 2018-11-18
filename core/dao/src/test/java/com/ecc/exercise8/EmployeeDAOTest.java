@@ -298,7 +298,9 @@ public class EmployeeDAOTest {
 		this.employee.getContacts().add(contact1);
 		employeeDAO.saveEmployee(this.employee);
 
+		// contact1.setEmployee(this.employee);
 		this.employee.getContacts().remove(contact1);
+
 		employeeDAO.updateEmployee(this.employee);
 
 		Employee employee2 = employeeDAO.getEmployeeJoinedContacts(this.employee.getId()).get();
