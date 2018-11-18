@@ -59,6 +59,7 @@ public class ContactQueryApp {
 
     	List<Contact> existingContacts = this.contactService.getContacts();
     	Contact contact;
+        boolean isValid = false;
 
     	do {
     		System.out.println("[0] Landline, [1] Mobile, [2] Email");
@@ -69,7 +70,13 @@ public class ContactQueryApp {
 
     		contact = new Contact(type, value, employee.get());
 
-    	} while(existingContacts.contains(contact));
+            if (!existingContacts.contains(contact)) {
+                isValid = true;
+            }
+            else {
+                System.out.println("Error: Duplicate Contact.");
+            }
+    	} while(!isValid);
 
     	this.contactService.saveContact(contact);
     }
