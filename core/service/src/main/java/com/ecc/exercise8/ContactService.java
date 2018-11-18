@@ -24,16 +24,8 @@ public class ContactService {
 		return contactDAO.getContacts();
 	}
 
-	public List<Contact> getContactsJoinedEmployee() {
-		return contactDAO.getContactsJoinedEmployee();
-	}
-
-	public Optional<Contact> getContactJoinedEmployee(Long id) {
-		return contactDAO.getContactJoinedEmployee(id);
-	}
-
 	public String getContactDetail(Long id) {
-		Optional<Contact> contact = contactDAO.getContactJoinedEmployee(id); 
+		Optional<Contact> contact = contactDAO.getContact(id); 
 
 		if (!contact.isPresent()) {
 			return null;
@@ -50,7 +42,7 @@ public class ContactService {
 	}
 
 	public String getContactDetails() {
-		return getContactsJoinedEmployee()
+		return getContacts()
 			   .stream()
 			   .map(contact -> getContactDetail(contact.getId()))
 			   .collect(Collectors.joining("\n"));

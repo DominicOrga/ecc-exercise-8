@@ -33,7 +33,7 @@ public class ContactServiceTest {
 	public void whenContactGetAsStringThenMatchExpectedFormat() {
 		this.contactService.saveContact(this.contact);
 
-		this.contact = this.contactService.getContactJoinedEmployee(this.contact.getId()).get();
+		this.contact = this.contactService.getContact(this.contact.getId()).get();
 
 		String contactDetail = this.contactService.getContactDetail(this.contact.getId());		
 

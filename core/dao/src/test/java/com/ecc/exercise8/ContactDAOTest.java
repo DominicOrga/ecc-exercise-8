@@ -12,8 +12,8 @@ import org.junit.Ignore;
 import org.junit.Before;
 import org.junit.After;
 
+import org.hibernate.Hibernate;
 import org.hibernate.PropertyValueException;
-
 
 public class ContactDAOTest {
 	private ContactDAO contactDAO;
@@ -60,6 +60,15 @@ public class ContactDAOTest {
 
 		assertThat(contact2.getType()).isEqualTo(this.contact.getType());
 		assertThat(contact2.getValue()).isEqualTo(this.contact.getValue());
+	}
+
+	@Test
+	public void whenContactIsLoadedThenEagerFetchEmployee() {
+		this.contactDAO.saveContact(this.contact);
+
+		Contact contact2 = this.contactDAO.getContact(this.contact.getId()).get();
+
+		assertThat(Hibernate.isInitialized(contact2.getEmployee())).isTrue();
 	}
 
 	@Test

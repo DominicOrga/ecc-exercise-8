@@ -34,32 +34,6 @@ public class ContactDAO {
 		}
 	}
 
-	public Optional<Contact> getContactJoinedEmployee(Long id) {
-		try (Session session = SessionUtil.getSession()) {
-			Contact contact = session.createQuery(
-					"SELECT c " +
-					"FROM Contact c " +
-					"LEFT JOIN FETCH c.employee " +
-					"WHERE c.id=:id", Contact.class)
-				.setParameter("id", id)
-				.uniqueResult();
-
-			return Optional.ofNullable(contact);
-		}
-	}
-
-	public List<Contact> getContactsJoinedEmployee() {
-		try (Session session = SessionUtil.getSession()) {
-			List<Contact> contacts = session.createQuery(
-					"SELECT c " + 
-					"FROM Contact c " +
-					"LEFT JOIN FETCH c.employees", Contact.class)
-				.list();
-
-			return contacts;
-		}
-	}
-
 	public void updateContact(Contact contact) {
 		try (Session session = SessionUtil.getSession()) {
 			Transaction tx = session.beginTransaction();
