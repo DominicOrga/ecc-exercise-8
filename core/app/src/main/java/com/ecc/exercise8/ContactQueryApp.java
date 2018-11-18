@@ -110,7 +110,7 @@ public class ContactQueryApp {
                     break;
             }
 
-            if (!existingContacts.contains(contact)) {
+            if (!existingContacts.contains(contact.get())) {
                 isValid = true;
             }
             else {
