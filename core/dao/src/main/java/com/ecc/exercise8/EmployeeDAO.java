@@ -1,6 +1,7 @@
 package com.ecc.exercise8;
 
 import java.util.Optional;
+import java.util.List;
 
 import com.ecc.exercise8.SessionUtil;
 
@@ -22,6 +23,17 @@ public class EmployeeDAO {
 			Employee employee = (Employee) session.get(Employee.class, id);
 			return Optional.ofNullable(employee);
 		}	
+	}
+
+	public List<Employee> getEmployees() {
+		try (Session session = SessionUtil.getSession()) {
+			List<Employee> employees = session.createQuery(
+					"SELECT e " +
+					"FROM Employee e", Employee.class)
+				.list();
+
+			return employees;
+		}
 	}
 
 	public Optional<Employee> getEmployeeJoinedContacts(Long id) {

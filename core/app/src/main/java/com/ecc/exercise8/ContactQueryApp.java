@@ -1,121 +1,165 @@
-// package com.ecc.exercise8;
+package com.ecc.exercise8;
 
-// public class ContactQueryApp {
-// 	ContactService contactService = new ContactService();
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-// 	private static final int VIEW_CONTACT = 0;
-// 	private static final int ADD_CONTACT = 1;
-// 	private static final int UPDATE_CONTACT = 2;
-// 	private static final int REMOVE_CONTACT = 3;
-// 	private static final int RETURN = 4;
+public class ContactQueryApp {
+	ContactService contactService = new ContactService();
 
-// 	private static final int COLUMN_TYPE = 0;
-// 	private static final int COLUMN_VALUE = 1;
+	private static final int VIEW_CONTACT = 0;
+	private static final int ADD_CONTACT = 1;
+	private static final int UPDATE_CONTACT = 2;
+	private static final int REMOVE_CONTACT = 3;
+	private static final int RETURN = 4;
 
-// 	public void execute() {
-//     	boolean isReturn = false;
+	private static final int COLUMN_TYPE = 0;
+	private static final int COLUMN_VALUE = 1;
 
-//     	do {
-//     		System.out.println("[0] View Contacts, [1] Add Contact, [2] Update Contact, [3] Remove Contact, [4] Return");
+	public void execute() {
+    	boolean isReturn = false;
 
-//     		int option = InputUtility.nextIntPersistent("Enter option:");
+    	do {
+    		System.out.println("[0] View Contacts, [1] Add Contact, [2] Update Contact, [3] Remove Contact, [4] Return");
 
-// 	    	switch (option) {
-// 	    		case VIEW_CONTACT:
-// 	    			viewContact();
-// 	    			break;
-//                 case ADD_CONTACT :
-//                 	addContact();
-//                 	viewContact();
-//                 	break;
-//                 case UPDATE_CONTACT:
-//                 	updateContact();
-//                 	viewContact();
-//                 	break;
-//                 case REMOVE_CONTACT:
-//                 	removeContact();
-//                 	viewContact();
-//                 	break;
-//     			case RETURN :
-//     				isReturn = true;
-// 	    	}	
+    		int option = InputUtility.nextIntPersistent("Enter option:");
 
-//     	} while (!isReturn);    	
-//     }
+	    	switch (option) {
+	    		case VIEW_CONTACT:
+	    			viewContact();
+	    			break;
+                case ADD_CONTACT :
+                	addContact();
+                	viewContact();
+                	break;
+                case UPDATE_CONTACT:
+                	updateContact();
+                	viewContact();
+                	break;
+                case REMOVE_CONTACT:
+                	removeContact();
+                	viewContact();
+                	break;
+    			case RETURN :
+    				isReturn = true;
+	    	}	
+    	} while (!isReturn);    	
+    }
 
-//     public void viewContact() {
-// 		System.out.println(this.contactService.getContactDetails());    	
-//     }
+    public void viewContact() {
+		System.out.println(this.contactService.getContactDetails());
+    }
 
-//     public void addContact() {
-//     	List<Contact> existingContacts = this.contactService.getContacts();
-//     	String[] existingContactCodes = existingContacts.stream().map(Contact::getCode).toArray(String[]::new);
+    public void addContact() {
+		Optional<Employee> employee = getEmployeeByID();
 
-// 		String code = InputUtility.nextStringPersistent("Enter Code:", existingContactCodes);
-// 		String description = InputUtility.nextStringPersistent("Enter Description:");
+    	if (!employee.isPresent()) {
+    		return;
+    	}
 
-// 		Contact contact = new Contact(code, description);
-// 		this.contactService.saveContact(contact);
-//     }
+    	List<Contact> existingContacts = this.contactService.getContacts();
+    	Contact contact;
 
-//     public void updateContact() {
-// 		Optional<Contact> contact = getContactByID();
+    	do {
+    		System.out.println("[0] Landline, [1] Mobile, [2] Email");
+			Contact.ContactType type = 
+				Contact.ContactType.values()[InputUtility.nextIntPersistent("Enter Type:", 0, 2)];
+    		
+    		String value = InputUtility.nextStringPersistent("Enter Value:");
 
-// 		if (!contact.isPresent()) {
-// 			System.out.println("No Contact Exists.");
-// 			return;
-// 		}
+    		contact = new Contact(type, value, employee.get());
 
-//     	System.out.println("[0] Code, [1] Description");
-//     	int option = InputUtility.nextIntPersistent("Choose Column to Edit:", 0, 1);
+    	} while(existingContacts.contains(contact));
 
-//     	switch (option) {
-//     		case COLUMN_CODE:
-//     			List<Contact> existingContacts = this.contactService.getContacts();
-//     			String[] existingContactCodes = existingContacts.stream().map(Contact::getCode).toArray(String[]::new);
+    	this.contactService.saveContact(contact);
+    }
 
-//     			String code = InputUtility.nextStringPersistent("Enter Code:", existingContactCodes);
-//     			contact.get().setCode(code);
-//     			break;
-// 			case COLUMN_DESCRIPTION:
-// 				String description = InputUtility.nextStringPersistent("Enter Description:");
-// 				contact.get().setDescription(description);
-// 				break;
-//     	}
+    public void updateContact() {
+		// Optional<Contact> contact = getContactByID();
 
-//     	this.contactService.updateContact(contact.get());
-//     }
+		// if (!contact.isPresent()) {
+		// 	System.out.println("No Contact Exists.");
+		// 	return;
+		// }
 
-//     public void removeContact() {
-//     	Optional<Contact> contact = getContactByID();
+  //   	System.out.println("[0] Code, [1] Description");
+  //   	int option = InputUtility.nextIntPersistent("Choose Column to Edit:", 0, 1);
 
-//     	if (!contact.isPresent()) {
-//     		System.out.println("No Contact Exists");
-//     	}
+  //   	switch (option) {
+  //   		case COLUMN_CODE:
+  //   			List<Contact> existingContacts = this.contactService.getContacts();
+  //   			String[] existingContactCodes = existingContacts.stream().map(Contact::getCode).toArray(String[]::new);
 
-//     	this.contactService.removeContact(contact.get().getId());
-//     }
+  //   			String code = InputUtility.nextStringPersistent("Enter Code:", existingContactCodes);
+  //   			contact.get().setCode(code);
+  //   			break;
+		// 	case COLUMN_DESCRIPTION:
+		// 		String description = InputUtility.nextStringPersistent("Enter Description:");
+		// 		contact.get().setDescription(description);
+		// 		break;
+  //   	}
 
-//     private Optional<Contact> getContactByID() {
-//     	List<Contact> existingContacts = this.contactService.getContacts();
+  //   	this.contactService.updateContact(contact.get());
+    }
 
-//     	if (existingContacts == null || existingContacts.isEmpty()) {
-//     		return null;
-//     	}
+    public void removeContact() {
+    	// Optional<Contact> contact = getContactByID();
 
-//     	Optional<Contact> contact = Optional.empty();    	
+    	// if (!contact.isPresent()) {
+    	// 	System.out.println("No Contact Exists");
+    	// }
 
-//     	do {
-//     		Long id = (long) InputUtility.nextIntPersistent("Enter Contact ID:");
+    	// this.contactService.removeContact(contact.get().getId());
+    }
 
-//     		contact = this.contactService.getContact(id);
+    private Optional<Employee> getEmployeeByID() {
+    	EmployeeDAO employeeDAO = new EmployeeDAO();
+    	List<Employee> employees = employeeDAO.getEmployees();
 
-//     		if (!contact.isPresent()) {
-//     			System.out.println("Contact ID does not exist.");
-//     		}
+    	if (employees == null || employees.isEmpty()) {
+    		return Optional.empty();
+    	}
 
-//     	} while (!contact.isPresent());
+    	String idList = employees.stream().map(
+    		employee -> employee.getId() + ": " + employee.getName()).collect(Collectors.joining("\n"));
 
-//     	return contact;
-//     }
-// }
+    	System.out.println(idList);
+
+    	Optional<Employee> employee;
+
+    	do {
+    		long id = InputUtility.nextLongPersistent("Enter Employee ID:");
+    		employee = employeeDAO.getEmployee(id);
+
+    		if (!employee.isPresent()) {
+    			System.out.println("Employee ID does not exist.");
+    		}	
+
+    	} while(!employee.isPresent());
+
+    	return employee;
+    }
+
+    private Optional<Contact> getContactByID() {
+    	List<Contact> existingContacts = this.contactService.getContacts();
+
+    	if (existingContacts == null || existingContacts.isEmpty()) {
+    		return Optional.empty();
+    	}
+
+    	Optional<Contact> contact = Optional.empty();    	
+
+    	do {
+    		Long id = (long) InputUtility.nextIntPersistent("Enter Contact ID:");
+
+    		contact = this.contactService.getContact(id);
+
+    		if (!contact.isPresent()) {
+    			System.out.println("Contact ID does not exist.");
+    		}
+
+    	} while (!contact.isPresent());
+
+    	return contact;
+    }
+}

@@ -6,8 +6,8 @@
     <session-factory>
         <property name="connection.url">jdbc:postgresql://localhost/ecc</property> <!-- BD Mane -->
         <property name="connection.driver_class">org.postgresql.Driver</property> <!-- DB Driver -->
-        <property name="connection.username">postgres</property> <!-- DB User -->
-        <property name="connection.password">P4mkgo31nsl</property> <!-- DB Password -->
+        <property name="connection.username">orga</property> <!-- DB User -->
+        <property name="connection.password">O4mkgo31nal</property> <!-- DB Password -->
         
         <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property> <!-- DB Dialect -->
         <property name="hbm2ddl.auto">create-drop</property> <!-- create / create-drop / update -->

@@ -4,8 +4,10 @@ public class App
 {
     public static void main( String[] args )
     {
+    	ContactQueryApp contactQueryApp = new ContactQueryApp();
         RoleQueryApp roleQueryApp = new RoleQueryApp();
 
-        roleQueryApp.execute();        
+        contactQueryApp.execute();
+        // roleQueryApp.execute();        
     }
 }
