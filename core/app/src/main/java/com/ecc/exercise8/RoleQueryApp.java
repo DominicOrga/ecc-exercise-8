@@ -5,10 +5,9 @@ import java.util.stream.Collectors;
 import java.util.Optional;
 
 public class RoleQueryApp {
-
 	RoleService roleService = new RoleService();
 
-	private static final int VIEW_ROLE = 0;
+	private static final int VIEW_ROLES = 0;
 	private static final int ADD_ROLE = 1;
 	private static final int UPDATE_ROLE = 2;
 	private static final int REMOVE_ROLE = 3;
@@ -26,20 +25,20 @@ public class RoleQueryApp {
     		int option = InputUtility.nextIntPersistent("Enter option:");
 
 	    	switch (option) {
-	    		case VIEW_ROLE:
-	    			viewRole();
+	    		case VIEW_ROLES:
+	    			viewRoles();
 	    			break;
                 case ADD_ROLE :
                 	addRole();
-                	viewRole();
+                	viewRoles();
                 	break;
                 case UPDATE_ROLE:
                 	updateRole();
-                	viewRole();
+                	viewRoles();
                 	break;
                 case REMOVE_ROLE:
                 	removeRole();
-                	viewRole();
+                	viewRoles();
                 	break;
     			case RETURN :
     				isReturn = true;
@@ -48,7 +47,7 @@ public class RoleQueryApp {
     	} while (!isReturn);    	
     }
 
-    public void viewRole() {
+    public void viewRoles() {
 		System.out.println(this.roleService.getRoleDetails());    	
     }
 

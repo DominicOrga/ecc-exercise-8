@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public class ContactQueryApp {
 	ContactService contactService = new ContactService();
 
-	private static final int VIEW_CONTACT = 0;
+	private static final int VIEW_CONTACTS = 0;
 	private static final int ADD_CONTACT = 1;
 	private static final int UPDATE_CONTACT = 2;
 	private static final int REMOVE_CONTACT = 3;
@@ -26,20 +26,20 @@ public class ContactQueryApp {
     		int option = InputUtility.nextIntPersistent("Enter option:");
 
 	    	switch (option) {
-	    		case VIEW_CONTACT:
-	    			viewContact();
+	    		case VIEW_CONTACTS:
+	    			viewContacts();
 	    			break;
                 case ADD_CONTACT :
                 	addContact();
-                	viewContact();
+                	viewContacts();
                 	break;
                 case UPDATE_CONTACT:
                 	updateContact();
-                	viewContact();
+                	viewContacts();
                 	break;
                 case REMOVE_CONTACT:
                 	removeContact();
-                	viewContact();
+                	viewContacts();
                 	break;
     			case RETURN :
     				isReturn = true;
@@ -47,7 +47,7 @@ public class ContactQueryApp {
     	} while (!isReturn);    	
     }
 
-    public void viewContact() {
+    public void viewContacts() {
 		System.out.println(this.contactService.getContactDetails());
     }
 
