@@ -1,6 +1,7 @@
 package com.ecc.exercise8;
 
 import java.util.Optional;
+import java.time.LocalDate;
 
 public class EmployeeQueryApp {
 	EmployeeService employeeService = new EmployeeService();
@@ -41,18 +42,18 @@ public class EmployeeQueryApp {
 	    		case LIST_EMPLOYEES:
 	    			viewEmployees();
 	    			break;
-                case ADD_EMPLOYEE :
-                	addEmployee();
-                	viewEmployees();
-                	break;
-                case UPDATE_EMPLOYEE:
-                	updateEmployee();
-                	viewEmployees();
-                	break;
-                case REMOVE_EMPLOYEE:
-                	removeEmployee();
-                	viewEmployees();
-                	break;
+          case ADD_EMPLOYEE :
+          	addEmployee();
+          	viewEmployees();
+          	break;
+          case UPDATE_EMPLOYEE:
+          	updateEmployee();
+          	viewEmployees();
+          	break;
+          case REMOVE_EMPLOYEE:
+          	removeEmployee();
+          	viewEmployees();
+            break;
     			case RETURN :
     				isReturn = true;
 	    	}	
@@ -60,39 +61,37 @@ public class EmployeeQueryApp {
     }
 
     public void viewEmployees() {
-		System.out.println(this.employeeService.getEmployeeDetails());
+		  System.out.println(this.employeeService.getEmployeeDetails());
     }
 
     public void addEmployee() {
-		// Optional<Employee> employee = getEmployeeByID();
+      String firstName = InputUtility.nextStringPersistent("Enter First Name:");
+      String middleName = InputUtility.nextStringPersistent("Enter Middle Name:");
+      String lastName = InputUtility.nextStringPersistent("Enter Last Name:");
 
-  //   	if (!employee.isPresent()) {
-  //           System.out.println("No employee exists to assign a employee.");
-  //   		return;
-  //   	}
+      Name name = new Name(firstName, middleName, lastName);
 
-  //   	List<Employee> existingEmployees = this.employeeService.getEmployees();
-  //   	Employee employee;
-  //       boolean isValid = false;
+      LocalDate birthDate = 
+        InputUtility.nextDatePersistent("Birth Date", 1900, LocalDate.now().getYear() - 18);
 
-  //   	do {
-  //   		System.out.println("[0] Landline, [1] Mobile, [2] Email");
-		// 	Employee.EmployeeType type = 
-		// 		Employee.EmployeeType.values()[InputUtility.nextIntPersistent("Enter Type:", 0, 2)];
-    		
-  //   		String value = InputUtility.nextStringPersistent("Enter Value:");
+      LocalDate dateHired = 
+        InputUtility.nextDatePersistent("Date Hired", birthDate.getYear() + 18, LocalDate.now().getYear());
 
-  //   		employee = new Employee(type, value, employee.get());
+      float gwa = InputUtility.nextFloatPersistent("Enter GWA:", 1, 5);
 
-  //           if (!existingEmployees.contains(employee)) {
-  //               isValid = true;
-  //           }
-  //           else {
-  //               System.out.println("Error: Duplicate Employee.");
-  //           }
-  //   	} while(!isValid);
+      System.out.println("[0] Employed, [1] Unemployed");
+      boolean isEmployed = InputUtility.nextIntPersistent("Employment Status:", 0, 1) == 0;
 
-  //   	this.employeeService.saveEmployee(employee);
+      Employee employee = new Employee(name, birthDate, dateHired, gwa, isEmployed);
+
+      String streetNumber = InputUtility.nextStringPersistent("Street:");
+      String barangay = InputUtility.nextStringPersistent("Barangay:");
+      String city = InputUtility.nextStringPersistent("City:");
+      int zipcode = InputUtility.nextIntPersistent("Zipcode:", 1000, 9999);
+
+      Address address = new Address(streetNumber, barangay, city, zipcode, employee);
+      employee.setAddress(address);
+      this.employeeService.saveEmployee(employee);
     }
 
     public void updateEmployee() {
