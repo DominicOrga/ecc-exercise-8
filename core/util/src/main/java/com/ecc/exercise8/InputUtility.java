@@ -132,6 +132,47 @@ public class InputUtility {
 		return Optional.empty();
 	}
 
+	public static float nextFloatPersistent(String message) {
+		return nextFloatPersistent(message, Float.MIN_VALUE, Float.MAX_VALUE);
+	}
+
+	public static float nextFloatPersistent(String message, float min, float max) {
+		Optional<Float> input;
+
+		do {
+			input = nextFloat(message, min, max);
+		} while (!input.isPresent());
+
+		return input.get().floatValue();
+	}
+
+	public static Optional<Float> nextFloat(String message) {
+		return nextFloat(message, Float.MIN_VALUE, Float.MAX_VALUE);
+	}
+
+	public static Optional<Float> nextFloat(String message, float min, float max) {
+		Scanner scanner = new Scanner(System.in);
+
+		System.out.print(message + " ");
+		String input = scanner.nextLine();
+		
+		if (input.matches("^([+-]?\\d*\\.?\\d*)$")) {
+			float floatInput = Float.parseFloat(input);
+
+			if (floatInput >= min && floatInput <= max) {				
+				return Optional.of(floatInput);
+			}
+			else {
+				System.out.printf("Input should be a float value between %,.4f (inclusive) and %,.4f " + 
+					"(inclusive)\n", min, max);
+			}
+		} else {
+			System.out.println("Please enter valid float value");
+		}	
+
+		return Optional.empty();
+	}
+
 	public static boolean nextBoolPersistent(String message, String trueSymbol, String falseSymbol) {
 		Optional<Boolean> input;
 
