@@ -30,7 +30,7 @@ public class EmployeeService {
 	}
 
 	public String getEmployeeDetail(Long id) {
-		Optional<Employee> employee = employeeDAO.getEmployee(id); 
+		Optional<Employee> employee = employeeDAO.getEmployee(id, true, true); 
 
 		if (!employee.isPresent()) {
 			return null;

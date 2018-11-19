@@ -61,7 +61,6 @@ public class EmployeeServiceTest {
 	}
 
 	@Test
-	@Ignore
 	public void whenEmployeeGetAsStringThenMatchExpectedFormat() {
 		this.employeeService.saveEmployee(this.employee);
 
@@ -96,56 +95,31 @@ public class EmployeeServiceTest {
 			));
 	}
 
-	// @After
-	// public void removePersistedEmployee() {
-	// 	if (this.employee.getId() == null) {
-	// 		return;
-	// 	}
+	@After
+	public void removePersistedRole() {
+		RoleDAO roleDAO = new RoleDAO();
 
-	// 	Optional<Employee> employee2 = this.employeeService.getEmployee(this.employee.getId());
+		List<Role> roles = roleDAO.getRoles();
 
-	// 	if (employee2.isPresent()) {
-	// 		this.employeeService.removeEmployee(employee2.get().getId());
-	// 	}
-	// }
+		for (Role role : roles) {
+			if (role.equals(this.role)) {
+				roleDAO.removeRole(role.getId());
+				break;
+			}
+		}
+	}
 
-	// @After
-	// public void removePersistedEmployee() {
-	// 	if (this.employee.getId() == null) {
-	// 		return;
-	// 	}
+	@After
+	public void removePersistedEmployee() {
+		if (this.employee.getId() == null) {
+			return;
+		}
 
-	// 	EmployeeDAO employeeDAO = new EmployeeDAO();
-	// 	Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
+		EmployeeDAO employeeDAO = new EmployeeDAO();
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 	
-	// 	if (employee2.isPresent()) {
-	// 		employeeDAO.removeEmployee(employee2.get().getId());
-	// 	}
-	// }
-
-	// private Employee generateEmployee() {
-	// 	String firstName = "Dominic";
-	// 	String middleName = "Rivera";
-	// 	String lastName = "Orga";
-	// 	Name name = new Name(firstName, middleName, lastName);
-	// 	LocalDate birthdate = LocalDate.of(1993, 11, 5);
-	// 	LocalDate dateHired = LocalDate.of(2011, 4, 3);
-	// 	float gwa = 2.75f;
-	// 	boolean isEmployed = true;
-
-	// 	Employee employee = new Employee(name, birthdate, dateHired, gwa, isEmployed);
-
-	// 	String streetNumber = "113";
-	// 	String barangay = "San Isidro";
-	// 	String city = "Manila";
-	// 	Integer zipcode = 1920;
-	// 	Address address = new Address(streetNumber, barangay, city, zipcode, employee);
-
-	// 	employee.setAddress(address);
-
-	// 	EmployeeDAO employeeDAO = new EmployeeDAO();
-	// 	employeeDAO.saveEmployee(employee);
-
-	// 	return employee;
-	// }
+		if (employee2.isPresent()) {
+			employeeDAO.removeEmployee(employee2.get().getId());
+		}
+	}
 }
