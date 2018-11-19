@@ -34,7 +34,7 @@ public class EmployeeQueryApp {
 
     	do {
     		System.out.println("[0] List Employees, [1] Add Employee, [2] Update Employee, " + 
-                "[3] Remove Employee, [4] VIEW_EMPLOYEE, [5] Return");
+            "[3] Remove Employee, [4] VIEW_EMPLOYEE, [5] Return");
 
     		int option = InputUtility.nextIntPersistent("Enter option:");
 
@@ -42,21 +42,21 @@ public class EmployeeQueryApp {
 	    		case LIST_EMPLOYEES:
 	    			viewEmployees();
 	    			break;
-          case ADD_EMPLOYEE :
-          	addEmployee();
-          	viewEmployees();
-          	break;
-          case UPDATE_EMPLOYEE:
-          	updateEmployee();
-          	viewEmployees();
-          	break;
-          case REMOVE_EMPLOYEE:
-          	removeEmployee();
-          	viewEmployees();
-            break;
+                case ADD_EMPLOYEE :
+                  	addEmployee();
+                  	viewEmployees();
+                  	break;
+                case UPDATE_EMPLOYEE:
+              	    updateEmployee();
+              	    viewEmployees();
+              	    break;
+                case REMOVE_EMPLOYEE:
+              	    removeEmployee();
+              	    viewEmployees();
+                    break;
     			case RETURN :
-    				isReturn = true;
-	    	}	
+        			isReturn = true;
+    	    	}	
     	} while (!isReturn);    	
     }
 
@@ -65,72 +65,131 @@ public class EmployeeQueryApp {
     }
 
     public void addEmployee() {
-      String firstName = InputUtility.nextStringPersistent("Enter First Name:");
-      String middleName = InputUtility.nextStringPersistent("Enter Middle Name:");
-      String lastName = InputUtility.nextStringPersistent("Enter Last Name:");
+        String firstName = InputUtility.nextStringPersistent("Enter First Name:");
+        String middleName = InputUtility.nextStringPersistent("Enter Middle Name:");
+        String lastName = InputUtility.nextStringPersistent("Enter Last Name:");
 
-      Name name = new Name(firstName, middleName, lastName);
+        Name name = new Name(firstName, middleName, lastName);
 
-      LocalDate birthDate = 
-        InputUtility.nextDatePersistent("Birth Date", 1900, LocalDate.now().getYear() - 18);
+        LocalDate birthDate = 
+          InputUtility.nextDatePersistent("Birth Date", 1900, LocalDate.now().getYear() - 18);
 
-      LocalDate dateHired = 
-        InputUtility.nextDatePersistent("Date Hired", birthDate.getYear() + 18, LocalDate.now().getYear());
+        LocalDate dateHired = 
+          InputUtility.nextDatePersistent("Date Hired", birthDate.getYear() + 18, LocalDate.now().getYear());
 
-      float gwa = InputUtility.nextFloatPersistent("Enter GWA:", 1, 5);
+        float gwa = InputUtility.nextFloatPersistent("Enter GWA:", 1, 5);
 
-      System.out.println("[0] Employed, [1] Unemployed");
-      boolean isEmployed = InputUtility.nextIntPersistent("Employment Status:", 0, 1) == 0;
+        System.out.println("[0] Employed, [1] Unemployed");
+        boolean isEmployed = InputUtility.nextIntPersistent("Employment Status:", 0, 1) == 0;
 
-      Employee employee = new Employee(name, birthDate, dateHired, gwa, isEmployed);
+        Employee employee = new Employee(name, birthDate, dateHired, gwa, isEmployed);
 
-      String streetNumber = InputUtility.nextStringPersistent("Street:");
-      String barangay = InputUtility.nextStringPersistent("Barangay:");
-      String city = InputUtility.nextStringPersistent("City:");
-      int zipcode = InputUtility.nextIntPersistent("Zipcode:", 1000, 9999);
+        String streetNumber = InputUtility.nextStringPersistent("Street Number:");
+        String barangay = InputUtility.nextStringPersistent("Barangay:");
+        String city = InputUtility.nextStringPersistent("City:");
+        int zipcode = InputUtility.nextIntPersistent("Zipcode:", 1000, 9999);
 
-      Address address = new Address(streetNumber, barangay, city, zipcode, employee);
-      employee.setAddress(address);
-      this.employeeService.saveEmployee(employee);
+        Address address = new Address(streetNumber, barangay, city, zipcode, employee);
+        employee.setAddress(address);
+        this.employeeService.saveEmployee(employee);
     }
 
     public void updateEmployee() {
-		// Optional<Employee> employee = getEmployeeByID();
+  		Optional<Employee> employee = getEmployeeByID();
 
-		// if (!employee.isPresent()) {
-		// 	System.out.println("No Employee Exists.");
-		// 	return;
-		// }
+  		if (!employee.isPresent()) {
+  			System.out.println("No Employee Exists.");
+  			return;
+  		}
 
-  //   	System.out.println("[0] Type, [1] Value");
-  //   	int option = InputUtility.nextIntPersistent("Choose Column to Edit:", 0, 1);
+    	System.out.println(
+            "[0] Name, [1] Birth Date, [2] Date Hired, [3] GWA, [4] Employment Status. [5] Address");
+    	int option = InputUtility.nextIntPersistent("Choose Column to Edit:", 0, 5);
 
-  //       List<Employee> existingEmployees = this.employeeService.getEmployees();
-  //       boolean isValid = false;
+        boolean isValid = false;
 
-  //       do {
-  //           switch (option) {
-  //               case COLUMN_TYPE:
-  //                   System.out.println("[0] Landline, [1] Mobile, [2] Email");
-  //                   Employee.EmployeeType type = 
-  //                       Employee.EmployeeType.values()[InputUtility.nextIntPersistent("Enter Type:", 0, 2)];
-  //                   employee.get().setType(type);
-  //                   break;
-  //               case COLUMN_VALUE:
-  //                   String value = InputUtility.nextStringPersistent("Enter Value:");
-  //                   employee.get().setValue(value);
-  //                   break;
-  //           }
+        switch (option) {
+            case COLUMN_NAME:
+                updateName(employee.get().getName());
+                break;
+            
+            case COLUMN_BIRTH_DATE:
+                LocalDate birthDate = 
+                    InputUtility.nextDatePersistent("Birth Date", 1900, LocalDate.now().getYear() - 18);
 
-  //           if (!existingEmployees.contains(employee.get())) {
-  //               isValid = true;
-  //           }
-  //           else {
-  //               System.out.println("Error: Duplicate Employee.");
-  //           }
-  //       } while(!isValid);
+                employee.get().setBirthDate(birthDate);
+                break;
 
-  //   	this.employeeService.updateEmployee(employee.get());
+            case COLUMN_DATE_HIRED:
+                LocalDate dateHired = 
+                    InputUtility.nextDatePersistent("Date Hired", birthDate.getYear() + 18, 
+                        LocalDate.now().getYear());
+
+                employee.get().setDateHired(dateHired);
+                break;
+
+            case COLUMN_GWA:
+                float gwa = InputUtility.nextFloatPersistent("Enter GWA:", 1, 5);
+                employee.get().setGWA(gwa);
+                break;
+
+            case COLUMN_EMPLOYMENT_STATUS:
+                System.out.println("[0] Employed, [1] Unemployed");
+                boolean isEmployed = InputUtility.nextIntPersistent("Employment Status:", 0, 1) == 0;
+                employee.get().setEmployed(isEmployed);
+                break;
+
+            case COLUMN_ADDRESS:
+                updateAddress(employee.get().getAddress());
+                break;
+        }
+
+    	this.employeeService.updateEmployee(employee.get());
+    }
+
+    private void updateName(Name name) {
+        System.out.println("[0] First Name, [1] Middle Name, [2] Last Name");
+        int option = InputUtility.nextIntPersistent("Choose Column to Edit:", 0, 2);
+
+        switch (option) {
+            case COLUMN_FIRST_NAME:
+                String firstName = InputUtility.nextStringPersistent("Enter First Name:");
+                name.setFirstName(firstName);
+                break;
+            case COLUMN_MIDDLE_NAME:
+                String middleName = InputUtility.nextStringPersistent("Enter Middle Name:");
+                name.setMiddleName(middleName);
+                break;
+            case COLUMN_LAST_NAME:
+                String lastName = InputUtility.nextStringPersistent("Enter Last Name:");
+                name.setLastName(lastName);
+                break;
+        }
+    }
+
+    private void updateAddress(Address address) {
+        System.out.println("[0] Street Number, [1] Barangay, [2] City, [3] Zipcode");
+        int option = InputUtility.nextIntPersistent("Choose Column to Edit:", 0, 3);
+
+
+        switch (option) {
+            case COLUMN_STREET_NUMBER:
+                String streetNumber = InputUtility.nextStringPersistent("Street Number:");
+                address.setStreetNumber(streetNumber);
+                break;
+            case COLUMN_BARANGAY:
+                String barangay = InputUtility.nextStringPersistent("Barangay:");
+                address.setBarangay(barangay);
+                break;
+            case COLUMN_CITY:
+                String city = InputUtility.nextStringPersistent("City:");
+                address.setCity(city);
+                break;
+            case COLUMN_ZIPCODE:
+                int zipcode = InputUtility.nextIntPersistent("Zipcode:", 1000, 9999);
+                address.setZipcode(zipcode);
+                break;
+        }
     }
 
     public void removeEmployee() {
@@ -144,31 +203,18 @@ public class EmployeeQueryApp {
     }
 
     private Optional<Employee> getEmployeeByID() {
-    	// EmployeeDAO employeeDAO = new EmployeeDAO();
-    	// List<Employee> employees = employeeDAO.getEmployees();
+    	Optional<Employee> employee;
 
-    	// if (employees == null || employees.isEmpty()) {
-    	// 	return Optional.empty();
-    	// }
+    	do {
+    		long id = InputUtility.nextLongPersistent("Enter Employee ID:");
+    		employee = this.employeeService.getEmployee(id);
 
-    	// String idList = employees.stream().map(
-    	// 	employee -> employee.getId() + ": " + employee.getName()).collect(Collectors.joining("\n"));
+    		if (!employee.isPresent()) {
+    			System.out.println("Employee ID does not exist.");
+    		}	
 
-    	// System.out.println(idList);
+    	} while(!employee.isPresent());
 
-    	// Optional<Employee> employee;
-
-    	// do {
-    	// 	long id = InputUtility.nextLongPersistent("Enter Employee ID:");
-    	// 	employee = employeeDAO.getEmployee(id);
-
-    	// 	if (!employee.isPresent()) {
-    	// 		System.out.println("Employee ID does not exist.");
-    	// 	}	
-
-    	// } while(!employee.isPresent());
-
-    	// return employee;
-      return Optional.empty();
+    	return employee;
     }
 }
