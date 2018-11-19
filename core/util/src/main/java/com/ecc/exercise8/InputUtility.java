@@ -2,6 +2,8 @@ package com.ecc.exercise8;
 
 import java.util.Optional;
 import java.util.Scanner;
+import java.time.Year;
+import java.time.LocalDate;
 
 public class InputUtility {
 
@@ -156,5 +158,62 @@ public class InputUtility {
 			System.out.printf("Valid inputs are %s (true) and %s (false)\n", trueSymbol, falseSymbol);
 			return Optional.empty();
 		}
+	}
+
+	public static LocalDate nextDatePersistent(String message, int minYear, int maxYear) {
+		Optional<LocalDate> date = Optional.empty();
+
+		do {
+			date = nextDate(message, minYear, maxYear);
+		} while (!date.isPresent());
+
+		return date.get();
+	}
+
+	public static Optional<LocalDate> nextDate(String message, int minYear, int maxYear) {
+		if (minYear < Year.MIN_VALUE) {
+			throw new IllegalArgumentException("Min Year must be greater than or equal to " + Year.MIN_VALUE);
+		}
+
+		if (minYear > Year.MAX_VALUE) {
+			throw new IllegalArgumentException("Min Year must be less than or equal to " + Year.MAX_VALUE);
+		}
+
+		if (minYear > maxYear) {
+			throw new IllegalArgumentException("Min Year must be less than or equal to Max Year");
+		}
+
+		if (maxYear < Year.MIN_VALUE) {
+			throw new IllegalArgumentException("Max Year must be greater than or equal to " + Year.MIN_VALUE);
+		}
+
+		if (maxYear > Year.MAX_VALUE) {
+			throw new IllegalArgumentException("Max Year must be less than or equal to " + Year.MAX_VALUE);
+		}
+
+		System.out.println(message);
+
+		Optional<Integer> year = 
+			nextInt(String.format("Enter Year (%d ~ %d):", minYear, maxYear), minYear, maxYear);
+
+		if (!year.isPresent()) {
+			return Optional.empty();
+		}
+
+		Optional<Integer> month = nextInt("Enter Month (1 ~ 12):", 1, 12);
+
+		if (!month.isPresent()) {
+			return Optional.empty();
+		}
+
+		LocalDate date = LocalDate.of(year.get(), month.get(), 1);
+		Optional<Integer> day = 
+			nextInt(String.format("Enter day (%d ~ %d):", 1, date.lengthOfMonth()), 1, date.lengthOfMonth());
+
+		if (!day.isPresent()) {
+			return Optional.empty();
+		}
+
+		return Optional.ofNullable(LocalDate.of(year.get(), month.get(), day.get()));
 	}
 }
