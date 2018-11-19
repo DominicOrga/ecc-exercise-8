@@ -2,6 +2,8 @@ package com.ecc.exercise8;
 
 import java.util.Optional;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 import com.ecc.exercise8.SessionUtil;
 
@@ -19,7 +21,36 @@ public class EmployeeDAO {
 	}
 
 	public Optional<Employee> getEmployee(Long id) {
+		return getEmployee(id, false, false);
+	}
+
+	public Optional<Employee> getEmployee(Long id, boolean isContactsInitialized, boolean isRolesInitialized) {
 		try (Session session = SessionUtil.getSession()) {
+
+			StringBuilder queryBuilder = new StringBuilder();
+
+			queryBuilder.append("SELECT e ");
+			queryBuilder.append("FROM Employee e ");
+
+			if (isContactsInitialized) {
+				queryBuilder.append("LEFT JOIN FETCH e.contacts ");
+			}
+
+			if (isRolesInitialized) {
+				queryBuilder.append("LEFT JOIN FETCH e.roles ");
+			}
+
+			queryBuilder.append("WHERE e.id=:id");
+
+			if (isContactsInitialized || isRolesInitialized) {
+				Employee employee = session.createQuery(
+					queryBuilder.toString(), Employee.class)
+				.setParameter("id", id)
+				.uniqueResult();
+
+				return Optional.ofNullable(employee);
+			}
+
 			Employee employee = (Employee) session.get(Employee.class, id);
 			return Optional.ofNullable(employee);
 		}	
@@ -33,34 +64,6 @@ public class EmployeeDAO {
 				.list();
 
 			return employees;
-		}
-	}
-
-	public Optional<Employee> getEmployeeJoinedContacts(Long id) {
-		try (Session session = SessionUtil.getSession()) {
-			Employee employee = session.createQuery(
-					"SELECT e " + 
-					"FROM Employee e " +
-					"LEFT JOIN FETCH e.contacts " +
-					"WHERE e.id=:id", Employee.class)
-				.setParameter("id", id)
-				.uniqueResult();
-
-			return Optional.ofNullable(employee);
-		}
-	}
-
-	public Optional<Employee> getEmployeeJoinedRoles(Long id) {
-		try (Session session = SessionUtil.getSession()) {
-			Employee employee = session.createQuery(
-					"SELECT e " + 
-					"FROM Employee e " +
-					"LEFT JOIN FETCH e.roles " +
-					"WHERE e.id=:id", Employee.class)
-				.setParameter("id", id)
-				.uniqueResult();
-
-			return Optional.ofNullable(employee);
 		}
 	}
 

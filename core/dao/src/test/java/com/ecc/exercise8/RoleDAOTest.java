@@ -143,7 +143,7 @@ public class RoleDAOTest {
 		roleDAO.updateRole(this.role);
 
 		EmployeeDAO employeeDAO = new EmployeeDAO();
-		employee = employeeDAO.getEmployeeJoinedRoles(employee.getId()).get();
+		employee = employeeDAO.getEmployee(employee.getId(), false, true).get();
 
 		assertThat(employee.getRoles().iterator().next().getCode()).isEqualTo("HR");
 	}

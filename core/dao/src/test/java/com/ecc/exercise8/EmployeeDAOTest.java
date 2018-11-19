@@ -255,7 +255,7 @@ public class EmployeeDAOTest {
 		this.employee.getContacts().add(contact1);
 		employeeDAO.saveEmployee(this.employee);
 
-		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedContacts(this.employee.getId());
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId(), true, false);
 		Contact contact2 = employee2.get().getContacts().iterator().next();
 
 		assertThat(contact2).isEqualTo(contact1);
@@ -273,7 +273,7 @@ public class EmployeeDAOTest {
 
 		employeeDAO.saveEmployee(this.employee);
 
-		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedContacts(this.employee.getId());
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId(), true, false);
 
 		assertThat(employee2.get().getContacts().size()).isEqualTo(3);
 	}
@@ -287,7 +287,7 @@ public class EmployeeDAOTest {
 
 		employeeDAO.saveEmployee(this.employee);
 
-		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedContacts(this.employee.getId());
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId(), true, false);
 
 		assertThat(employee2.get().getContacts().size()).isEqualTo(1);
 	}
@@ -303,7 +303,7 @@ public class EmployeeDAOTest {
 
 		employeeDAO.updateEmployee(this.employee);
 
-		Employee employee2 = employeeDAO.getEmployeeJoinedContacts(this.employee.getId()).get();
+		Employee employee2 = employeeDAO.getEmployee(this.employee.getId(), true, false).get();
 		assertThat(employee2.getContacts().size()).isEqualTo(0);
 	}
 
@@ -317,7 +317,7 @@ public class EmployeeDAOTest {
 		this.employee.getRoles().add(role);
 		this.employeeDAO.saveEmployee(this.employee);
 
-		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedRoles(this.employee.getId());
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId(), false, true);
 
 		Role role2 = employee2.get().getRoles().iterator().next();
 
@@ -345,7 +345,7 @@ public class EmployeeDAOTest {
 
 		this.employeeDAO.saveEmployee(this.employee);
 
-		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedRoles(this.employee.getId());
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId(), false, true);
 
 		assertThat(employee2.get().getRoles().size()).isEqualTo(3);
 	}
@@ -363,7 +363,7 @@ public class EmployeeDAOTest {
 
 		this.employeeDAO.saveEmployee(this.employee);
 
-		Optional<Employee> employee2 = employeeDAO.getEmployeeJoinedRoles(this.employee.getId());
+		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId(), false, true);
 
 		assertThat(employee2.get().getRoles().size()).isEqualTo(1);
 	}
