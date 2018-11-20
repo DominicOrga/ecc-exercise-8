@@ -6,12 +6,14 @@ import java.util.Optional;
 
 public class RoleQueryApp {
 	RoleService roleService = new RoleService();
+    EmployeeService employeeService = new EmployeeService();
 
 	private static final int VIEW_ROLES = 0;
 	private static final int ADD_ROLE = 1;
 	private static final int UPDATE_ROLE = 2;
 	private static final int REMOVE_ROLE = 3;
-	private static final int RETURN = 4;
+    private static final int ASSIGN_ROLE = 4;
+	private static final int RETURN = 5;
 
 	private static final int COLUMN_CODE = 0;
 	private static final int COLUMN_DESCRIPTION = 1;
@@ -20,7 +22,7 @@ public class RoleQueryApp {
     	boolean isReturn = false;
 
     	do {
-    		System.out.println("[0] View Roles, [1] Add Role, [2] Update Role, [3] Remove Role, [4] Return");
+    		System.out.println("[0] View Roles, [1] Add Role, [2] Update Role, [3] Remove Role, [4] Assign Role, [5] Return");
 
     		int option = InputUtility.nextIntPersistent("Enter option:");
 
@@ -40,6 +42,9 @@ public class RoleQueryApp {
                 	removeRole();
                 	viewRoles();
                 	break;
+                case ASSIGN_ROLE:
+                    assignRole();
+                    break;
     			case RETURN :
     				isReturn = true;
 	    	}	
@@ -99,6 +104,60 @@ public class RoleQueryApp {
     	}
 
     	this.roleService.removeRole(role.get().getId());
+    }
+
+    private void assignRole() {
+        Optional<Employee> employee = getEmployeeByID(false, true);
+
+        if (!employee.isPresent()) {
+            System.out.println("No Employee Exists.");
+            return;
+        }
+
+        Optional<Role> role = getRoleByID();
+
+        if (!role.isPresent()) {
+            System.out.println("No Role Exists.");
+            return;
+        }
+
+        if (employee.get().getRoles().contains(role.get())) {
+            System.out.println("Role already assigned to Employee.");
+            return;
+        }
+
+        employee.get().getRoles().add(role.get());
+        this.employeeService.updateEmployee(employee.get());
+        System.out.println("Role assigned to Employee.");
+    }
+
+    private Optional<Employee> getEmployeeByID(boolean isContactsInitialized, boolean isRolesInitialized) {
+        EmployeeDAO employeeDAO = new EmployeeDAO();
+        List<Employee> employees = employeeDAO.getEmployees();
+
+        if (employees == null || employees.isEmpty()) {
+            return Optional.empty();
+        }
+
+        String idList = employees.stream()
+                                 .map(employee -> employee.getId() + ": " + employee.getName())
+                                 .collect(Collectors.joining("\n"));
+
+        System.out.println(idList);
+
+        Optional<Employee> employee;
+
+        do {
+            long id = InputUtility.nextLongPersistent("Enter Employee ID:");
+            employee = employeeDAO.getEmployee(id, isContactsInitialized, isRolesInitialized);
+
+            if (!employee.isPresent()) {
+                System.out.println("Employee ID does not exist.");
+            }   
+
+        } while(!employee.isPresent());
+
+        return employee;
     }
 
     private Optional<Role> getRoleByID() {

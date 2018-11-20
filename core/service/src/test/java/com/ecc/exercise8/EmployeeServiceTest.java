@@ -90,7 +90,7 @@ public class EmployeeServiceTest {
 										   .map(c -> c.getType() + ": " + c.getValue())
 										   .collect(Collectors.joining(", ")),
 				this.employee.getRoles().stream()
-										.map(r -> r.getId().toString())
+										.map(Role::getCode)
 										.collect(Collectors.joining(", "))
 			));
 	}
