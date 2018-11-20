@@ -69,17 +69,6 @@ public class RoleDAOTest {
 	}
 
 	@Test
-	public void whenCodeIsNullThenRoleIsNotPersisted() {
-		this.role.setCode(null);
-
-		Throwable thrown = catchThrowable(() -> {
-			roleDAO.saveRole(this.role);
-		});
-
-		assertThat(thrown).isInstanceOf(PropertyValueException.class);
-	}
-
-	@Test
 	public void givenDescriptionWhenRoleIsSavedAndLoadedThenDescriptionIsPersisted() {
 		roleDAO.saveRole(this.role);
 
@@ -98,17 +87,6 @@ public class RoleDAOTest {
 		Role role2 = roleDAO.getRole(this.role.getId()).get();
 
 		assertThat(role2.getDescription()).isEqualTo("QA Stuffs");
-	}
-
-	@Test
-	public void whenDescriptionIsNullThenRoleIsNotPersisted() {
-		this.role.setDescription(null);
-
-		Throwable thrown = catchThrowable(() -> {
-			roleDAO.saveRole(this.role);
-		});
-
-		assertThat(thrown).isInstanceOf(PropertyValueException.class);
 	}
 
 	@Test
