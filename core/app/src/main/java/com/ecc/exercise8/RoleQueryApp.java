@@ -1,6 +1,7 @@
 package com.ecc.exercise8;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
@@ -13,7 +14,8 @@ public class RoleQueryApp {
 	private static final int UPDATE_ROLE = 2;
 	private static final int REMOVE_ROLE = 3;
     private static final int ASSIGN_ROLE = 4;
-	private static final int RETURN = 5;
+    private static final int REVOKE_ROLE = 5;
+	private static final int RETURN = 6;
 
 	private static final int COLUMN_CODE = 0;
 	private static final int COLUMN_DESCRIPTION = 1;
@@ -22,7 +24,8 @@ public class RoleQueryApp {
     	boolean isReturn = false;
 
     	do {
-    		System.out.println("[0] View Roles, [1] Add Role, [2] Update Role, [3] Remove Role, [4] Assign Role, [5] Return");
+    		System.out.println("[0] View Roles, [1] Add Role, [2] Update Role, [3] Remove Role, " + 
+                "[4] Assign Role, [5] Revoke Role, [6] Return");
 
     		int option = InputUtility.nextIntPersistent("Enter option:");
 
@@ -45,7 +48,10 @@ public class RoleQueryApp {
                 case ASSIGN_ROLE:
                     assignRole();
                     break;
-    			case RETURN :
+                case REVOKE_ROLE:
+                    revokeRole();
+                    break;
+    			case RETURN:
     				isReturn = true;
 	    	}	
 
@@ -129,6 +135,50 @@ public class RoleQueryApp {
         employee.get().getRoles().add(role.get());
         this.employeeService.updateEmployee(employee.get());
         System.out.println("Role assigned to Employee.");
+    }
+
+    private void revokeRole() {
+        Optional<Employee> employee = getEmployeeByID(false, true);
+
+        if (!employee.isPresent()) {
+            System.out.println("No Employee Exists.");
+            return;
+        }
+
+        Set<Role> assignedRoles = employee.get().getRoles();
+
+        if (assignedRoles.isEmpty()) {
+            System.out.println("No Assigned Roles.");
+            return;
+        }
+
+        System.out.println("Assigned Roles:");
+        String idList = assignedRoles.stream()
+                             .map(role -> role.getId() + ": " + role.getCode())
+                             .collect(Collectors.joining("\n"));
+
+        System.out.println(idList);
+        Optional<Role> role = Optional.empty();
+
+        do {
+            long roleId = InputUtility.nextLongPersistent("Enter Role ID:");
+
+            role = this.roleService.getRole(roleId);
+
+            if (!role.isPresent()) {
+                System.out.println("Role ID Does Not Exist.");
+                continue;
+            }
+
+            if (!assignedRoles.contains(role.get())) {
+                System.out.println("Role ID Not Asssigned to Employee.");
+                role = Optional.empty();
+            }
+        } while (!role.isPresent());
+
+        assignedRoles.remove(role.get());
+        this.employeeService.updateEmployee(employee.get());
+        System.out.println("Role revoked from Employee.");
     }
 
     private Optional<Employee> getEmployeeByID(boolean isContactsInitialized, boolean isRolesInitialized) {
