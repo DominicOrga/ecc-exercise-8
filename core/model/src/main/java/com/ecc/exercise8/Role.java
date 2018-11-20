@@ -11,6 +11,11 @@ import javax.persistence.Column;
 import javax.persistence.ManyToMany;
 import javax.persistence.CascadeType;
 
+import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Email;
+
 @Entity
 @Table(name = RoleContract.TABLE_NAME)
 public class Role {
@@ -20,11 +25,13 @@ public class Role {
 	@Column(name = RoleContract.COLUMN_ID)
 	private Long id;
 
-	@Column(name = RoleContract.COLUMN_CODE, nullable = false, unique = true)
+	@Column(name = RoleContract.COLUMN_CODE, unique = true)
+	@NotNull
 	@Size(min = 1, max = 25)
 	private String code;
 
-	@Column(name = RoleContract.COLUMN_DESCRIPTION, nullable = false)
+	@Column(name = RoleContract.COLUMN_DESCRIPTION)
+	@NotNull
 	@Size(min = 10, max = 255)
 	private String description;
 

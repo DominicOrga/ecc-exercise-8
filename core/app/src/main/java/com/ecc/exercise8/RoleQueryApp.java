@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.Optional;
 
+import javax.validation.ConstraintViolation;
+
 public class RoleQueryApp {
 	RoleService roleService = new RoleService();
     EmployeeService employeeService = new EmployeeService();
@@ -63,14 +65,27 @@ public class RoleQueryApp {
     }
 
     public void addRole() {
-    	List<Role> existingRoles = this.roleService.getRoles();
-    	String[] existingRoleCodes = existingRoles.stream().map(Role::getCode).toArray(String[]::new);
-
-		String code = InputUtility.nextStringPersistent("Enter Code:", existingRoleCodes);
+		String code = InputUtility.nextStringPersistent("Enter Code:");
 		String description = InputUtility.nextStringPersistent("Enter Description:");
 
 		Role role = new Role(code, description);
-		this.roleService.saveRole(role);
+
+        Set<ConstraintViolation<Role>> roleViolations = ValidatorUtil.validate(role);
+
+        if (roleViolations.isEmpty()) {
+            List<Role> existingRoles = this.roleService.getRoles();
+            boolean isCodeMatch = existingRoles.stream().anyMatch(r -> r.getCode().equals(code));
+
+            if (isCodeMatch) {
+                System.out.println("code: must be unique.");
+            }
+            else {
+                this.roleService.saveRole(role);
+            }
+        }
+        else {
+            System.out.println(ValidatorUtil.getViolationMessage(roleViolations));
+        }
     }
 
     public void updateRole() {
@@ -89,7 +104,7 @@ public class RoleQueryApp {
     			List<Role> existingRoles = this.roleService.getRoles();
     			String[] existingRoleCodes = existingRoles.stream().map(Role::getCode).toArray(String[]::new);
 
-    			String code = InputUtility.nextStringPersistent("Enter Code:", existingRoleCodes);
+    			String code = InputUtility.nextStringPersistent("Enter Code:");
     			role.get().setCode(code);
     			break;
 			case COLUMN_DESCRIPTION:
