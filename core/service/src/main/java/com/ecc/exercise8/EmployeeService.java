@@ -33,6 +33,10 @@ public class EmployeeService {
 		return employeeDAO.getEmployees(isContactsInitialized, isContactsInitialized);
 	}
 
+	public List<Employee> getEmployeesSorted(String column, boolean isContactsInitialized, boolean isRolesInitialized) {
+		return employeeDAO.getEmployeesSorted(column, isContactsInitialized, isRolesInitialized);
+	}
+
 	public String getEmployeeDetail(Long id) {
 		Optional<Employee> employee = employeeDAO.getEmployee(id, true, true); 
 
@@ -65,8 +69,8 @@ public class EmployeeService {
 									   .map(c -> c.getType() + ": " + c.getValue())
 									   .collect(Collectors.joining(", ")),
 			employee.getRoles().stream()
-									.map(r -> r.getId().toString())
-									.collect(Collectors.joining(", ")));
+							   .map(r -> r.getId().toString())
+							   .collect(Collectors.joining(", ")));
 	}
 
 	public String getEmployeeDetails() {
@@ -74,7 +78,14 @@ public class EmployeeService {
 			   .stream()
 			   .map(employee -> getEmployeeDetail(employee))
 			   .collect(Collectors.joining("\n"));
-	} 
+	}
+
+	public String getEmployeeDetailsSorted(String column) {
+		return getEmployeesSorted(column, true, true)
+			   .stream()
+			   .map(employee -> getEmployeeDetail(employee))
+			   .collect(Collectors.joining("\n"));
+	}
 
 	public void updateEmployee(Employee employee) {
 		this.employeeDAO.updateEmployee(employee);

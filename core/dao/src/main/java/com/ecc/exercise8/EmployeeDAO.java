@@ -3,6 +3,7 @@ package com.ecc.exercise8;
 import java.util.Optional;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.stream.Collectors;
 
 import com.ecc.exercise8.SessionUtil;
@@ -74,6 +75,50 @@ public class EmployeeDAO {
 
 			if (isRolesInitialized) {
 				queryBuilder.append("LEFT JOIN FETCH e.roles ");
+			}
+
+			queryBuilder.append("ORDER BY e.id");
+
+			List<Employee> employees = session.createQuery(
+					queryBuilder.toString(), Employee.class)
+				.list();
+
+			return employees;
+		}
+	}
+
+	public List<Employee> getEmployeesSorted(String column, boolean isContactsInitialized, 
+		boolean isRolesInitialized) {
+		
+		if (column.equals(EmployeeContract.COLUMN_GWA)) {
+			List<Employee> employees = getEmployees(isContactsInitialized, isRolesInitialized);
+
+			return employees.stream()
+							.sorted(Comparator.comparing(Employee::getGWA))
+							.collect(Collectors.toList());
+		}
+
+		try (Session session = SessionUtil.getSession()) {
+			StringBuilder queryBuilder = new StringBuilder();
+
+			queryBuilder.append("SELECT e ");
+			queryBuilder.append("FROM Employee e ");
+
+			if (isContactsInitialized) {
+				queryBuilder.append("LEFT JOIN FETCH e.contacts ");
+			}
+
+			if (isRolesInitialized) {
+				queryBuilder.append("LEFT JOIN FETCH e.roles ");
+			}
+
+			switch (column) {
+				case EmployeeContract.COLUMN_DATE_HIRED:
+					queryBuilder.append("ORDER BY e.dateHired ");
+					break;
+				case NameContract.COLUMN_LAST_NAME:
+					queryBuilder.append("ORDER BY e.name.lastName ");
+					break;
 			}
 
 			List<Employee> employees = session.createQuery(

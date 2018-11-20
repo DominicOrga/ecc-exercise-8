@@ -1,6 +1,7 @@
 package com.ecc.exercise8;
 
 import java.util.Optional;
+import java.util.List;
 import java.time.LocalDate;
 
 public class EmployeeQueryApp {
@@ -12,6 +13,11 @@ public class EmployeeQueryApp {
 	private static final int REMOVE_EMPLOYEE = 3;
 	private static final int VIEW_EMPLOYEE = 4;
 	private static final int RETURN = 5;
+
+    private static final int SORT_BY_GWA = 0;
+    private static final int SORT_BY_DATE_HIRED = 1;
+    private static final int SORT_BY_LAST_NAME = 2;
+    private static final int SORT_BY_ID = 3;
 
 	private static final int COLUMN_NAME = 0;
 	private static final int COLUMN_BIRTH_DATE = 1;
@@ -40,7 +46,7 @@ public class EmployeeQueryApp {
 
 	    	switch (option) {
 	    		case LIST_EMPLOYEES:
-	    			viewEmployees();
+	    			viewEmployeesSorted();
 	    			break;
                 case ADD_EMPLOYEE :
                   	addEmployee();
@@ -61,7 +67,32 @@ public class EmployeeQueryApp {
     }
 
     public void viewEmployees() {
-		  System.out.println(this.employeeService.getEmployeeDetails());
+		System.out.println(this.employeeService.getEmployeeDetails());
+    }
+
+    public void viewEmployeesSorted() {
+        System.out.println("Sort by:");
+        System.out.println("[0] GWA, [1] Date Hired, [2] Last Name, [3] ID");
+
+        int option = InputUtility.nextIntPersistent("Enter option:");
+
+        switch (option) {
+            case 0:
+                System.out.println(
+                    this.employeeService.getEmployeeDetailsSorted(EmployeeContract.COLUMN_GWA));
+                break;
+            case 1:
+                System.out.println(
+                    this.employeeService.getEmployeeDetailsSorted(EmployeeContract.COLUMN_DATE_HIRED));
+                break;
+            case 2:
+                System.out.println(
+                    this.employeeService.getEmployeeDetailsSorted(NameContract.COLUMN_LAST_NAME));
+                break;
+            case 3:
+                viewEmployees();
+                break;
+        }
     }
 
     public void addEmployee() {
@@ -203,7 +234,14 @@ public class EmployeeQueryApp {
     }
 
     private Optional<Employee> getEmployeeByID() {
-    	Optional<Employee> employee;
+        List<Employee> existingEmployees = this.employeeService.getEmployees();
+
+    	Optional<Employee> employee = Optional.empty();
+
+        if (existingEmployees.isEmpty()) {
+            return employee;
+        }
+
 
     	do {
     		long id = InputUtility.nextLongPersistent("Enter Employee ID:");
