@@ -122,7 +122,7 @@ public class EmployeeQueryApp {
 
             case COLUMN_DATE_HIRED:
                 LocalDate dateHired = 
-                    InputUtility.nextDatePersistent("Date Hired", birthDate.getYear() + 18, 
+                    InputUtility.nextDatePersistent("Date Hired", employee.get().getBirthDate().getYear() + 18, 
                         LocalDate.now().getYear());
 
                 employee.get().setDateHired(dateHired);
@@ -193,13 +193,13 @@ public class EmployeeQueryApp {
     }
 
     public void removeEmployee() {
-    	// Optional<Employee> employee = getEmployeeByID();
+    	Optional<Employee> employee = getEmployeeByID();
 
-    	// if (!employee.isPresent()) {
-    	// 	System.out.println("No Employee Exists");
-    	// }
+    	if (!employee.isPresent()) {
+    		System.out.println("No Employee Exists");
+    	}
 
-    	// this.employeeService.removeEmployee(employee.get().getId());
+    	this.employeeService.removeEmployee(employee.get().getId());
     }
 
     private Optional<Employee> getEmployeeByID() {
