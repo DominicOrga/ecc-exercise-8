@@ -66,7 +66,7 @@ public class EmployeeDAO {
 
 			StringBuilder queryBuilder = new StringBuilder();
 
-			queryBuilder.append("SELECT e ");
+			queryBuilder.append("SELECT DISTINCT e ");
 			queryBuilder.append("FROM Employee e ");
 
 			if (isContactsInitialized) {
@@ -101,7 +101,7 @@ public class EmployeeDAO {
 		try (Session session = SessionUtil.getSession()) {
 			StringBuilder queryBuilder = new StringBuilder();
 
-			queryBuilder.append("SELECT e ");
+			queryBuilder.append("SELECT DISTINCT e ");
 			queryBuilder.append("FROM Employee e ");
 
 			if (isContactsInitialized) {

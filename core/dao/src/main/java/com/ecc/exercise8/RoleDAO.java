@@ -51,7 +51,7 @@ public class RoleDAO {
 		try (Session session = SessionUtil.getSession()) {
 			if (isEmployeeInitialized) {
 				List<Role> roles = session.createQuery(
-					"SELECT r " + 
+					"SELECT DISTINCT r " + 
 					"FROM Role r " +
 					"LEFT JOIN FETCH r.employees " +
 					"ORDER BY r.id", Role.class)
@@ -61,7 +61,7 @@ public class RoleDAO {
 			}
 
 			List<Role> roles = session.createQuery(
-					"SELECT r " +
+					"SELECT DISTINCT r " +
 					"FROM Role r " +
 					"ORDER BY r.id", Role.class)
 				.list();
