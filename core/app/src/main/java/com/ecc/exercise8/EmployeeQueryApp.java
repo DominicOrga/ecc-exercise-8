@@ -40,7 +40,7 @@ public class EmployeeQueryApp {
 
     	do {
     		System.out.println("[0] List Employees, [1] Add Employee, [2] Update Employee, " + 
-            "[3] Remove Employee, [4] VIEW_EMPLOYEE, [5] Return");
+            "[3] Remove Employee, [4] View Employee, [5] Return");
 
     		int option = InputUtility.nextIntPersistent("Enter option:");
 
@@ -60,10 +60,24 @@ public class EmployeeQueryApp {
               	    removeEmployee();
               	    viewEmployees();
                     break;
+                case VIEW_EMPLOYEE:
+                    viewEmployee();
+                    break;
     			case RETURN :
         			isReturn = true;
     	    	}	
     	} while (!isReturn);    	
+    }
+
+    public void viewEmployee() {
+        Optional<Employee> employee = getEmployeeByID(true, true);
+
+        if (!employee.isPresent()) {
+            System.out.println("No Employee exists.");
+            return;
+        }
+
+        System.out.println(this.employeeService.getEmployeeDetail(employee.get()));
     }
 
     public void viewEmployees() {
@@ -228,12 +242,17 @@ public class EmployeeQueryApp {
 
     	if (!employee.isPresent()) {
     		System.out.println("No Employee Exists");
+            return;
     	}
 
     	this.employeeService.removeEmployee(employee.get().getId());
     }
 
     private Optional<Employee> getEmployeeByID() {
+        return getEmployeeByID(false, false);
+    }
+
+    private Optional<Employee> getEmployeeByID(boolean isContactsInitialized, boolean isRolesInitialized) {
         List<Employee> existingEmployees = this.employeeService.getEmployees();
 
     	Optional<Employee> employee = Optional.empty();
@@ -245,7 +264,7 @@ public class EmployeeQueryApp {
 
     	do {
     		long id = InputUtility.nextLongPersistent("Enter Employee ID:");
-    		employee = this.employeeService.getEmployee(id);
+    		employee = this.employeeService.getEmployee(id, isContactsInitialized, isRolesInitialized);
 
     		if (!employee.isPresent()) {
     			System.out.println("Employee ID does not exist.");
