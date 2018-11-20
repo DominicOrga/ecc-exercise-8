@@ -26,7 +26,11 @@ public class EmployeeService {
 	}
 
 	public List<Employee> getEmployees() {
-		return employeeDAO.getEmployees();
+		return getEmployees(false, false);
+	}
+
+	public List<Employee> getEmployees(boolean isContactsInitialized, boolean isRolesInitialized) {
+		return employeeDAO.getEmployees(isContactsInitialized, isContactsInitialized);
 	}
 
 	public String getEmployeeDetail(Long id) {
@@ -36,35 +40,39 @@ public class EmployeeService {
 			return null;
 		}
 
+		return getEmployeeDetail(employee.get());
+	}
+
+	public String getEmployeeDetail(Employee employee) {
 		return String.format(
-				"ID: %d \n" +
-				"Name: %s \n" +
-				"Birth Date: %s \n" +
-				"Date Hired: %s \n" +
-				"GWA: %s \n" +
-				"Employement Status: %s \n" +	
-				"Address: %s \n" +
-				"Contact/s: %s \n" +
-				"Role/s: %s\n", 
-				employee.get().getId(), 
-				employee.get().getName(), 
-				employee.get().getBirthDate().format(DateTimeFormatter.ISO_LOCAL_DATE),
-				employee.get().getDateHired().format(DateTimeFormatter.ISO_LOCAL_DATE),
-				employee.get().getGWA(),
-				employee.get().isEmployed() ? "Employed" : "Unemployed",
-				employee.get().getAddress(),
-				employee.get().getContacts().stream()
-										   .map(c -> c.getType() + ": " + c.getValue())
-										   .collect(Collectors.joining(", ")),
-				employee.get().getRoles().stream()
-										.map(r -> r.getId().toString())
-										.collect(Collectors.joining(", ")));
+			"ID: %d \n" +
+			"Name: %s \n" +
+			"Birth Date: %s \n" +
+			"Date Hired: %s \n" +
+			"GWA: %s \n" +
+			"Employement Status: %s \n" +	
+			"Address: %s \n" +
+			"Contact/s: %s \n" +
+			"Role/s: %s\n", 
+			employee.getId(), 
+			employee.getName(), 
+			employee.getBirthDate().format(DateTimeFormatter.ISO_LOCAL_DATE),
+			employee.getDateHired().format(DateTimeFormatter.ISO_LOCAL_DATE),
+			employee.getGWA(),
+			employee.isEmployed() ? "Employed" : "Unemployed",
+			employee.getAddress(),
+			employee.getContacts().stream()
+									   .map(c -> c.getType() + ": " + c.getValue())
+									   .collect(Collectors.joining(", ")),
+			employee.getRoles().stream()
+									.map(r -> r.getId().toString())
+									.collect(Collectors.joining(", ")));
 	}
 
 	public String getEmployeeDetails() {
-		return getEmployees()
+		return getEmployees(true, true)
 			   .stream()
-			   .map(employee -> getEmployeeDetail(employee.getId()))
+			   .map(employee -> getEmployeeDetail(employee))
 			   .collect(Collectors.joining("\n"));
 	} 
 

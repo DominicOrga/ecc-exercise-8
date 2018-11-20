@@ -115,7 +115,7 @@ public class EmployeeQueryApp {
             
             case COLUMN_BIRTH_DATE:
                 LocalDate birthDate = 
-                    InputUtility.nextDatePersistent("Birth Date", 1900, LocalDate.now().getYear() - 18);
+                    InputUtility.nextDatePersistent("Birth Date", 1900, employee.get().getDateHired().getYear() - 18);
 
                 employee.get().setBirthDate(birthDate);
                 break;

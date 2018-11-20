@@ -57,10 +57,27 @@ public class EmployeeDAO {
 	}
 
 	public List<Employee> getEmployees() {
+		return getEmployees(false, false);
+	}
+
+	public List<Employee> getEmployees(boolean isContactsInitialized, boolean isRolesInitialized) {
 		try (Session session = SessionUtil.getSession()) {
+
+			StringBuilder queryBuilder = new StringBuilder();
+
+			queryBuilder.append("SELECT e ");
+			queryBuilder.append("FROM Employee e ");
+
+			if (isContactsInitialized) {
+				queryBuilder.append("LEFT JOIN FETCH e.contacts ");
+			}
+
+			if (isRolesInitialized) {
+				queryBuilder.append("LEFT JOIN FETCH e.roles ");
+			}
+
 			List<Employee> employees = session.createQuery(
-					"SELECT e " +
-					"FROM Employee e", Employee.class)
+					queryBuilder.toString(), Employee.class)
 				.list();
 
 			return employees;
