@@ -127,6 +127,7 @@ public class ContactQueryApp {
 
     	if (!contact.isPresent()) {
     		System.out.println("No Contact Exists");
+            return;
     	}
 
     	this.contactService.removeContact(contact.get().getId());
@@ -163,11 +164,11 @@ public class ContactQueryApp {
     private Optional<Contact> getContactByID() {
     	List<Contact> existingContacts = this.contactService.getContacts();
 
-    	if (existingContacts == null || existingContacts.isEmpty()) {
-    		return Optional.empty();
-    	}
+    	Optional<Contact> contact = Optional.empty();  
 
-    	Optional<Contact> contact = Optional.empty();    	
+        if (existingContacts == null || existingContacts.isEmpty()) {
+            return contact;
+        }  	
 
     	do {
     		Long id = (long) InputUtility.nextIntPersistent("Enter Contact ID:");

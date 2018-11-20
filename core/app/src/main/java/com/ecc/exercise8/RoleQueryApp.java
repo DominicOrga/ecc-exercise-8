@@ -95,6 +95,7 @@ public class RoleQueryApp {
 
     	if (!role.isPresent()) {
     		System.out.println("No Role Exists");
+            return;
     	}
 
     	this.roleService.removeRole(role.get().getId());
@@ -103,11 +104,11 @@ public class RoleQueryApp {
     private Optional<Role> getRoleByID() {
     	List<Role> existingRoles = this.roleService.getRoles();
 
-    	if (existingRoles == null || existingRoles.isEmpty()) {
-    		return null;
-    	}
-
     	Optional<Role> role = Optional.empty();    	
+
+        if (existingRoles == null || existingRoles.isEmpty()) {
+            return role;
+        }
 
     	do {
     		long id = InputUtility.nextLongPersistent("Enter Role ID:");
