@@ -21,9 +21,11 @@ public class Role {
 	private Long id;
 
 	@Column(name = RoleContract.COLUMN_CODE, nullable = false, unique = true)
+	@Size(min = 1, max = 25)
 	private String code;
 
 	@Column(name = RoleContract.COLUMN_DESCRIPTION, nullable = false)
+	@Size(min = 10, max = 255)
 	private String description;
 
 	@ManyToMany(mappedBy = "roles")
