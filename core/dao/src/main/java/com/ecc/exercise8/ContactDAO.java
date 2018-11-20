@@ -27,7 +27,8 @@ public class ContactDAO {
 		try (Session session = SessionUtil.getSession()) {
 			List<Contact> contacts = session.createQuery(
 					"SELECT c " +
-					"FROM Contact c", Contact.class)
+					"FROM Contact c " +
+					"ORDER BY c.id", Contact.class)
 				.list();
 
 			return contacts;

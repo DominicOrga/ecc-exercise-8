@@ -31,20 +31,24 @@ public class ContactService {
 			return null;
 		}
 
+		return getContactDetail(contact.get());
+	}
+
+	public String getContactDetail(Contact contact) {
 		return String.format("ID: %d \n" +
-						"Type: %s \n" +
-						"Value: %s \n" +
-						"Employee ID: %d\n",
-						contact.get().getId(), 
-						contact.get().getType(), 
-						contact.get().getValue(), 
-						contact.get().getEmployee().getId());
+			"Type: %s \n" +
+			"Value: %s \n" +
+			"Employee ID: %d\n",
+			contact.getId(), 
+			contact.getType(), 
+			contact.getValue(), 
+			contact.getEmployee().getId());
 	}
 
 	public String getContactDetails() {
 		return getContacts()
 			   .stream()
-			   .map(contact -> getContactDetail(contact.getId()))
+			   .map(contact -> getContactDetail(contact))
 			   .collect(Collectors.joining("\n"));
 	} 
 

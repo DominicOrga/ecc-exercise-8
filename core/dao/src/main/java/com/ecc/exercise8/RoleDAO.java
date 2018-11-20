@@ -53,7 +53,8 @@ public class RoleDAO {
 				List<Role> roles = session.createQuery(
 					"SELECT r " + 
 					"FROM Role r " +
-					"LEFT JOIN FETCH r.employees", Role.class)
+					"LEFT JOIN FETCH r.employees " +
+					"ORDER BY r.id", Role.class)
 				.list();
 
 				return roles;
@@ -61,7 +62,8 @@ public class RoleDAO {
 
 			List<Role> roles = session.createQuery(
 					"SELECT r " +
-					"FROM Role r", Role.class)
+					"FROM Role r " +
+					"ORDER BY r.id", Role.class)
 				.list();
 
 			return roles;

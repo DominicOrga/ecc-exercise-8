@@ -35,20 +35,26 @@ public class RoleService {
 			return null;
 		}
 
+		return getRoleDetail(role.get());
+	}
+
+	public String getRoleDetail(Role role) {
 		return String.format("ID: %d \n" +
-						"Code: %s \n" +
-						"Description: %s \n" +
-						"Employee ID/s: %s\n",
-						role.get().getId(), 
-						role.get().getCode(), 
-						role.get().getDescription(), 
-						role.get().getEmployees().stream().map(e -> e.getId().toString()).collect(Collectors.joining(", ")));
+			"Code: %s \n" +
+			"Description: %s \n" +
+			"Employee ID/s: %s\n",
+			role.getId(), 
+			role.getCode(), 
+			role.getDescription(), 
+			role.getEmployees().stream()
+									 .map(e -> e.getId().toString())
+									 .collect(Collectors.joining(", ")));
 	}
 
 	public String getRoleDetails() {
 		return getRoles(true)
 			   .stream()
-			   .map(role -> getRoleDetail(role.getId()))
+			   .map(role -> getRoleDetail(role))
 			   .collect(Collectors.joining("\n"));
 	} 
 
