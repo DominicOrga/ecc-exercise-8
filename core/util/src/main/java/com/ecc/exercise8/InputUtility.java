@@ -7,30 +7,33 @@ import java.time.LocalDate;
 
 public class InputUtility {
 
-	public static String nextStringPersistent(String message, String... invalidSubstrings) {
+	public static String nextStringPersistent(String message) {
+		return nextStringPersistent(message, true);
+	}
+
+	public static String nextStringPersistent(String message, boolean isTrimmed) {
 		Optional<String> input;
 
 		do {
-			input = nextString(message, invalidSubstrings);
+			input = nextString(message, isTrimmed);
 		} while (!input.isPresent());
 
 		return input.get();
 	}
 
-	public static Optional<String> nextString(String message, String... invalidSubstrings) {
+	public static Optional<String> nextString(String message) {
+		return nextString(message, true);
+	}
+
+	public static Optional<String> nextString(String message, boolean isTrimmed) {
 		Scanner scanner = new Scanner(System.in);
 		boolean isInputValidated = false;
 
 		System.out.print(message + " ");
 		String input = scanner.nextLine();
 
-		if (invalidSubstrings != null) {
-			for (int i = 0, s = invalidSubstrings.length; i < s; i++) {
-				if (input.contains(invalidSubstrings[i])) {
-					System.out.printf("Input should not contain %s\n", invalidSubstrings[i]);
-					return Optional.empty();
-				};
-			}
+		if (isTrimmed) {
+			input = input.trim();
 		}
 
 		return Optional.of(input);

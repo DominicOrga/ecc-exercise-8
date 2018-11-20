@@ -24,19 +24,6 @@ public class InputUtilityTest {
 	}
 
 	@Test
-	public void givenAnInvalidStringInputWhenRequestStringThenReturnEmpty() {
-		String stringInput = "My Input String";
-		String[] invalidSubstring = { "Input" };
-
-		ByteArrayInputStream in = new ByteArrayInputStream(stringInput.getBytes());
-		System.setIn(in);
-
-		Optional<String> str = InputUtility.nextString("message", invalidSubstring);
-
-		assertThat(str.isPresent()).isFalse();
-	}
-
-	@Test
 	public void givenAValidIntegerInputWhenRequestIntegerThenReturnInteger() {
 		String intInput = "4";
 
