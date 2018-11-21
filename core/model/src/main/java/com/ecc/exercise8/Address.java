@@ -10,6 +10,9 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.CascadeType;
 
+import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
+
 @Entity
 @Table(name = AddressContract.TABLE_NAME)
 public class Address {
@@ -20,19 +23,24 @@ public class Address {
 	private Long id;
 
 	@Column(name = AddressContract.COLUMN_STREET_NUMBER)
+	@NotBlank
 	private String streetNumber;
 
 	@Column(name = AddressContract.COLUMN_BARANGAY)
+	@NotBlank
 	private String barangay;
 
 	@Column(name = AddressContract.COLUMN_CITY)
+	@NotBlank
 	private String city;
 
 	@Column(name = AddressContract.COLUMN_ZIPCODE)
+	@NotNull
 	private Integer zipcode;
 
 	@OneToOne
-	@JoinColumn(name = AddressContract.COLUMN_EMPLOYEE_ID, nullable = false)
+	@JoinColumn(name = AddressContract.COLUMN_EMPLOYEE_ID)
+	@NotNull
 	private Employee employee;
 
 	public Address() {}

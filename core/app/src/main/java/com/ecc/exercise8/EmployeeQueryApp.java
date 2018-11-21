@@ -2,7 +2,10 @@ package com.ecc.exercise8;
 
 import java.util.Optional;
 import java.util.List;
+import java.util.Set;
 import java.time.LocalDate;
+
+import javax.validation.ConstraintViolation;
 
 public class EmployeeQueryApp {
 	EmployeeService employeeService = new EmployeeService();
@@ -115,6 +118,13 @@ public class EmployeeQueryApp {
         String lastName = InputUtility.nextStringPersistent("Enter Last Name:");
 
         Name name = new Name(firstName, middleName, lastName);
+        
+        Set<ConstraintViolation<Name>> nameViolations = ValidatorUtil.validate(name);
+
+        if (!nameViolations.isEmpty()) {
+            System.out.println(ValidatorUtil.getViolationMessage(nameViolations));
+            return;
+        }  
 
         LocalDate birthDate = 
           InputUtility.nextDatePersistent("Birth Date", 1900, LocalDate.now().getYear() - 18);
@@ -129,13 +139,29 @@ public class EmployeeQueryApp {
 
         Employee employee = new Employee(name, birthDate, dateHired, gwa, isEmployed);
 
-        String streetNumber = InputUtility.nextStringPersistent("Street Number:");
+        String streetNumber = String.valueOf(InputUtility.nextIntPersistent("Street Number:"));
         String barangay = InputUtility.nextStringPersistent("Barangay:");
         String city = InputUtility.nextStringPersistent("City:");
         int zipcode = InputUtility.nextIntPersistent("Zipcode:", 1000, 9999);
 
         Address address = new Address(streetNumber, barangay, city, zipcode, employee);
+        
+        Set<ConstraintViolation<Address>> addressViolations = ValidatorUtil.validate(address);
+
+        if (!addressViolations.isEmpty()) {
+            System.out.println(ValidatorUtil.getViolationMessage(addressViolations));
+            return;
+        }        
+
         employee.setAddress(address);
+
+        Set<ConstraintViolation<Employee>> employeeViolations = ValidatorUtil.validate(employee);
+
+        if (!employeeViolations.isEmpty()) {
+            System.out.println(ValidatorUtil.getViolationMessage(employeeViolations));
+            return;
+        }
+
         this.employeeService.saveEmployee(employee);
     }
 
@@ -189,6 +215,27 @@ public class EmployeeQueryApp {
                 break;
         }
 
+        Set<ConstraintViolation<Name>> nameViolations = ValidatorUtil.validate(employee.get().getName());
+
+        if (!nameViolations.isEmpty()) {
+            System.out.println(ValidatorUtil.getViolationMessage(nameViolations));
+            return;
+        } 
+
+        Set<ConstraintViolation<Address>> addressViolations = ValidatorUtil.validate(employee.get().getAddress());
+
+        if (!addressViolations.isEmpty()) {
+            System.out.println(ValidatorUtil.getViolationMessage(addressViolations));
+            return;
+        }        
+
+        Set<ConstraintViolation<Employee>> employeeViolations = ValidatorUtil.validate(employee.get());
+
+        if (!employeeViolations.isEmpty()) {
+            System.out.println(ValidatorUtil.getViolationMessage(employeeViolations));
+            return;
+        }
+
     	this.employeeService.updateEmployee(employee.get());
     }
 
@@ -219,7 +266,7 @@ public class EmployeeQueryApp {
 
         switch (option) {
             case COLUMN_STREET_NUMBER:
-                String streetNumber = InputUtility.nextStringPersistent("Street Number:");
+                String streetNumber = String.valueOf(InputUtility.nextIntPersistent("Street Number:"));
                 address.setStreetNumber(streetNumber);
                 break;
             case COLUMN_BARANGAY:

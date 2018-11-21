@@ -20,6 +20,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.AttributeOverride;
 
+import javax.validation.constraints.NotNull;
+
 @Entity
 @Table(name = EmployeeContract.TABLE_NAME)
 public class Employee {
@@ -31,16 +33,20 @@ public class Employee {
 	@Embedded
 	private Name name;
 
-	@Column(name = EmployeeContract.COLUMN_BIRTH_DATE, nullable = false)
+	@Column(name = EmployeeContract.COLUMN_BIRTH_DATE)
+	@NotNull
 	private LocalDate birthDate;
 
-	@Column(name = EmployeeContract.COLUMN_DATE_HIRED, nullable = false)
+	@Column(name = EmployeeContract.COLUMN_DATE_HIRED)
+	@NotNull
 	private LocalDate dateHired;
 
-	@Column(name = EmployeeContract.COLUMN_GWA, nullable = false)
+	@Column(name = EmployeeContract.COLUMN_GWA)
+	@NotNull
 	private Float gwa;
 
-	@Column(name = EmployeeContract.COLUMN_IS_EMPLOYED, nullable = false)
+	@Column(name = EmployeeContract.COLUMN_IS_EMPLOYED)
+	@NotNull
 	private Boolean isEmployed;
 	
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "employee", optional = false)

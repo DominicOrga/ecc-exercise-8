@@ -3,14 +3,19 @@ package com.ecc.exercise8;
 import javax.persistence.Embeddable;
 import javax.persistence.Column;
 
+import org.hibernate.validator.constraints.NotBlank;
+
 @Embeddable
 public class Name {
 
-	@Column(name = NameContract.COLUMN_FIRST_NAME, nullable = false)
+	@Column(name = NameContract.COLUMN_FIRST_NAME)
+	@NotBlank
 	private String firstName;
-	@Column(name = NameContract.COLUMN_MIDDLE_NAME, nullable = false)
+	@Column(name = NameContract.COLUMN_MIDDLE_NAME)
+	@NotBlank
 	private String middleName;
-	@Column(name = NameContract.COLUMN_LAST_NAME, nullable = false)
+	@Column(name = NameContract.COLUMN_LAST_NAME)
+	@NotBlank
 	private String lastName;
 
 	public Name() {}
