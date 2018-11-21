@@ -13,6 +13,7 @@ import org.junit.Ignore;
 import org.junit.After;
 
 import org.hibernate.PropertyValueException;
+import org.hibernate.exception.ConstraintViolationException;
 
 public class EmployeeDAOTest {
 
@@ -88,17 +89,6 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	public void whenNameIsNullThenEmployeeIsNotPersisted() {
-		this.employee.setName(null);
-
-		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.saveEmployee(this.employee);
-		});
-
-		assertThat(thrown).isInstanceOf(PropertyValueException.class);
-	}
-
-	@Test
 	public void givenBirthDateWhenEmployeeIsSavedAndLoadedThenBirthdateIsPersisted() {
 		employeeDAO.saveEmployee(this.employee);
 
@@ -118,17 +108,6 @@ public class EmployeeDAOTest {
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
 		assertThat(employee2.get().getBirthDate().isEqual(newBirthDate)).isTrue();
-	}
-
-	@Test
-	public void whenBirthDateIsNullThenEmployeeIsNotPersisted() {
-		this.employee.setBirthDate(null);
-
-		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.saveEmployee(this.employee);
-		});
-
-		assertThat(thrown).isInstanceOf(PropertyValueException.class);
 	}
 
 	@Test
@@ -154,17 +133,6 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	public void whenDateHiredIsNullThenEmployeeIsNotPersisted() {
-		this.employee.setDateHired(null);
-
-		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.saveEmployee(this.employee);
-		});
-
-		assertThat(thrown).isInstanceOf(PropertyValueException.class);
-	}
-
-	@Test
 	public void givenGWAWhenEmployeeIsSavedAndLoadedThenGWAIsPersisted() {
 		employeeDAO.saveEmployee(this.employee);
 
@@ -184,17 +152,6 @@ public class EmployeeDAOTest {
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
 		assertThat(employee2.get().getGWA()).isEqualTo(newGWA);
-	}
-
-	@Test
-	public void whenGWAIsNullThenEmployeeIsNotPersisted() {
-		this.employee.setGWA(null);
-
-		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.saveEmployee(this.employee);
-		});
-
-		assertThat(thrown).isInstanceOf(PropertyValueException.class);
 	}
 
 	@Test
@@ -219,34 +176,12 @@ public class EmployeeDAOTest {
 	}
 
 	@Test
-	public void whenEmployedStatusIsNullThenEmployeeIsNotPersisted() {
-		this.employee.setEmployed(null);
-
-		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.saveEmployee(this.employee);
-		});
-
-		assertThat(thrown).isInstanceOf(PropertyValueException.class);
-	}
-
-	@Test
 	public void givenAnAddressWhenEmployeeIsSavedAndLoadedThenAddressIsPersisted() {
 		employeeDAO.saveEmployee(this.employee);
 
 		Optional<Employee> employee2 = employeeDAO.getEmployee(this.employee.getId());
 
 		assertThat(employee2.get().getAddress().toString()).isEqualTo(employee.getAddress().toString());
-	}
-
-	@Test
-	public void whenAddressIsNullThenEmployeeIsNotPersisted() {
-		this.employee.setAddress(null);
-
-		Throwable thrown = catchThrowable(() -> {
-			employeeDAO.saveEmployee(this.employee);
-		});
-
-		assertThat(thrown).isInstanceOf(PropertyValueException.class);	
 	}
 
 	@Test
