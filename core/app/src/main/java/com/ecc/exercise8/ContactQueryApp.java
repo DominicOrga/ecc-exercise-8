@@ -100,35 +100,42 @@ public class ContactQueryApp {
 			return;
 		}
 
-    	System.out.println("[0] Type, [1] Value");
+    	System.out.println("[0] Type and Value, [1] Value");
     	int option = InputUtility.nextIntPersistent("Choose Column to Edit:", 0, 1);
 
+        switch (option) {
+            case COLUMN_TYPE:
+                System.out.println("[0] Landline, [1] Mobile, [2] Email");
+                Contact.ContactType type = 
+                    Contact.ContactType.values()[InputUtility.nextIntPersistent("Enter Type:", 0, 2)];
+                contact.get().setType(type);
+
+            case COLUMN_VALUE:
+                String value = InputUtility.nextStringPersistent("Enter Value:");
+                contact.get().setValue(value);
+                break;
+        }
+
+        boolean isContactValueValid = isContactValueValid(contact.get().getType(), contact.get().getValue());
+
+        if (!isContactValueValid) {
+            return;
+        }
+
         List<Contact> existingContacts = this.contactService.getContacts();
-        boolean isValid = false;
+        if (existingContacts.contains(contact.get())) {
+            System.out.println("Error: Duplicate Contact.");
+            return;
+        }
 
-        do {
-            switch (option) {
-                case COLUMN_TYPE:
-                    System.out.println("[0] Landline, [1] Mobile, [2] Email");
-                    Contact.ContactType type = 
-                        Contact.ContactType.values()[InputUtility.nextIntPersistent("Enter Type:", 0, 2)];
-                    contact.get().setType(type);
-                    break;
-                case COLUMN_VALUE:
-                    String value = InputUtility.nextStringPersistent("Enter Value:");
-                    contact.get().setValue(value);
-                    break;
-            }
+        Set<ConstraintViolation<Contact>> contactViolations = ValidatorUtil.validate(contact.get());
 
-            if (!existingContacts.contains(contact.get())) {
-                isValid = true;
-            }
-            else {
-                System.out.println("Error: Duplicate Contact.");
-            }
-        } while(!isValid);
-
-    	this.contactService.updateContact(contact.get());
+        if (contactViolations.isEmpty()) {
+            this.contactService.updateContact(contact.get());
+        }
+        else {
+            System.out.println(ValidatorUtil.getViolationMessage(contactViolations));
+        }
     }
 
     private boolean isContactValueValid(Contact.ContactType type, String value) {
