@@ -10,7 +10,6 @@
         <property name="connection.password">D4mkgo31nal</property> <!-- DB Password -->
         
         <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property> <!-- DB Dialect -->
-        <property name="hbm2ddl.auto">create-drop</property> <!-- create / create-drop / update -->
                 
         <mapping class="com.ecc.exercise8.Employee"/>
         <mapping class="com.ecc.exercise8.Address"/>
