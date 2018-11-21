@@ -10,6 +10,8 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 
+import javax.validation.constraints.NotNull;
+
 @Entity
 @Table(name = ContactContract.TABLE_NAME)
 public class Contact {
@@ -24,14 +26,17 @@ public class Contact {
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = ContactContract.COLUMN_TYPE, nullable = false)
+	@Column(name = ContactContract.COLUMN_TYPE)
+	@NotNull
 	private ContactType type;
 	
-	@Column(name = ContactContract.COLUMN_VALUE, nullable = false)
+	@Column(name = ContactContract.COLUMN_VALUE)
+	@NotNull
 	private String value;
 	
 	@ManyToOne
-	@JoinColumn(name = ContactContract.COLUMN_EMPLOYEE_ID, nullable = false)
+	@JoinColumn(name = ContactContract.COLUMN_EMPLOYEE_ID)
+	@NotNull
 	private Employee employee;
 
 	public Contact() {}

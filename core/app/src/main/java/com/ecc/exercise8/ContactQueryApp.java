@@ -1,8 +1,11 @@
 package com.ecc.exercise8;
 
 import java.util.List;
+import java.util.Set;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import javax.validation.ConstraintViolation;
 
 public class ContactQueryApp {
 	ContactService contactService = new ContactService();
@@ -59,28 +62,34 @@ public class ContactQueryApp {
     		return;
     	}
 
-    	List<Contact> existingContacts = this.contactService.getContacts();
-    	Contact contact;
-        boolean isValid = false;
+        System.out.println("[0] Landline, [1] Mobile, [2] Email");
+        Contact.ContactType type = 
+            Contact.ContactType.values()[InputUtility.nextIntPersistent("Enter Type:", 0, 2)];
+        
+        String value = InputUtility.nextStringPersistent("Enter Value:");
 
-    	do {
-    		System.out.println("[0] Landline, [1] Mobile, [2] Email");
-			Contact.ContactType type = 
-				Contact.ContactType.values()[InputUtility.nextIntPersistent("Enter Type:", 0, 2)];
-    		
-    		String value = InputUtility.nextStringPersistent("Enter Value:");
+        boolean isContactValueValid = isContactValueValid(type, value);
 
-    		contact = new Contact(type, value, employee.get());
+        if (!isContactValueValid) {
+            return;
+        }
 
-            if (!existingContacts.contains(contact)) {
-                isValid = true;
-            }
-            else {
-                System.out.println("Error: Duplicate Contact.");
-            }
-    	} while(!isValid);
+        List<Contact> existingContacts = this.contactService.getContacts();
+        Contact contact = new Contact(type, value, employee.get());
 
-    	this.contactService.saveContact(contact);
+        if (existingContacts.contains(contact)) {
+            System.out.println("Error: Duplicate Contact.");
+            return;
+        }
+
+        Set<ConstraintViolation<Contact>> contactViolations = ValidatorUtil.validate(contact);
+
+        if (contactViolations.isEmpty()) {
+            this.contactService.saveContact(contact);
+        }
+        else {
+            System.out.println(ValidatorUtil.getViolationMessage(contactViolations));
+        }
     }
 
     public void updateContact() {
@@ -120,6 +129,30 @@ public class ContactQueryApp {
         } while(!isValid);
 
     	this.contactService.updateContact(contact.get());
+    }
+
+    private boolean isContactValueValid(Contact.ContactType type, String value) {
+        if (type == Contact.ContactType.landline) {
+            if (!value.matches("^\\d{7}$")) {
+                System.out.println("value: landline must be a 7-digit value");
+                return false;
+            }
+        }
+        else if (type == Contact.ContactType.mobile) {
+            if (!value.matches("^\\d{11}$")) {
+                System.out.println("value: mobile must be a 11-digit number");
+                return false;
+            }
+        }
+        else if (type == Contact.ContactType.email) {
+            if (!value.matches(
+                    "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")) {
+                System.out.println("value: not a valid email address");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     public void removeContact() {
