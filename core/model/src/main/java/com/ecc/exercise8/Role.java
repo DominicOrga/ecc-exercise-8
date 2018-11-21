@@ -11,10 +11,9 @@ import javax.persistence.Column;
 import javax.persistence.ManyToMany;
 import javax.persistence.CascadeType;
 
-import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = RoleContract.TABLE_NAME)
@@ -26,13 +25,11 @@ public class Role {
 	private Long id;
 
 	@Column(name = RoleContract.COLUMN_CODE, unique = true)
-	@NotNull
-	@Size(min = 1, max = 25)
+	@NotBlank
 	private String code;
 
 	@Column(name = RoleContract.COLUMN_DESCRIPTION)
-	@NotNull
-	@Size(min = 5, max = 255)
+	@NotBlank
 	private String description;
 
 	@ManyToMany(mappedBy = "roles")
