@@ -101,11 +101,22 @@ public class RoleQueryApp {
 
     	switch (option) {
     		case COLUMN_CODE:
-    			List<Role> existingRoles = this.roleService.getRoles();
-    			String[] existingRoleCodes = existingRoles.stream().map(Role::getCode).toArray(String[]::new);
+                boolean isCodeMatch = true;
 
-    			String code = InputUtility.nextStringPersistent("Enter Code:");
-    			role.get().setCode(code);
+                do {
+                    String code = InputUtility.nextStringPersistent("Enter Code:");
+
+                    List<Role> existingRoles = this.roleService.getRoles();
+                    isCodeMatch = existingRoles.stream().anyMatch(r -> r.getCode().equals(code));
+
+                    if (isCodeMatch) {
+                        System.out.println("code: must be unique.");
+                    }
+                    else {
+                        role.get().setCode(code);
+                    }
+                } while (isCodeMatch);
+    			
     			break;
 			case COLUMN_DESCRIPTION:
 				String description = InputUtility.nextStringPersistent("Enter Description:");
@@ -113,7 +124,14 @@ public class RoleQueryApp {
 				break;
     	}
 
-    	this.roleService.updateRole(role.get());
+        Set<ConstraintViolation<Role>> roleViolations = ValidatorUtil.validate(role.get());
+
+        if (roleViolations.isEmpty()) {
+            this.roleService.updateRole(role.get());
+        }
+        else {
+            System.out.println(ValidatorUtil.getViolationMessage(roleViolations));
+        }
     }
 
     public void removeRole() {

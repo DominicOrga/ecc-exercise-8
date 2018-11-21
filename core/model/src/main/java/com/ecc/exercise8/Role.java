@@ -32,7 +32,7 @@ public class Role {
 
 	@Column(name = RoleContract.COLUMN_DESCRIPTION)
 	@NotNull
-	@Size(min = 10, max = 255)
+	@Size(min = 5, max = 255)
 	private String description;
 
 	@ManyToMany(mappedBy = "roles")
