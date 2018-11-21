@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 
 import javax.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = ContactContract.TABLE_NAME)
@@ -31,7 +32,7 @@ public class Contact {
 	private ContactType type;
 	
 	@Column(name = ContactContract.COLUMN_VALUE)
-	@NotNull
+	@NotBlank
 	private String value;
 	
 	@ManyToOne
