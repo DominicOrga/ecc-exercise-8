@@ -18,6 +18,5 @@
     <module>dao</module>
     <module>service</module>
     <module>app</module>
-    <module>util</module>
   </modules>
 </project>

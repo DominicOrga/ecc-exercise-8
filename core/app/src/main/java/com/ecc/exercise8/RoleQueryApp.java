@@ -37,15 +37,12 @@ public class RoleQueryApp {
 	    			break;
                 case ADD_ROLE :
                 	addRole();
-                	viewRoles();
                 	break;
                 case UPDATE_ROLE:
                 	updateRole();
-                	viewRoles();
                 	break;
                 case REMOVE_ROLE:
                 	removeRole();
-                	viewRoles();
                 	break;
                 case ASSIGN_ROLE:
                     assignRole();
@@ -56,6 +53,8 @@ public class RoleQueryApp {
     			case RETURN:
     				isReturn = true;
 	    	}	
+
+            System.out.println("Operation complete.");                                        
 
     	} while (!isReturn);    	
     }

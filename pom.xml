@@ -25,6 +25,7 @@
   <modules>
     <module>infra</module>
     <module>core</module>
+    <module>util</module>
   </modules>
 
   <dependencies>

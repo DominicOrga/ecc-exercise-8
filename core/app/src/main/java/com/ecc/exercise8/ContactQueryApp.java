@@ -34,19 +34,19 @@ public class ContactQueryApp {
 	    			break;
                 case ADD_CONTACT :
                 	addContact();
-                	viewContacts();
                 	break;
                 case UPDATE_CONTACT:
                 	updateContact();
-                	viewContacts();
                 	break;
                 case REMOVE_CONTACT:
                 	removeContact();
-                	viewContacts();
                 	break;
     			case RETURN :
     				isReturn = true;
 	    	}	
+
+            System.out.println("Operation complete.");                                        
+
     	} while (!isReturn);    	
     }
 

@@ -53,15 +53,12 @@ public class EmployeeQueryApp {
 	    			break;
                 case ADD_EMPLOYEE :
                   	addEmployee();
-                  	viewEmployees();
                   	break;
                 case UPDATE_EMPLOYEE:
               	    updateEmployee();
-              	    viewEmployees();
               	    break;
                 case REMOVE_EMPLOYEE:
               	    removeEmployee();
-              	    viewEmployees();
                     break;
                 case VIEW_EMPLOYEE:
                     viewEmployee();
@@ -69,6 +66,9 @@ public class EmployeeQueryApp {
     			case RETURN :
         			isReturn = true;
     	    	}	
+
+                System.out.println("Operation complete.");                                        
+                
     	} while (!isReturn);    	
     }
 
