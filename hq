@@ -1,0 +1,80 @@
+* [33m179e0ac[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m Transfer util layer outside of core
+* [33mf3bb1f9[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Finalize exercise 8
+* [33mbe0d0f2[m Validate employee data
+* [33m44018d9[m Convert @NotNull to @NotBlank for role strings
+* [33mc04b53e[m Contact @NotNull to @NotBlank for strings
+* [33mf6bcc73[m Validate contact update
+* [33m6840447[m Validate add contact
+* [33m096eff8[m Validate RoleQueryApp
+* [33m035df92[m Modify EmployeeDAOTest and ContactDAOTest
+* [33meb6c8af[m Modify RoleDAOTest
+* [33mac96727[m Validate add role
+* [33md32077d[m Create ValidatorUtil
+* [33m450c5c6[m Trim string inputs
+* [33mabd5efd[m Add hibernate validator to maven
+* [33mb2dfc3a[m Revoke role from Employee
+* [33mc073b85[m Assign role to employee
+* [33m8c6338b[m Add distinct in join fetch queries
+* [33m07a456a[m Bug fix and complete combine apps
+* [33m0b15517[m View single employee
+* [33m2bbc0b0[m Sort employee details
+* [33m3c7f29f[m Improve code efficiency in getEmployees
+* [33m0b458e4[m Improve code efficiency
+* [33m0c3889b[m Update and delete employee
+* [33m4c41200[m STASH
+* [33m79c2001[m Add employee
+* [33mb4efca1[m Add nextFloat and nextFloatPersistent
+* [33m8b19cae[m Add nextDate and nextDatePersistent
+* [33m68b0964[m View employee detail
+* [33mda9291f[m Refactor EmployeeDAO
+* [33mdba1a02[m Code refactor
+* [33m0d4e00e[m Delete contact
+* [33m108a669[m Fix bug identical contact not matching
+* [33m16563ac[m Override equals and hashcode at employee
+* [33mfb16213[m Show duplicate contact error during add contact
+* [33m84d507d[m Add contact
+* [33m9b26f20[m RoleQueryApp refactor
+* [33mf9168f6[m Add nextLong
+* [33m0db7bb7[m Refactor roleDAO and roleService
+* [33m26ec1ac[m Rely on contacts default eager fetch on employee
+* [33m5c68b4c[m Add ContactService
+* [33m55f6e67[m Fix test bug wherein role data is not removed
+* [33m3a8852b[m Remove test contact data
+* [33m0c2fb93[m Test delete contact
+* [33mcd5b116[m Test non-persistence when a contact value is null
+* [33m1b9ce23[m Test update contact
+* [33m10db1dc[m Test contact persist
+* [33m063f6da[m Delete role
+* [33mb2a53e0[m Update role
+* [33m846b578[m Add role
+* [33m63732f4[m View roles
+* [33m08b5ee2[m Update role cascade on employees
+* [33m52f07de[m Add util layer
+* [33m1df58e3[m Get role detail
+* [33m8ef1fee[m Test code refactor
+* [33mefa6a5f[m Make address (owner) and employee bidirectional
+* [33m77fc157[m Code refactor
+* [33mb9cad0b[m Cleanup test roles
+* [33ma151291[m Alleluiah! Delete role with associated employee
+* [33m8da8ba3[m Add CRUD operations on RoleDAO
+* [33mf33e399[m Add service layer
+* [33m4335340[m Add table contracts
+* [33mbf431cb[m Add NameContract
+* [33m6be0517[m Test employee update
+* [33mf867904[m Test name update
+* [33m22a35a8[m Test orphanRemoval on Contacts
+* [33m55eea0b[m Convert roles into set
+* [33m3d83f00[m Conver contacts into a set
+* [33m254ba69[m Persist role on employee
+* [33m90207fa[m Test multiple contacts
+* [33me76102f[m Persist associated contacts
+* [33md851a21[m Do not persist when address is null
+* [33m422ebeb[m Persist address
+* [33m9a1a0e3[m Do not persist when employed or gwa is null
+* [33meb4c6d2[m Do not persist when name is null
+* [33mb26e0de[m When employee saved then it must be persisted
+* [33m812e3bd[m Ignore target folder
+* [33mc89222f[m Remove lompok
+* [33mc49541e[m Test employee persist
+* [33mbc89767[m Add model layer and hibernate config file
+* [33m04ca69c[m Let there be the first commit
